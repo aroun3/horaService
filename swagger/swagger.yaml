@@ -1,0 +1,205 @@
+swagger: '2.0'
+info:
+  description: This API decribe Bloom project resource
+  version: 1.0.0
+  title: API for Bloom project
+  # put the contact info for your development or API team
+  contact:
+    email: aroun3@yahoo.fr
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+
+paths:
+  /article/{ref_article}:
+    get:
+      tags:
+        - developers
+      summary: load article resource
+      operationId: loadArticle
+      description: |
+        Example  /article/4b01-90e6?merchant=d701748f0851
+      produces:
+        - application/json
+      parameters:
+        - name: ref_article
+          in: path
+          type: string
+          description: reference article
+          required : true
+      responses:
+        "200":
+          description: search results matching criteria
+          schema:
+            #type: array
+            #items:
+            $ref: '#/definitions/ArticleResponse'
+        "400":
+          description: bad input parameter
+   
+definitions:
+
+  ArticleResponse:
+    required: 
+      - code
+      - error
+      - content
+    properties:
+      code:
+        type: integer
+        example: 200
+      error:
+        type: boolean
+        example: false
+      content:
+        $ref: '#/definitions/Article'
+  Article:
+    type: object
+    required:
+    - id
+    - ref
+    - name
+    - qte
+    - price
+    - otherOptionsCategorie
+    - merchant
+    properties:
+      id:
+        type: integer
+        format: uuid
+        example: 1
+      ref:
+        type: string
+        format: uuid
+        example: 4b01-90e6
+      name:
+        type: string
+        example: "1/2 pain + 7 baguettes"
+      qte:
+        type: integer
+        example: 1
+      price:
+        type: integer
+        example: 1500
+      otherOptionsCategorie:
+        type: array
+        items:
+          $ref: '#/definitions/OtherOptionsCategorie'
+      merchant:
+          $ref: '#/definitions/Merchant'
+  OtherOptionsCategorie:
+    required:
+    - id
+    - ref
+    - lib
+    - otherOptions
+    properties:
+      id:
+        type: integer
+        format: uuid
+        example: 1
+      ref:
+        type: string
+        example: 6c54-4b01-90e6-d701748f0851
+      lib:
+        type: string
+        example: SUPLEMENT AU CHOIX
+      otherOptions:
+        type: array
+        items:
+          $ref: '#/definitions/OtherOptions'
+  OtherOptions:
+    required: 
+      - id
+      - ref
+      - lib
+      - price
+      - qte
+      - choosed
+    properties:
+      id:
+        type: integer
+        format: uuid
+        example: 1
+      ref:
+        type: string
+        format: uuid
+        example: 6666huji-4b01-90e6-d701748f0851
+      lib:
+        type: string
+        example: Oignon
+      price:
+        type: integer
+        example: 500
+      qte:
+        type: integer
+        example: 1
+      choosed:
+        type: boolean
+        example: false
+  Merchant:
+    required:
+      - id
+      - ref_merchant
+      - delivery_fees
+    properties:
+      id:
+        type: integer
+        format: uuid
+        example: 1
+      ref_merchant:
+          type: string
+          format: uuid
+          example: d701748f0851
+      delivery_fees:
+        type: array
+        items:
+           $ref: '#/definitions/DeliveryFees'
+  DeliveryFees:
+    required:
+      - id
+      - ref
+      - commune
+      - delivery_fees_price
+    properties:
+      id:
+          type: integer
+          format: uuid
+          example: 1
+      ref:
+        type: integer
+        format: uuid
+        example: 6666huji-4b01
+      commune:
+        type: string
+        example: Cocody
+      delivery_fees_price:
+        type: integer
+        example: 1500
+  # Manufacturer:
+  #   required:
+  #   - name
+  #   properties:
+  #     name:
+  #       type: string
+  #       example: ACME Corporation
+  #     homePage:
+  #       type: string
+  #       format: url
+  #       example:  https://www.acme-corp.com
+  #     phone:
+  #       type: string
+  #       example: 408-867-5309
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /xcodevs-corporatio/bloom/1.0.0
+schemes:
+ - https
