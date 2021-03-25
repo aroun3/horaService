@@ -3,17 +3,22 @@ package com.visitor.controller;
 import com.visitor.entities.ERole;
 import com.visitor.entities.Role;
 import com.visitor.entities.User;
+
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
 import com.visitor.payload.request.LoginRequest;
 import com.visitor.payload.request.SignupRequest;
 import com.visitor.payload.response.JwtResponse;
 import com.visitor.payload.response.MessageResponse;
+
 import com.visitor.repositories.RoleRepository;
 import com.visitor.repositories.UserRepository;
+
 import com.visitor.security.jwt.JwtUtils;
 import com.visitor.security.services.UserDetailsImpl;
-import com.visitor.service.UserService;
+
+import com.visitor.services.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,16 +29,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
+	private static final Logger logger = Logger.getLogger(AuthController.class.getName());
+	
 	@Autowired
 	AuthenticationManager authenticationManager;
 
@@ -56,26 +65,41 @@ public class AuthController {
 	public ResponseEntity<?> authenticateUser(@RequestBody @Valid LoginRequest loginRequest) {
 		try {
 			Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
-			if(user.get().getStatus().equals((short)1)){
-				Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-				String jwt = jwtUtils.generateJwtToken(authentication);
-
-				UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-				List<String> roles = userDetails.getAuthorities().stream()
-						.map(item -> item.getAuthority())
-						.collect(Collectors.toList());
-				System.out.println("username ============>> " + loginRequest.getUsername());
-				System.out.println("token jwt ============>> " + jwt);
-
-				return ResponseEntity.ok(new JwtResponse(jwt,
-						userDetails.getId(),
-						userDetails.getUsername(),
-						userDetails.getEmail(),
-						roles, AppConstants.STATUS_CODE_SUCCESS[0]));
-
-			}else{
+			
+			if(user.isPresent()){
+				if(user.get().getStatus().equals((short)1)){
+					
+					Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+	
+					SecurityContextHolder.getContext().setAuthentication(authentication);
+					String jwt = jwtUtils.generateJwtToken(authentication);
+					
+					UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+					
+					List<String> roles = userDetails.getAuthorities().stream()
+							.map(item -> item.getAuthority())
+							.collect(Collectors.toList());
+					
+					System.out.println("username ============>> " + loginRequest.getUsername());
+					
+	
+					return ResponseEntity.ok(new ApiResponse(
+						"v1", 
+						true, 
+						"Succés", 
+						new JwtResponse(jwt,
+							userDetails.getId(),
+							userDetails.getUsername(),
+							userDetails.getEmail(),
+							roles, AppConstants.STATUS_CODE_SUCCESS[0])
+						)
+					);
+	
+				}else{
+					throw new IllegalStateException("Vous ne pouvez pas vous connectez car votre compte est desactivé");
+				}
+			}
+			else{
 				throw new IllegalStateException("Vous ne pouvez pas vous connectez car votre compte est desactivé");
 			}
 
@@ -96,20 +120,30 @@ public class AuthController {
 
 		System.out.println("SignupRequest "+signUpRequest);
 
+		//Verify Username
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Erreur: le nom utilisateur est deja utilisé!"));
 		}
 
+		//Verify email
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
 			return ResponseEntity
 					.badRequest()
 					.body(new MessageResponse("Erreur: Email est deja utilisé!"));
 		}
 
+		//Verify phone
+		if (userRepository.existsByPhone(signUpRequest.getPhone())) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Erreur: Le telephone est deja utilisé!"));
+		}
+
 		// Create new user's account
 		signUpRequest.setStatus((short) 1);
+		
 		User user = new User(signUpRequest.getFullName(),
 				signUpRequest.getUsername(),signUpRequest.getPhone(), signUpRequest.getEmail(),
 				encoder.encode(signUpRequest.getPassword()), signUpRequest.getStatus());

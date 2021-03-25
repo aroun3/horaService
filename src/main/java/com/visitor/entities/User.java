@@ -18,7 +18,7 @@ import java.util.Set;
  * Created by Mory on 25/01/2021.
  */
 @Entity
-@Table(	name = "users",
+@Table(	name = "h_users",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
@@ -29,7 +29,12 @@ import java.util.Set;
 @ToString
 public class User extends UserDateAudit{
 
-        @Id
+        /**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+
+		@Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
 
@@ -67,11 +72,13 @@ public class User extends UserDateAudit{
         private Short status;
 
         @ManyToMany(fetch = FetchType.LAZY)
-        @JoinTable(	name = "user_roles",
+        @JoinTable(	name = "h_user_roles",
                 joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
         private Set<Role> roles = new HashSet<>();
 
+		public User(){}
+		
         public User(String fullName,String username,String phone,String email, String password, Short status) {
                 this.fullName = fullName;
                 this.username = username;
@@ -80,4 +87,85 @@ public class User extends UserDateAudit{
                 this.password = password;
                 this.status = status;
         }
+
+		public Integer getId() {
+			return id;
+		}
+
+		public void setId(Integer id) {
+			this.id = id;
+		}
+
+		public String getMatricule() {
+			return matricule;
+		}
+
+		public void setMatricule(String matricule) {
+			this.matricule = matricule;
+		}
+
+		public String getFullName() {
+			return fullName;
+		}
+
+		public void setFullName(String fullName) {
+			this.fullName = fullName;
+		}
+
+		public String getUsername() {
+			return username;
+		}
+
+		public void setUsername(String username) {
+			this.username = username;
+		}
+
+		public String getPhone() {
+			return phone;
+		}
+
+		public void setPhone(String phone) {
+			this.phone = phone;
+		}
+
+		public String getEmail() {
+			return email;
+		}
+
+		public void setEmail(String email) {
+			this.email = email;
+		}
+
+		public String getPassword() {
+			return password;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
+
+		public String getFonction() {
+			return fonction;
+		}
+
+		public void setFonction(String fonction) {
+			this.fonction = fonction;
+		}
+
+		public Short getStatus() {
+			return status;
+		}
+
+		public void setStatus(Short status) {
+			this.status = status;
+		}
+
+		public Set<Role> getRoles() {
+			return roles;
+		}
+
+		public void setRoles(Set<Role> roles) {
+			this.roles = roles;
+		}
+        
 }

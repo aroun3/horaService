@@ -61,16 +61,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			http.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.authorizeRequests().antMatchers("/api/auth/**").permitAll()
-				.anyRequest().authenticated()
+			.authorizeRequests()
+			.antMatchers(
+				"/api/auth/**",
+				"/swagger-ui/*"
+				).permitAll()
+			.anyRequest().authenticated();
+			
 			/*.and().
 			formLogin().loginPage("/login")
 			.loginProcessingUrl("/login")
 			.permitAll().defaultSuccessUrl("/home", true)
-			.failureForwardUrl("/login")*/;
+			.failureForwardUrl("/login")*////;
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-}
+	}
 
 
 	@Bean

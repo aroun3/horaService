@@ -3,7 +3,7 @@ package com.visitor.controller;
 import com.visitor.entities.Role;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
-import com.visitor.service.RoleService;
+import com.visitor.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,6 @@
 package com.visitor.repositories;
 
-import com.visitor.entities.Carte;
-import com.visitor.entities.TypePiece;
+import com.visitor.entities.visitor.TypePiece;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

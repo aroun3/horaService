@@ -1,10 +1,12 @@
 package com.visitor.repositories;
 
-import com.visitor.entities.Coupling;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+
+import com.visitor.entities.visitor.Coupling;
 
 @Repository
 public interface CouplingRepository extends JpaRepository<Coupling, Integer> {

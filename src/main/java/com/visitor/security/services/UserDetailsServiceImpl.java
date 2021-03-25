@@ -2,7 +2,6 @@ package com.visitor.security.services;
 
 import com.visitor.entities.User;
 import com.visitor.repositories.UserRepository;
-import com.visitor.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
