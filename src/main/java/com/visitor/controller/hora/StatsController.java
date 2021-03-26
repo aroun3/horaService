@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,25 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 
-import com.visitor.config.Const;
 import com.visitor.entities.Phantom;
 import com.visitor.entities.RealTimeTransaction;
 import com.visitor.entities.Transactions;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
+import com.visitor.services.PhantomService;
 import com.visitor.services.StatsService;
-import com.visitor.utils.CurrentDate;
 
 @RestController
 @RequestMapping("/api/hora/stats")
@@ -39,34 +32,13 @@ public class StatsController {
     @Autowired
     StatsService statsService;
 
+    @Autowired
+    PhantomService phantomService;
+
     private DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    /**
-     * List presence : dont le pointage est complete
-     * @return
-     */
-    @PostMapping("/getListAttendance")
-    public ResponseEntity<?> getListAttendance(){
-        return ResponseEntity.ok().body(new ApiResponse(true, "Vous etes sur la page d'accueil"));
-    }
-    
-    /**
-     * List depart
-     * @return
-     */
-    public ResponseEntity<?> getListCheckOut (){
-        return ResponseEntity.ok().body(new ApiResponse(true, "Vous etes sur la page d'accueil"));
-    }
 
     /**
-     * List arrivée
-     * @return
-     */
-    public ResponseEntity<?> getListCheckIn (){
-        return ResponseEntity.ok().body(new ApiResponse(true, "Vous etes sur la page d'accueil"));
-    }
-
-    /**
-     * List current punchs
+     * Liste des pointage en temps réel : basé sur la table iclock_transaction
      * @return
      */
     @GetMapping("/getListCurrentPunch")
@@ -83,28 +55,10 @@ public class StatsController {
         return ResponseEntity.ok().body(new ApiResponse("v1",true, AppConstants.STATUS_CODE_SUCCESS[1], listCurrentsPunchs));
     }
 
-    /**
-     * Liste des pointages : tout type de pointage confondu
-     * @return
-     * @throws ParseException
-     */
-    @GetMapping("/getListPunch")
-    public ResponseEntity<?> getListPunch (
-        @RequestParam("date") 
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        String date,
-        @RequestParam (defaultValue = "5") Integer limit, 
-        @RequestParam( )  String status) throws ParseException{
-
-        Date dateSelected = this.format.parse(date);
-        List<Transactions> data = statsService.findPunchByStatus(dateSelected,status,limit);
-        
-        return ResponseEntity.ok(new ApiResponse("v1",true, AppConstants.STATUS_CODE_SUCCESS[1], data));
-    }
-
+    //========================== PHANTOM ================================
     
     /**
-     * Total pointage
+     * Total pointage : early - ontime - late
      * @return
      */
     @GetMapping("/getCountAttendance")
@@ -123,9 +77,9 @@ public class StatsController {
 
         Date dateSelected = this.format.parse(date);
         
-        countEarlyCheckIn = statsService.countByEarlyCheckin(dateSelected);
-        countOnTimeCheckIn = statsService.countByOntimeCheckin(dateSelected);
-        countLateCheckIn = statsService.countByLateCheckin(dateSelected);
+        countEarlyCheckIn = phantomService.countByEarlyCheckinAndPunchDate(dateSelected);
+        countOnTimeCheckIn = phantomService.countByOntimeCheckinAndPunchDate(dateSelected);
+        countLateCheckIn = phantomService.countByLateCheckinAndPunchDate(dateSelected);
 
         map.put("early_checkin",countEarlyCheckIn);
         map.put("ontime_checkin",countOnTimeCheckIn);
@@ -147,13 +101,11 @@ public class StatsController {
     
 
     /**
-     * Total absent
+     * Liste des arrive et des departs (status)
+     * @param date
      * @return
+     * @throws ParseException
      */
-    public ResponseEntity<?> getCountAbsent (){
-        return ResponseEntity.ok().body(new ApiResponse(true, "Vous etes sur la page d'accueil"));
-    }
-
     @GetMapping("/getListStatusPunch")
     public ResponseEntity<?> listPunchByStatus(
         @RequestParam("date") 
@@ -162,7 +114,7 @@ public class StatsController {
     )throws ParseException{
         Date dateSelected = this.format.parse(date);
 
-        List<Phantom> result = statsService.listPunchByStatus(dateSelected);
+        List<Phantom> result = phantomService.listPunchByPunchDate(dateSelected);
         
         return ResponseEntity.ok().body(new ApiResponse("v1",true, AppConstants.STATUS_CODE_SUCCESS[1], result));
     }
@@ -180,7 +132,7 @@ public class StatsController {
 
         Date dateSelected = this.format.parse(date);
 
-        List<Phantom> result = statsService.findByPunchDateAndCheckinStatusOrderByFirstPunchAsc(dateSelected);
+        List<Phantom> result = phantomService.findByPunchDateAndCheckinStatusOrderByFirstPunchAsc(dateSelected);
         
         return ResponseEntity.ok().body(new ApiResponse("v1",true, AppConstants.STATUS_CODE_SUCCESS[1], result));
     }
@@ -198,7 +150,7 @@ public class StatsController {
 
         Date dateSelected = this.format.parse(date);
 
-        List<Phantom> result = statsService.findByPunchDateAndCheckinStatusOrderByFirstPunchDesc(dateSelected);
+        List<Phantom> result = phantomService.findByPunchDateAndCheckinStatusOrderByFirstPunchDesc(dateSelected);
         
         return ResponseEntity.ok().body(new ApiResponse("v1",true, AppConstants.STATUS_CODE_SUCCESS[1], result));
     }

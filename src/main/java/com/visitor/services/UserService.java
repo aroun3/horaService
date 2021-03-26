@@ -38,7 +38,7 @@ public class UserService implements UserServiceInterface {
     @Override
     public User getOneById(Integer id) {
         Optional<User> user = userRepository.findById(id);
-        return user.isPresent() ? .get() ;
+        return user.isPresent() ? user.get() : null;
     }
 
     @Override

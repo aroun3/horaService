@@ -17,7 +17,7 @@ import org.hibernate.annotations.Immutable;
 @Immutable
 @Table(name = "`h_realtime_transaction`")
 //@Subselect("select uuid() as id, rt.empcode as empcode, rt.punchtime as punchtime, rt.firstname as firstname, rt.lastname as lastname, rt.photo as photo from h_realtime_transaction as rt")
-public class RealTimeTransaction implements Serializable {
+public class                                                                        RealTimeTransaction implements Serializable {
 
     /**
      *

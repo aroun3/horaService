@@ -2,18 +2,13 @@ package com.visitor.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
-import java.util.List;
-
-import com.visitor.entities.RealTimeTransaction;
 import com.visitor.entities.Transactions;
 @Repository
 public interface StatsRepository extends JpaRepository<Transactions, Integer>{
     
-    @Query(value="SELECT * FROM h_transactions WHERE status = ?1",nativeQuery = true)
+    /*@Query(value="SELECT * FROM h_transactions WHERE status = ?1",nativeQuery = true)
     public List<Transactions> getListPunch();
     
     @Query(value="SELECT * FROM h_transactions as ht WHERE ht.date_trans = :dateSelected AND ht.status =:status LIMIT :limit ",nativeQuery = true)
@@ -27,7 +22,7 @@ public interface StatsRepository extends JpaRepository<Transactions, Integer>{
     public Integer countPunch(
         @Param("dateSelected") Date dateSelected,
         @Param("status") String status
-        );
+        );*/
 
     /**
      * nombre des employé

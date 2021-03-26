@@ -22,6 +22,14 @@ public interface PhantomRepository extends JpaRepository<Phantom,String>{
     public Integer countByEarlyCheckinAndPunchDate(boolean status,Date date);
 
     /**
+     * Liste des arrivées à l'heure
+     * @param status
+     * @param date
+     * @return
+     */
+    public List<Phantom>  findByEarlyCheckinAndPunchDate(boolean status,Date date);
+
+    /**
      * Total arrivé à l'heure
      * @param status
      * @param date
@@ -30,12 +38,27 @@ public interface PhantomRepository extends JpaRepository<Phantom,String>{
     public Integer countByOntimeCheckinAndPunchDate(boolean status,Date date);
 
     /**
+     * Liste des arrivées à l'heure
+     * @param status
+     * @param date
+     * @return
+     */
+    public List<Phantom> findByOntimeCheckinAndPunchDate(boolean status,Date date);
+    /**
      * Total arrivé en retard
      * @param status
      * @param date
      * @return
      */
     public Integer countByLateCheckinAndPunchDate(boolean status,Date date);
+
+    /**
+     * Liste des arrivées en retards
+     * @param status
+     * @param date
+     * @return
+     */
+    public List<Phantom> findByLateCheckinAndPunchDate(boolean status,Date date);
 
 
     /**
@@ -45,24 +68,20 @@ public interface PhantomRepository extends JpaRepository<Phantom,String>{
      */
     public List<Phantom> findByPunchDateAndCheckinStatusOrderByFirstPunchAsc(Date date,boolean status) ;
 
+
     /**
      * Liste des derniers arrive
      * @param status
      * @return
      */
     public List<Phantom> findByPunchDateAndCheckinStatusOrderByFirstPunchDesc(Date date,boolean status) ;
+    
     /**
      * Liste des pointages de la @date courante
      * @param date
-     * @return checkin_status / checkout_status
+     * @return checkin_status(arrivé) / checkout_status(depart)
      */
     public List<Phantom> findByPunchDate(Date date);
 
-    /**
-     * Liste des arrivées
-     * @param status
-     * @return
-     */
-    
-    public List<Phantom> countBy();
+
 }
