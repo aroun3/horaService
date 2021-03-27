@@ -1,0 +1,14 @@
+psql:Z:/data/DIGIN/PROJECTS/gestion-visiteur/req_functions.sql:124: NOTICE:  emp_code: 973
+psql:Z:/data/DIGIN/PROJECTS/gestion-visiteur/req_functions.sql:124: NOTICE:  emp_code: 792
+psql:Z:/data/DIGIN/PROJECTS/gestion-visiteur/req_functions.sql:124: NOTICE:  emp_code: 791
+psql:Z:/data/DIGIN/PROJECTS/gestion-visiteur/req_functions.sql:124: NOTICE:  emp_code: 792
+psql:Z:/data/DIGIN/PROJECTS/gestion-visiteur/req_functions.sql:124: NOTICE:  emp_code: 753
+psql:Z:/data/DIGIN/PROJECTS/gestion-visiteur/req_functions.sql:124: NOTICE:  emp_code: G011
+psql:Z:/data/DIGIN/PROJECTS/gestion-visiteur/req_functions.sql:124: NOTICE:  emp_code: G013
+psql:Z:/data/DIGIN/PROJECTS/gestion-visiteur/req_functions.sql:124: NOTICE:  emp_code: S060
+psql:Z:/data/DIGIN/PROJECTS/gestion-visiteur/req_functions.sql:124: NOTICE:  emp_code: V127
+psql:Z:/data/DIGIN/PROJECTS/gestion-visiteur/req_functions.sql:124: NOTICE:  first_punch: 2021-02-18 09:59:49 / last_punch: 2021-02-18 09:59:49
+psql:Z:/data/DIGIN/PROJECTS/gestion-visiteur/req_functions.sql:124: ERREUR:  une valeur NULL viole la contrainte NOT NULL de la colonne « id »
+D�TAIL : La ligne en échec contient (null, 973, 2021-02-18, 09:59:49, 09:59:49, null)
+CONTEXTE : instruction SQL « INSERT INTO h_transactions(code_emp,first_punch,last_punch,date_trans) VALUES('973','2021-02-18 09:59:49','2021-02-18 09:59:49','2021-02-18') »
+fonction PL/pgsql "updateEmployeeStatus"(), ligne 61 à EXECUTE

@@ -15,6 +15,12 @@ public class PhantomService {
     @Autowired
     PhantomRepository phantomRepository;
     
+    // Test request
+    
+    public List<Phantom> test(){
+        return phantomRepository.test();
+    }
+
     /**
      * Total pointage des arrivées avant l'heure
      * @param date
@@ -47,8 +53,8 @@ public class PhantomService {
      * @param date
      * @return
      */
-    public List<Phantom> findByPunchDateAndCheckinStatusOrderByFirstPunchAsc(Date date){
-        return phantomRepository.findByPunchDateAndCheckinStatusOrderByFirstPunchAsc(date,true);
+    public List<Phantom> listFirstCheckinPunchAsc(Date date){
+        return phantomRepository.loadPunchByDateAndStatusAsc(date,true);
     }
 
     /**
@@ -57,8 +63,8 @@ public class PhantomService {
      * @return
      */
 
-    public List<Phantom> findByPunchDateAndCheckinStatusOrderByFirstPunchDesc(Date date){
-        return phantomRepository.findByPunchDateAndCheckinStatusOrderByFirstPunchDesc(date,true);
+    public List<Phantom> listFirstCheckinPunchDesc(Date date){
+        return phantomRepository.loadPunchByDateAndStatusDesc(date,true);
     }
 
     /**
@@ -69,6 +75,8 @@ public class PhantomService {
     public List<Phantom> listPunchByPunchDate(Date date){
         return phantomRepository.findByPunchDate(date);
     }
+
+    
 
 
     /*public List<Phantom> findByPhantomCheckinStatusIn(){

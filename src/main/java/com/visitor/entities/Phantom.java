@@ -13,6 +13,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import org.hibernate.annotations.Immutable;
 
+/**
+ * Copie des données personnalisé de la base biotime
+ */
 @Entity
 @Immutable
 @Table(name = "h_phantom_view")
@@ -55,6 +58,9 @@ public class Phantom implements Serializable{
     @Column(name = "eposition")
     private String eposition;
 
+    @Column(name = "area")
+    private String area;
+
     @Column(name = "incomplet")
     private boolean incomplet;
 
@@ -84,6 +90,12 @@ public class Phantom implements Serializable{
     
     public String getEmpCode() {
         return empCode;
+    }
+    public String getArea() {
+        return area;
+    }
+    public void setArea(String area) {
+        this.area = area;
     }
     public boolean isLateCheckout() {
         return lateCheckout;

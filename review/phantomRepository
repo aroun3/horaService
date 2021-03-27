@@ -9,24 +9,14 @@ import com.visitor.entities.Phantom;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-/**
- * Repository Phantom : La necessité est de recuperer les données en temps réel et de les formaters sur le model de h_transaction
- */
 @Repository
 @Transactional
 public interface PhantomRepository extends JpaRepository<Phantom,String>{
 
-    /**
-     * Pour les test de requetes
-     * @return
-     */
     @Query(value="SELECT * FROM h_phantom_view LIMIT 1",nativeQuery = true)
     public List<Phantom> test();
-
-
     /**
      * Total arrivée avant l'heure
      * @param status
@@ -76,26 +66,19 @@ public interface PhantomRepository extends JpaRepository<Phantom,String>{
 
 
     /**
-     * List des premiers arrivés
+     * List des premier arrivé
      * @param status
      * @return
      */
-    @Query(value="SELECT * FROM h_phantom_view WHERE punch_date = :dateSelected AND checkin_status = :status ORDER BY first_punch ASC LIMIT 10",nativeQuery = true)
-    public List<Phantom> loadPunchByDateAndStatusAsc(
-        @Param("dateSelected") Date dateSelected,
-        @Param("status") boolean status) ;
+    public List<Phantom> findFirst1ByPunchDateAndCheckinStatusOrderByFirstPunchAsc(Date date,boolean status) ;
 
 
     /**
-     * Liste des derniers arrivées
+     * Liste des derniers arrive
      * @param status
      * @return
      */
-    @Query(value="SELECT * FROM h_phantom_view WHERE punch_date = :dateSelected AND checkin_status = :status ORDER BY first_punch DESC LIMIT 10",nativeQuery = true)
-    public List<Phantom> loadPunchByDateAndStatusDesc(
-        @Param("dateSelected") Date dateSelected,
-        @Param("status") boolean status
-    ) ;
+    public List<Phantom> findByPunchDateAndCheckinStatusOrderByFirstPunchDesc(Date date,boolean status) ;
     
     /**
      * Liste des pointages de la @date courante

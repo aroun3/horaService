@@ -19,7 +19,6 @@ import java.util.Map;
 
 import com.visitor.entities.Phantom;
 import com.visitor.entities.RealTimeTransaction;
-import com.visitor.entities.Transactions;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
 import com.visitor.services.PhantomService;
@@ -35,7 +34,15 @@ public class StatsController {
     @Autowired
     PhantomService phantomService;
 
+    
     private DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+    @GetMapping("/test")
+    public ResponseEntity<?> test(){
+
+        List<Phantom> data = phantomService.test();
+        return ResponseEntity.ok().body(new ApiResponse("v1",true, AppConstants.STATUS_CODE_SUCCESS[1], data));
+    }
 
     /**
      * Liste des pointage en temps réel : basé sur la table iclock_transaction
@@ -132,7 +139,7 @@ public class StatsController {
 
         Date dateSelected = this.format.parse(date);
 
-        List<Phantom> result = phantomService.findByPunchDateAndCheckinStatusOrderByFirstPunchAsc(dateSelected);
+        List<Phantom> result = phantomService.listFirstCheckinPunchAsc(dateSelected);
         
         return ResponseEntity.ok().body(new ApiResponse("v1",true, AppConstants.STATUS_CODE_SUCCESS[1], result));
     }
@@ -150,7 +157,7 @@ public class StatsController {
 
         Date dateSelected = this.format.parse(date);
 
-        List<Phantom> result = phantomService.findByPunchDateAndCheckinStatusOrderByFirstPunchDesc(dateSelected);
+        List<Phantom> result = phantomService.listFirstCheckinPunchDesc(dateSelected);
         
         return ResponseEntity.ok().body(new ApiResponse("v1",true, AppConstants.STATUS_CODE_SUCCESS[1], result));
     }
