@@ -4,7 +4,7 @@ import com.visitor.entities.visitor.Coupling;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
 import com.visitor.repositories.UserRepository;
-import com.visitor.services.CouplingService;
+import com.visitor.services.visitor.CouplingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

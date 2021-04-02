@@ -1,7 +1,7 @@
-package com.visitor.services;
+package com.visitor.services.visitor;
 
 import com.visitor.entities.visitor.Coupling;
-import com.visitor.repositories.CouplingRepository;
+import com.visitor.repositories.visitor.CouplingRepository;
 import com.visitor.service_interfaces.CouplingServiceInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;

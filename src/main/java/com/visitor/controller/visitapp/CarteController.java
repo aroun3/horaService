@@ -4,7 +4,7 @@ import com.visitor.entities.visitor.Carte;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
 import com.visitor.repositories.UserRepository;
-import com.visitor.services.CarteService;
+import com.visitor.services.visitor.CarteService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
