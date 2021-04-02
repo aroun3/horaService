@@ -1,4 +1,4 @@
-package com.visitor.repositories;
+package com.visitor.repositories.visitor;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

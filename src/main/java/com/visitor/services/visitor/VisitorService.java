@@ -1,4 +1,4 @@
-package com.visitor.services;
+package com.visitor.services.visitor;
 
 import com.visitor.entities.visitor.Visitor;
 import com.visitor.repositories.VisitorRepository;

@@ -1,4 +1,4 @@
-package com.visitor.services;
+package com.visitor.services.visitor;
 
 import com.visitor.entities.visitor.TypePiece;
 import com.visitor.repositories.TypePieceRepository;

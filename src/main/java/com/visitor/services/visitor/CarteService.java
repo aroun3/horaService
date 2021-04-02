@@ -1,7 +1,7 @@
-package com.visitor.services;
+package com.visitor.services.visitor;
 
 import com.visitor.entities.visitor.Carte;
-import com.visitor.repositories.CarteRepository;
+import com.visitor.repositories.visitor.CarteRepository;
 import com.visitor.service_interfaces.CarteServiceInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,7 +4,7 @@ import com.visitor.entities.visitor.TypePiece;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
 import com.visitor.repositories.UserRepository;
-import com.visitor.services.TypePieceService;
+import com.visitor.services.visitor.TypePieceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
