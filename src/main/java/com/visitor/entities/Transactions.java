@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "h_transactions")
 @Immutable
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Transactions {
@@ -44,9 +43,6 @@ public class Transactions {
     @Column(name = "status")
     private String status;
 
-    Transactions(){
-        
-    }
 
     Transactions(Integer id){
         this.id = id;

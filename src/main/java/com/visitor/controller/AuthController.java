@@ -64,8 +64,11 @@ public class AuthController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@RequestBody @Valid LoginRequest loginRequest) {
 		try {
+			
+			System.out.println("================================= user name : "+loginRequest.getUsername());
 			Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
 			
+			System.out.println("============================= encoder : "+encoder.encode("admin123"));
 			if(user.isPresent()){
 				if(user.get().getStatus().equals((short)1)){
 					
