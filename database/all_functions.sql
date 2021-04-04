@@ -1,3 +1,8 @@
+--- NOMENCLATURE ---
+-- ABSENT = 0
+-- EARLY = 1
+-- ONTIME = 2
+-- LATE=3
 -- ================ Fonction pour obtenir le status arrival ==============
 DROP FUNCTION IF EXISTS public."getArrivalPunchState"(empCode text, dateSelected date ) CASCADE;
 
@@ -15,10 +20,10 @@ BEGIN
         SELECT INTO _result
         min(it.punch_time::time without time zone) as punch_time,
         CASE
-            WHEN min(it.punch_time::time without time zone) BETWEEN rec.min_checkin::time AND rec.h_checkin::time THEN 'EARLY'::text
-            WHEN min(it.punch_time::time without time zone) BETWEEN rec.h_checkin::time AND rec.late_checkin::time THEN 'ONTIME'::text
-            WHEN min(it.punch_time::time without time zone) BETWEEN rec.late_checkin::time AND rec.max_checkin::time  THEN 'LATE'::text
-            ELSE 'ABSENT'::text
+            WHEN min(it.punch_time::time without time zone) BETWEEN rec.min_checkin::time AND rec.h_checkin::time THEN '1'::text
+            WHEN min(it.punch_time::time without time zone) BETWEEN rec.h_checkin::time AND rec.late_checkin::time THEN '2'::text
+            WHEN min(it.punch_time::time without time zone) BETWEEN rec.late_checkin::time AND rec.max_checkin::time  THEN '3'::text
+            ELSE '0'::text
         END as punch_status
 
         FROM iclock_transaction it
@@ -30,7 +35,7 @@ BEGIN
     END IF;
 		
 	IF _result IS NULL THEN
-		_result = 'ABSENT';
+		_result = '0';
 	END IF;
 	
     RETURN NEXT _result;

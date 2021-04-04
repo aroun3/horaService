@@ -13,10 +13,10 @@ BEGIN
 
         SELECT INTO _result
         CASE
-            WHEN min(it.punch_time::time without time zone) >= rec.min_checkin::time AND min(it.punch_time::time without time zone) < rec.h_checkin::time THEN 'EARLY'::text
-            WHEN min(it.punch_time::time without time zone) >= rec.h_checkin::time AND min(it.punch_time::time without time zone) < rec.late_checkin::time THEN 'ONTIME'::text
-            WHEN min(it.punch_time::time without time zone) >= rec.late_checkin::time AND min(it.punch_time::time without time zone) < rec.max_checkin::time  THEN 'LATE'::text
-            ELSE 'ABSENT'::text
+            WHEN min(it.punch_time::time without time zone) >= rec.min_checkin::time AND min(it.punch_time::time without time zone) < rec.h_checkin::time THEN '1'::text
+            WHEN min(it.punch_time::time without time zone) >= rec.h_checkin::time AND min(it.punch_time::time without time zone) < rec.late_checkin::time THEN '2'::text
+            WHEN min(it.punch_time::time without time zone) >= rec.late_checkin::time AND min(it.punch_time::time without time zone) < rec.max_checkin::time  THEN '3'::text
+            ELSE '0'::text
         END as punch_status
 
         FROM iclock_transaction it
@@ -35,4 +35,4 @@ BEGIN
 END
 $$;
 
-select * from public."getArrivalPunchState"('753',CURRENT_TIMESTAMP::date);
+select * from public."getArrivalPunchState"('753','2021-02-18'::date);

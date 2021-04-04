@@ -6,7 +6,7 @@ CREATE TABLE public.h_log_transaction
     arrival_id smallint,
     departure_time timestamp with time zone,
     departure_id smallint,
-    presence_periode smallint,
+    presence_periode timestamp,
     arrival_state smallint,
     departure_state smallint,
     presence_state character varying(10),
