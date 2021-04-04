@@ -1,5 +1,7 @@
 package com.visitor.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,7 +12,7 @@ import org.hibernate.annotations.Immutable;
 @Entity
 @Immutable
 @Table(name = "h_personnel_department_view")
-public class Departement {
+public class Departement implements Serializable{
 
     @Id
     @Column(name = "dept_code")
@@ -19,7 +21,21 @@ public class Departement {
     @Column(name = "dept_name")
     private String deptName;
 
-    public String getDepCode() {
+    
+    public Departement() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+    
+	public Departement(String depCode, String deptName) {
+		super();
+		this.depCode = depCode;
+		this.deptName = deptName;
+	}
+
+
+	public String getDepCode() {
         return depCode;
     }
 

@@ -1,5 +1,6 @@
 package com.visitor.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Immutable
 @NoArgsConstructor
 @Data
-public class Transactions {
+public class Transactions implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

@@ -88,7 +88,41 @@ public class Phantom implements Serializable{
     @Column(name = "checkout_status")
     private boolean checkoutStatus;
     
-    public String getEmpCode() {
+    
+    public Phantom() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+    
+    
+	public Phantom(String empCode, Date punchDate, Date firstPunch, Date lastPunch, String firstName, String lastName,
+			String ephoto, String department, String eposition, String area, boolean incomplet, boolean earlyCheckin,
+			boolean ontimeCheckin, boolean lateCheckin, boolean earlyCheckout, boolean ontimeCheckout,
+			boolean lateCheckout, boolean checkinStatus, boolean checkoutStatus) {
+		super();
+		this.empCode = empCode;
+		this.punchDate = punchDate;
+		this.firstPunch = firstPunch;
+		this.lastPunch = lastPunch;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.ephoto = ephoto;
+		this.department = department;
+		this.eposition = eposition;
+		this.area = area;
+		this.incomplet = incomplet;
+		this.earlyCheckin = earlyCheckin;
+		this.ontimeCheckin = ontimeCheckin;
+		this.lateCheckin = lateCheckin;
+		this.earlyCheckout = earlyCheckout;
+		this.ontimeCheckout = ontimeCheckout;
+		this.lateCheckout = lateCheckout;
+		this.checkinStatus = checkinStatus;
+		this.checkoutStatus = checkoutStatus;
+	}
+
+
+	public String getEmpCode() {
         return empCode;
     }
     public String getArea() {

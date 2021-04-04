@@ -1,5 +1,7 @@
 package com.visitor.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,7 +12,7 @@ import org.hibernate.annotations.Immutable;
 @Entity
 @Immutable
 @Table(name = "h_personnel_employee_view")
-public class Employee {
+public class Employee implements Serializable{
 
     @Id
     @Column(name = "emp_code")
@@ -43,7 +45,34 @@ public class Employee {
     @Column(name = "address")
     private String address;
 
-    public String getEmpCode() {
+    @Column(name = "dep_id")
+    private Integer depId;
+    
+    
+    
+    
+    public Employee() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Employee(String empCode, String firstName, String lastName, String photo, String gender, String contactTel,
+			String mobile, String city, Integer status, String address, Integer depId) {
+		super();
+		this.empCode = empCode;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.photo = photo;
+		this.gender = gender;
+		this.contactTel = contactTel;
+		this.mobile = mobile;
+		this.city = city;
+		this.status = status;
+		this.address = address;
+		this.depId = depId;
+	}
+
+	public String getEmpCode() {
         return empCode;
     }
 
@@ -123,6 +152,12 @@ public class Employee {
         this.empCode = empCode;
     }
 
+	public Integer getDepId() {
+		return depId;
+	}
 
+	public void setDepId(Integer depId) {
+		this.depId = depId;
+	}
     
 }
