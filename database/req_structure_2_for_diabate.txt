@@ -1,0 +1,90 @@
+Vue 1 / Aroun
+-------------
+-- Autant de lignes que d employee -> jointure avec emp a gauche 
+-- et clause where sur matricule et gestion des cas absence
+* now,
+* matricule,
+* area,
+* arrival_time,
+* punch_state --early, on time, late, absent
+Where punch_time = now
+
+Req 1 / Dramane -> arrivees
+----------------------------
+* count_early,
+* count_ontime,
+* count_late,
+* count_absent
+
+Req 2 / Dramane -> arrivees by arrival_time
+--------------------------------------------
+* area
+* count_early,
+* count_ontime,
+* count_late,
+* count_absent
+group by area
+
+Req 3 / Dramane -> classements
+------------------------------
+-- 3-a- top 5 
+* matricule,
+* arrival_time
+* punch_state
+* divers
+order by asc
+
+-- 3-b- last 5
+* matricule,
+* arrival_time
+* punch_state
+* divers
+order by desc
+
+-- 3-c- absents
+* matricule
+* punch_state
+* divers
+
+Req 4 : arrivees temps reel
+---------------------------
+voir vue 2 Aroun
+
+========================================================================================================
+
+table 1 : historique journee / voir Aroun
+
+Req 1 : totaux par nature, sur periode
+---------------------------------------
+-- arrivees
+* count_early,
+* count_ontime,
+* count_late,
+* count_absent
+
+-- departs
+* count_early,
+* count_ontime,
+* count_late,
+* count_absent
+
+-- presences
+* count_below,
+* count_normal,
+* count_over,
+* count_absent
+
+-- absences
+* count_absent
+
+Req 2 : totaux par nature, sur periode, par site
+------------------------------------------------
+* meme infos groupees par site
+
+Req 3 : classements par nature, sur periode
+-------------------------------------------
+* 
+
+Req 4 : totaux par nature, sur periode, par journee
+---------------------------------------------------
+* meme infos groupees par journee <=> par site
