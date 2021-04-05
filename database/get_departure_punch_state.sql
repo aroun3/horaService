@@ -12,12 +12,11 @@ BEGIN
         SELECT * INTO rec FROM h_params LIMIT 1;
 
         SELECT INTO _result
-        max(it.punch_time::time without time zone) as punch_time,
         CASE
-            WHEN max(it.punch_time::time without time zone) >= rec.min_checkout::time AND max(it.punch_time::time without time zone) < rec.h_checkout::time THEN 'EARLY'::text
-            WHEN max(it.punch_time::time without time zone) >= rec.h_checkout::time AND max(it.punch_time::time without time zone) < rec.late_checkout::time THEN 'ONTIME'::text
-            WHEN max(it.punch_time::time without time zone) >= rec.late_checkout::time AND max(it.punch_time::time without time zone) < rec.max_checkout::time  THEN 'LATE'::text
-            ELSE 'ABSENT'::text
+            WHEN max(it.punch_time::time without time zone) >= rec.min_checkout::time AND max(it.punch_time::time without time zone) < rec.h_checkout::time THEN '1'::text
+            WHEN max(it.punch_time::time without time zone) >= rec.h_checkout::time AND max(it.punch_time::time without time zone) < rec.late_checkout::time THEN '2'::text
+            WHEN max(it.punch_time::time without time zone) >= rec.late_checkout::time AND max(it.punch_time::time without time zone) < rec.max_checkout::time  THEN '3'::text
+            ELSE '0'::text
         END as punch_status
 
         FROM iclock_transaction it
@@ -25,11 +24,11 @@ BEGIN
 		it.punch_time::date = dateSelected::date AND 
 		it.punch_time::time >= rec.min_checkout::time AND 
 		it.punch_time::time <= rec.max_checkout::time 
-        GROUP BY it.emp_code, it.punch_time;
+        GROUP BY it.punch_time;
     END IF;
 		
 	IF _result IS NULL THEN
-		_result = 'ABSENT';
+		_result = '0 ';
 	END IF;
 	
     RETURN NEXT _result;

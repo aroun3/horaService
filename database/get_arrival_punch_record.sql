@@ -1,6 +1,6 @@
-DROP FUNCTION IF EXISTS public."getArrivalPunchTimeRecord"(empCode text, dateSelected date ) CASCADE;
+DROP FUNCTION IF EXISTS public."getArrivalPunchRecord"(empCode text, dateSelected date ) CASCADE;
 
-CREATE OR REPLACE FUNCTION public."getArrivalPunchTimeRecord"(empCode text, dateSelected date) 
+CREATE OR REPLACE FUNCTION public."getArrivalPunchRecord"(empCode text, dateSelected date) 
 returns TABLE(id Integer, arrival_time time)
 	language 'plpgsql'
 AS $$ 
@@ -20,11 +20,11 @@ BEGIN
 		it.punch_time::date = dateSelected::date AND 
 		it.punch_time::time >= rec.min_checkin::time AND 
 		it.punch_time::time <= rec.max_checkin::time 
-        GROUP BY it.punch_time;
+        GROUP BY it.id,it.punch_time;
     END IF;
 	
-    RETURN NEXT _result;
+    RETURN NEXT ;
 END
 $$;
 
---select * from public."getArrivalPunchTime"('753',CURRENT_TIMESTAMP::date);
+select * from public."getArrivalPunchRecord"('973','2021-02-18'::date);

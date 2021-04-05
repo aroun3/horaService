@@ -12,6 +12,7 @@ BEGIN
         SELECT * INTO rec FROM h_params LIMIT 1;
 
         SELECT INTO _result
+		
         max(it.punch_time::time without time zone)
 
         FROM iclock_transaction it
@@ -19,7 +20,7 @@ BEGIN
 		it.punch_time::date = dateSelected::date AND 
 		it.punch_time::time >= rec.min_checkout::time AND 
 		it.punch_time::time <= rec.max_checkout::time 
-        GROUP BY it.emp_code, it.punch_time;
+        GROUP BY it.punch_time;
     END IF;
 		
 	IF _result IS NULL THEN
@@ -30,4 +31,4 @@ BEGIN
 END
 $$;
 
-select * from public."getDeparturePunchTime"('753',CURRENT_TIMESTAMP::date);
+select * from public."getDeparturePunchTime"('753','2021-02-18'::date) as departure_time;
