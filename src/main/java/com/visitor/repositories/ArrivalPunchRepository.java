@@ -12,10 +12,10 @@ import com.visitor.entities.ArrivalPunch;
 @Repository
 public interface ArrivalPunchRepository extends JpaRepository<ArrivalPunch, Integer>{
 
-	@Query("select ap from ArrivalPunch ap where ap.punchStatus = 'EARLY' order by ap.arrivalTime asc limit 5")
+	@Query(value = "select * from arrivalpunch punch_status = 'EARLY' order by arrival_time asc limit 5", nativeQuery = true)
 	List<ArrivalPunch> top5();
 	
-	@Query("select ap from ArrivalPunch ap where ap.punchStatus = 'LATE' order by ap.arrivalTime desc limit 5")
+	@Query(value = "select * from arrivalpunch where punch_status = 'LATE' order by arrival_time desc limit 5", nativeQuery = true)
 	List<ArrivalPunch> last5();
 
 	List<ArrivalPunch> findByPunchStatus(String status);

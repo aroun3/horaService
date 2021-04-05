@@ -6,9 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.visitor.entities.AreaGps;
 import com.visitor.entities.ArrivalPunch;
 import com.visitor.payload.response.AreaStat;
 import com.visitor.payload.response.GeneralStat;
+import com.visitor.repositories.AreaGpsRepository;
 import com.visitor.repositories.ArrivalPunchRepository;
 import com.visitor.service_interfaces.AccueilService;
 
@@ -17,6 +19,9 @@ public class AccueilServiceImpl implements AccueilService{
 
 	@Autowired
 	private ArrivalPunchRepository arrivalPunchRepository;
+	
+	@Autowired
+	private AreaGpsRepository areaGpsRepository;
 	
 	@Override
 	public List<ArrivalPunch> top5() {
@@ -54,6 +59,8 @@ public class AccueilServiceImpl implements AccueilService{
 		List<String> areaList = arrivalPunchRepository.getArea();
 		AreaStat areaStat;
 		List<AreaStat> areaStats = new ArrayList<>();
+		Double longitude;
+		Double latitude;
 		
 		for (String area : areaList) {
 			Integer early = arrivalPunchRepository.countByArea(area,"EARLY");
@@ -61,7 +68,16 @@ public class AccueilServiceImpl implements AccueilService{
 			Integer late = arrivalPunchRepository.countByArea(area,"LATE");
 			Integer absent = arrivalPunchRepository.countByArea(area,"ABSENT");
 			
-			areaStats.add(new AreaStat(early, ontime, late, absent, area));
+			List<AreaGps> areaGps = areaGpsRepository.FindByArea(area);
+			
+			if (areaGps.isEmpty()) {
+				longitude = null;
+				latitude = null;
+			}else{
+				longitude = areaGps.get(0).getLongitude();
+				latitude = areaGps.get(0).getLatitude();
+			}
+			areaStats.add(new AreaStat(early, ontime, late, absent, area, longitude, latitude));
 		}
 
 
