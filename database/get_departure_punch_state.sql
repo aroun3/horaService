@@ -35,4 +35,4 @@ BEGIN
 END
 $$;
 
---select * from public."getDeparturePunchState"('753',CURRENT_TIMESTAMP::date);
+select * from public."getDeparturePunchState"('973','2021-02-18'::date); --CURRENT_TIMESTAMP

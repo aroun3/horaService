@@ -1,18 +1,23 @@
 CREATE TABLE public.h_log_transaction
 (
-    id integer NOT NULL,
+    id serial NOT NULL,
     emp_code character varying(20)  NOT NULL,
-    arrival_time timestamp with time zone,
+    arrival_time time with time zone,
     arrival_id smallint,
-    departure_time timestamp with time zone,
+    arrival_terminal_id integer,
+    departure_time time with time zone,
     departure_id smallint,
-    presence_periode timestamp,
-    arrival_state smallint,
-    departure_state smallint,
-    presence_state character varying(10),
+    departure_terminal_id integer,
+    presence_periode time,
+    arrival_state text,
+    departure_state text,
+    presence_state text,
     is_absent boolean,
+    log_date TIMESTAMP,
     CONSTRAINT h_log_transaction_pkey PRIMARY KEY (id)
-)
+);
+
+--ALTER TABLE public.h_log_transaction MODIFY id BIGSERIAL;
 
 CREATE TABLE public.h_log_dateparam
 (
