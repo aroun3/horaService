@@ -60,14 +60,14 @@ begin
 			) ON COMMIT DROP;
 			
 			-- =============== TEST VALUE ===========
-			daySelect := '2021-02-18'::date;
+			daySelect = '2021-02-18'::date;
 			-- ======================================
 			
 			for tmp_row_record in SELECT * FROM iclock_transaction it WHERE it.punch_time::date = daySelect::date --logDateParam.nextDate::date
 
 			loop
 		
-				SELECT COUNT(*) INTO _count_inlog FROM h_log_transaction hlt WHERE hlt.emp_code = it.emp_code AND h_log_transaction.log_date = daySelect::date;
+				SELECT COUNT(*) INTO _count_inlog FROM h_log_transaction hlt WHERE hlt.emp_code = tmp_row_record.emp_code AND hlt.log_date = daySelect::date;
 				
 				if _count_inlog = 0 then -- Pour eviter d'ajouter deux fois 
 					-- le status de arrival (NON_DISPONIBE = 0, EARLY = 1, ONTIME = 2, LATE = 3)
@@ -106,9 +106,10 @@ begin
 						emp_code,
 						arrival_time,
 						arrival_id,
-						arrival_terminal_id
+						arrival_terminal_id,
 						departure_time,
 						departure_id,
+						departure_terminal_id,
 						presence_periode,
 						arrival_state,
 						departure_state,
@@ -119,9 +120,10 @@ begin
 						tmp_row_record.emp_code,
 						_arrival_time,
 						_arrival_id,
+						_arrival_terminal_id
 						_departure_time,
 						_departure_id,
-						_departure_terminal_id
+						_departure_terminal_id,
 						_presence_periode,
 						_arrival_state,
 						_departure_state,
@@ -138,9 +140,10 @@ begin
 					emp_code,
 					arrival_time,
 					arrival_id,
-					arrival_terminal_id
+					arrival_terminal_id,
 					departure_time,
 					departure_id,
+					departure_terminal_id,
 					presence_periode,
 					arrival_state,
 					departure_state,
@@ -152,9 +155,10 @@ begin
 						emp_code,
 						arrival_time,
 						arrival_id,
+						arrival_terminal_id,
 						departure_time,
 						departure_id,
-					 	departure_terminal_id
+					 	departure_terminal_id,
 						presence_periode,
 						arrival_state,
 						departure_state,
