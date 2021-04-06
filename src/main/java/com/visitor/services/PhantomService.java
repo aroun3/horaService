@@ -76,6 +76,11 @@ public class PhantomService {
         return phantomRepository.findByPunchDate(date);
     }
 
+	public List<Phantom> findByEmpCodeOderByPunchDateDesc(String codeEmploye) {
+		List<Phantom> phantoms = phantomRepository.listEmpDesc(codeEmploye);
+		return phantoms;
+	}
+
     
 
 

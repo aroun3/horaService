@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 /**
@@ -15,8 +17,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+<<<<<<< HEAD
 @Data
 public class Role {
+=======
+public class Role implements Serializable{
+>>>>>>> 81b41c2bca8e71c1c17b401455be6358aa835895
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -28,5 +34,15 @@ public class Role {
     public ERole getName(){
         return this.name;
     }
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+    
+    
 
 }

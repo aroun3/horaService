@@ -77,7 +77,6 @@ public class User extends UserDateAudit{
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
         private Set<Role> roles = new HashSet<>();
 
-		public User(){}
 		
         public User(String fullName,String username,String phone,String email, String password, Short status) {
                 this.fullName = fullName;

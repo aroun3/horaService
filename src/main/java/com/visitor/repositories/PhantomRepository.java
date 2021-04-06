@@ -105,4 +105,8 @@ public interface PhantomRepository extends JpaRepository<Phantom,String>{
     public List<Phantom> findByPunchDate(Date date);
 
 
+    @Query(value = "select * from h_phantom_view where emp_code = :code", nativeQuery = true)
+	public List<Phantom> listEmpDesc(@Param("code") String emp_code);
+
+
 }

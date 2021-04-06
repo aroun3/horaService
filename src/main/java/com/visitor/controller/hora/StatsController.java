@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +21,7 @@ import com.visitor.entities.Phantom;
 import com.visitor.entities.RealTimeTransaction;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
+import com.visitor.payload.response.StatEmploye;
 import com.visitor.services.PhantomService;
 import com.visitor.services.StatsService;
 
@@ -132,14 +133,14 @@ public class StatsController {
      */
     @GetMapping("/getListFirstAttendance")
     public ResponseEntity<?> listFirstAttendance(
-        @RequestParam("date") 
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        String date
+        @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date
     )throws ParseException{
 
-        Date dateSelected = this.format.parse(date);
+        /*Date dateSelected = this.format.parse(date);
+        
+        System.out.println("=============================== dateSelected : "+dateSelected);*/
 
-        List<Phantom> result = phantomService.listFirstCheckinPunchAsc(dateSelected);
+        List<Phantom> result = phantomService.listFirstCheckinPunchAsc(date);
         
         return ResponseEntity.ok().body(new ApiResponse("v1",true, AppConstants.STATUS_CODE_SUCCESS[1], result));
     }
@@ -150,16 +151,24 @@ public class StatsController {
      */
     @GetMapping("/getListLastAttendance")
     public ResponseEntity<?> listLastAttendance(
-        @RequestParam("date") 
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        String date
+        @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date
     )throws ParseException{
 
-        Date dateSelected = this.format.parse(date);
+        /*Date dateSelected = this.format.parse(date);
 
-        List<Phantom> result = phantomService.listFirstCheckinPunchDesc(dateSelected);
+        System.out.println("=============================== dateSelected : "+dateSelected);*/
+        
+        List<Phantom> result = phantomService.listFirstCheckinPunchDesc(date);
         
         return ResponseEntity.ok().body(new ApiResponse("v1",true, AppConstants.STATUS_CODE_SUCCESS[1], result));
     }
+    
+    @GetMapping("/employe/{code_emp}")
+    public ResponseEntity<?> statsEmploye(@PathVariable("code_emp") String code_emp)throws ParseException{
 
+        
+        StatEmploye statEmploye = statsService.statsEmploye(code_emp);
+        
+        return ResponseEntity.ok().body(new ApiResponse("v1",true, AppConstants.STATUS_CODE_SUCCESS[1], statEmploye));
+    }
 }

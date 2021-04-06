@@ -97,8 +97,8 @@ public class VisitorController {
         }
     }
 
-    @GetMapping("/getPersonals")
+    /*@GetMapping("/getPersonals")
     public ResponseEntity<?> getListPersonals(){
-        return null;
-    }
+        
+    }*/
 }
