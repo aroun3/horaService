@@ -167,7 +167,9 @@ begin
 					 	log_date
 					 	FROM tmp_log_transaction);
 			res := 'OK';
-		end if;	
+		end if;
+	else
+		res := 'NOT FOUND';
 	end if;
 	
 	-- mise a jour de la date suivante
@@ -177,6 +179,7 @@ begin
 	
     EXCEPTION WHEN unique_violation THEN
         		GET STACKED DIAGNOSTICS res = PG_EXCEPTION_DETAIL;
+				
 	return next res;
 	
 end
