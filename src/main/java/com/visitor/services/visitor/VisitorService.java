@@ -48,7 +48,7 @@ public class VisitorService implements VisitorServiceInterface {
     @Override
     public Visitor addVisitor(Visitor visitor, MultipartFile multipartFile) {
         Visitor vis = null;
-        try {
+        /*try {
 
             if(multipartFile.getSize() > 0){
                 String fileArticleName = multipartFile.getOriginalFilename();
@@ -60,14 +60,14 @@ public class VisitorService implements VisitorServiceInterface {
             vis = add(visitor);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         return vis;
     }
 
     @Override
     public Visitor updateVisitor(Visitor visitor, MultipartFile multipartFile) {
         Visitor vis = null;
-        try {
+        /*try {
 
             if(multipartFile.getSize() > 0){
                 String fileArticleName = multipartFile.getOriginalFilename();
@@ -78,7 +78,7 @@ public class VisitorService implements VisitorServiceInterface {
             vis = update(visitor);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         return vis;
     }
 

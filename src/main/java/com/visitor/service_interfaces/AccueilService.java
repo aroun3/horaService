@@ -13,4 +13,5 @@ public interface AccueilService {
 		List<ArrivalPunch> absent();
 		GeneralStat generalStat();
 		List<AreaStat> areaStats();
+		List<ArrivalPunch> arriveEnTempsReel();
 }

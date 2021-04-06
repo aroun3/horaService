@@ -33,7 +33,7 @@ public class AccueilController {
     }
 	
 	
-	@GetMapping("/accueil/adsent")
+	@GetMapping("/accueil/absent")
     public List<ArrivalPunch> absent(){
 		List<ArrivalPunch> arrivalPunchs = accueilService.absent();
         return arrivalPunchs;
@@ -51,4 +51,12 @@ public class AccueilController {
 		List<AreaStat> areaStats= accueilService.areaStats();
         return areaStats;
     }
+	
+	@GetMapping("/accueil/temps-reel")
+    public List<ArrivalPunch> arriveEnTempsReel(){
+		List<ArrivalPunch> arrivalPunchs = accueilService.arriveEnTempsReel();
+        return arrivalPunchs;
+    }
+	
+	
 }

@@ -12,7 +12,7 @@ import com.visitor.entities.ArrivalPunch;
 @Repository
 public interface ArrivalPunchRepository extends JpaRepository<ArrivalPunch, Integer>{
 
-	@Query(value = "select * from arrivalpunch punch_status = 'EARLY' order by arrival_time asc limit 5", nativeQuery = true)
+	@Query(value = "select * from arrivalpunch where punch_status = 'EARLY' order by arrival_time asc limit 5", nativeQuery = true)
 	List<ArrivalPunch> top5();
 	
 	@Query(value = "select * from arrivalpunch where punch_status = 'LATE' order by arrival_time desc limit 5", nativeQuery = true)
@@ -28,5 +28,8 @@ public interface ArrivalPunchRepository extends JpaRepository<ArrivalPunch, Inte
 
 	@Query("select count(ap.punchStatus) from ArrivalPunch ap where ap.punchStatus = :status and ap.area = :area")
 	Integer countByArea(@Param("area") String area, @Param("status") String status);
+
+	@Query(value = "select * from ArrivalPunch ap where ap.punchStatus <> 'ABSENT'", nativeQuery = true)
+	List<ArrivalPunch> arriveEnTempsReel();
 
 }

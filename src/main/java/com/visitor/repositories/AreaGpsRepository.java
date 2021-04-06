@@ -10,5 +10,5 @@ import com.visitor.entities.AreaGps;
 @Repository
 public interface AreaGpsRepository extends JpaRepository<AreaGps, Integer>{
 
-	List<AreaGps> FindByArea(String area);
+	List<AreaGps>findByArea(String area);
 }
