@@ -12,7 +12,6 @@ import org.hibernate.annotations.Immutable;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Immutable
 @Table(name = "h_arrival_punch")
 public class ArrivalPunch implements Serializable{
 	
@@ -45,7 +44,7 @@ public class ArrivalPunch implements Serializable{
     @JsonFormat(pattern = "HH:mm:ss", timezone = "UTC")
 	private String arrivalTime;
     
-    @Column(name = "arrival_status")
+    @Column(name = "arrival_state")
 	private String punchStatus;
     
     @Column(name = "arrival_id")
