@@ -130,7 +130,7 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			presences = new PresenceHistory(below, normal, over, absent);
 			
 			absences = punchHistoryRepository.countAbsentByArea(area.getId(), startDate, endDate, Boolean.TRUE);
-			areaHistoryStats.add(new AreaHistoryStats(area.getArea(), area.getLongitude(), area.getLatituge(), arrivees, departs, presences, absences));
+			areaHistoryStats.add(new AreaHistoryStats(area.getArea(), area.getLongitude(), area.getLatitude(), arrivees, departs, presences, absences));
 			
 		}
 		

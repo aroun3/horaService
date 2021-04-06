@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.visitor.entities.AreaGps;
 import com.visitor.entities.ArrivalPunch;
+import com.visitor.entities.IArea;
 import com.visitor.payload.response.AreaStat;
 import com.visitor.payload.response.GeneralStat;
 import com.visitor.repositories.AreaGpsRepository;
@@ -68,7 +69,7 @@ public class AccueilServiceImpl implements AccueilService{
 			Integer late = arrivalPunchRepository.countByArea(area,"3");
 			Integer absent = arrivalPunchRepository.countByArea(area,"NON DISPONIBLE");
 			
-			List<AreaGps> areaGps = areaGpsRepository.findByArea(area);
+			List<IArea> areaGps = areaGpsRepository.findByArea(area);
 			
 			if (areaGps.isEmpty()) {
 				longitude = null;

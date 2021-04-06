@@ -5,5 +5,5 @@ public interface IArea {
 	Integer getId();
 	String getArea();
 	Double getLongitude();
-	Double getLatituge();
+	Double getLatitude();
 }
