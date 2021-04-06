@@ -66,8 +66,8 @@ public class Visitor extends UserDateAudit {
 
     @NotBlank
     @Size(max = 100)
-    @Column(name = "cni_Number")
-    private String idCardNumber;
+    @Column(name = "nfc_code")
+    private String nfcCode;
 
     @NotBlank
     @Size(max = 100)
@@ -76,16 +76,18 @@ public class Visitor extends UserDateAudit {
 
     @Column(name="in_date")
     @JsonIgnore
-    @NotBlank
+    //@NotBlank
     private Date inDate = new Date();
 
     @Column(name="out_date")
     @JsonIgnore
-    @NotBlank
-    private Date outDate;
+    //@NotBlank
+    private Date outDate = new Date();
+
+    private Short status;
 
     @NotBlank
-    private Short status;
+    private String phone;
 
 
 }

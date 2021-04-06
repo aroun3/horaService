@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -29,10 +31,15 @@ public class VisitorController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/visitor")
+    @GetMapping("/getListCurrentVisitors")
     public  List<Visitor> getAllVisitor(){
+        List<Visitor> visitors = visitorService.getAll().stream().filter(p -> p.getInDate() == new Date()).collect(Collectors.toList());        //return visitorService.getAll();
+        //return visitors;
         return visitorService.getAll();
+
     }
+
+
 
 
     @PostMapping("/visitor")
