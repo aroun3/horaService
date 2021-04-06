@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION public."getArrivalPunchTime"(empCode text, dateSelect
 	language 'plpgsql'
 AS $$ 
 DECLARE
-    _result varchar;
+    _result TIMESTAMP;
     rec RECORD;
 BEGIN
     IF empCode <> '' AND empCode IS NOT NULL THEN
@@ -22,7 +22,7 @@ BEGIN
     END IF;
 		
 	IF _result IS NULL THEN
-		_result = '';
+		_result = NULL;
 	END IF;
 	
     RETURN NEXT _result;

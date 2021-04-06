@@ -1,5 +1,6 @@
 package com.visitor.entities.visitor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.visitor.entities.User;
 import com.visitor.entities.audit.UserDateAudit;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Date;
 //import java.io.UnsupportedEncodingException;
 
 @Entity
@@ -28,50 +30,63 @@ public class Visitor extends UserDateAudit {
 
     @NotBlank
     @Size(max =100)
-    private String full_name;
+    @Column(name = "full_name")
+    private String fullName;
 
     @NotBlank
-    @Size(max = 20)
-    @Column(unique = true)
-    private String contact;
+    @Size(max = 100)
+    @Column(name = "by_appointment")
+    private String byAppointment;
 
-    @ManyToOne
-    @JoinColumn(name="type_piece_id")
-    private TypePiece typePiece;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "company")
+    private String company;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "personal_employee")
+    private String personalEmployee;
 
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
-    @Column(name="photo", unique =true, nullable = true,length = 80000000)
-    private byte[] photo;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "position")
+    private String position;
 
-    private String photoName;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "reason")
+    private String reason;
 
-    @Transient
-    private String photoTransient;
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "cni_type")
+    private String cniType;
+
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "cni_Number")
+    private String idCardNumber;
+
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "card_code")
+    private String cardCode;
+
+    @Column(name="in_date")
+    @JsonIgnore
+    @NotBlank
+    private Date inDate = new Date();
+
+    @Column(name="out_date")
+    @JsonIgnore
+    @NotBlank
+    private Date outDate;
 
     @NotBlank
     private Short status;
 
 
-    /*public String getPhotoTransient() {
-        if(getPhoto() != null) {
-            byte[] encodeBase64 = Base64.encodeBase64(getPhoto());
-            String base64Encoded = null;
-            try {
-                base64Encoded = new String(encodeBase64, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            String img = "data:image/jpeg;base64,"+ base64Encoded;
-            return img;
-        }else{
-            return null;
-        }
-    }*/
 
 
 }

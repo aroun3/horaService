@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
+import lombok.ToString;
 import org.hibernate.annotations.Immutable;
 
 import lombok.AllArgsConstructor;
@@ -21,10 +22,19 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "h_transactions")
+<<<<<<< HEAD
+//@Immutable
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Data
+@ToString
+public class Transactions {
+=======
 @Immutable
 @NoArgsConstructor
 @Data
 public class Transactions implements Serializable{
+>>>>>>> 81b41c2bca8e71c1c17b401455be6358aa835895
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
