@@ -23,9 +23,9 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
-@AllArgsConstructor
+/*@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Data*/
 @ToString
 public class User extends UserDateAudit{
 

@@ -36,11 +36,10 @@ public class VisitorController {
 
 
     @PostMapping("/visitor")
-    public ResponseEntity<?> saveVisitor(@RequestPart("visitor") Visitor visitor, @RequestPart(value = "file") MultipartFile multipartFile, Principal principal){
+    public ResponseEntity<?> saveVisitor(@RequestPart("visitor") Visitor visitor){
         try {
-            Optional<User> user = userRepository.findByUsername(principal.getName());
-            visitor.setUser(user.get());
-            Visitor data = visitorService.addVisitor(visitor, multipartFile);
+
+            Visitor data = visitorService.add(visitor);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
@@ -49,10 +48,10 @@ public class VisitorController {
     }
     
     @PutMapping("/visitor/{id}")
-    public ResponseEntity<?> updateVisitor(@RequestPart("visitor") Visitor visitor, @RequestPart(value = "file") MultipartFile multipartFile, @PathVariable Integer id){
+    public ResponseEntity<?> updateVisitor(@RequestPart("visitor") Visitor visitor,  @PathVariable Integer id){
         try {
             visitor.setId(id);
-            Visitor data = visitorService.updateVisitor(visitor,multipartFile);
+            Visitor data = visitorService.update(visitor);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_UPDATED[1], data));
         }catch(Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
@@ -100,6 +99,6 @@ public class VisitorController {
 
     @GetMapping("/getPersonals")
     public ResponseEntity<?> getListPersonals(){
-        
+        return null;
     }
 }
