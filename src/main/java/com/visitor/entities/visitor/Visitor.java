@@ -1,11 +1,11 @@
 package com.visitor.entities.visitor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.visitor.entities.User;
 import com.visitor.entities.audit.UserDateAudit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 //import org.apache.tomcat.util.codec.binary.Base64;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -18,6 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString
 public class Visitor extends UserDateAudit {
     /**
      *
@@ -85,8 +86,6 @@ public class Visitor extends UserDateAudit {
 
     @NotBlank
     private Short status;
-
-
 
 
 }
