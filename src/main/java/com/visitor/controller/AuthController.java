@@ -93,7 +93,7 @@ public class AuthController {
 						new JwtResponse(jwt,
 							userDetails.getId(),
 							userDetails.getUsername(),
-							userDetails.getEmail(),
+							userDetails.getFullName(),
 							roles, AppConstants.STATUS_CODE_SUCCESS[0])
 						)
 					);

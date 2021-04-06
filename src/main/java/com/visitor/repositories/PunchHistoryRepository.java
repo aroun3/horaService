@@ -115,7 +115,8 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 	@Query(value = "select avg(ph.departure) from punchhistory ph where ph.punch_day between :startDate and :endDate", nativeQuery = true)
 	Date departureMean(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 	
-	@Query(value = "select pa.id as id, pa.area_name as area from personnel_area pa", nativeQuery = true)
+	@Query(value = "select pa.id as id, pa.area_name as area, ag.longitude as longitude, ag.latitude as latitude "
+			+ "from personnel_area pa, h_gps_area ag where pa.id = ag.area_id", nativeQuery = true)
 	List<IArea> findAreaList();
 
 	@Query(value = "select pa.id from iclock_terminal pa where pa.area_id = :id", nativeQuery = true)
