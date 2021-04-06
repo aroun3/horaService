@@ -14,7 +14,7 @@ import com.visitor.entities.IArea;
 public interface AreaGpsRepository extends JpaRepository<AreaGps, Integer>{
 
 	@Query(value = "select pa.id as id, pa.area_name as area, ag.longitude as longitude, ag.latitude as latitude "
-			+ "from personnel_area pa, h_area_gps ag "
-			+ "where pa.id = ag.area_id pa.area_name = :area", nativeQuery = true)
+			+ "from personnel_area pa, h_gps_area ag "
+			+ "where pa.id = ag.area_id and pa.area_name = :area", nativeQuery = true)
 	List<IArea> findByArea(@Param("area") String area);
 }

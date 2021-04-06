@@ -62,15 +62,18 @@ public class AccueilServiceImpl implements AccueilService{
 		List<AreaStat> areaStats = new ArrayList<>();
 		Double longitude;
 		Double latitude;
-		
-		for (String area : areaList) {
+		String area;
+		for (String area1 : areaList) {
+			
+			area = area1.replace("TOUS LES SITES,", "");
 			Integer early = arrivalPunchRepository.countByArea(area,"1");
+			System.out.println("===================================");
 			Integer ontime = arrivalPunchRepository.countByArea(area,"2");
 			Integer late = arrivalPunchRepository.countByArea(area,"3");
 			Integer absent = arrivalPunchRepository.countByArea(area,"NON DISPONIBLE");
-			
+			System.out.println("===================================+");
 			List<IArea> areaGps = areaGpsRepository.findByArea(area);
-			
+			System.out.println("===================================+++++");
 			if (areaGps.isEmpty()) {
 				longitude = null;
 				latitude = null;
