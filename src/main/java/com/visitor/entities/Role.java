@@ -17,12 +17,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-<<<<<<< HEAD
 @Data
 public class Role {
-=======
-public class Role implements Serializable{
->>>>>>> 81b41c2bca8e71c1c17b401455be6358aa835895
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
