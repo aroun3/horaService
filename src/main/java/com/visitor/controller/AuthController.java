@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
 	private static final Logger logger = Logger.getLogger(AuthController.class.getName());

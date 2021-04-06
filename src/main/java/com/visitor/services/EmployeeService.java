@@ -17,7 +17,7 @@ public class EmployeeService implements EmployeeServiceInterface {
     private EmployeeRepository employeeRepository;
     @Override
     public List<Employee> findAll() {
-        return null;
+        return employeeRepository.findAll();
     }
 
     @Override
