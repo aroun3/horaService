@@ -49,15 +49,12 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		Date endDate = new Date();
 		getStartAndEndDate(periode, startDate, endDate);
 		
-		System.out.println("============================================== debut");
-		
 		early = punchHistoryRepository.countArrivalByState(startDate, endDate, "1");
 		ontime = punchHistoryRepository.countArrivalByState(startDate, endDate, "2");
 		late = punchHistoryRepository.countArrivalByState(startDate, endDate, "3");
 		absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "NON DIPONIBLE");
 		
 		arrivees = new GeneralHistoryStats(early, ontime, late, absent);
-		System.out.println("============================================== arrivees");
 		
 		early = punchHistoryRepository.countDepatureByState(startDate, endDate, "1");
 		ontime = punchHistoryRepository.countDepatureByState(startDate, endDate, "2");
@@ -65,7 +62,6 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "NON DIPONIBLE");
 		
 		departs = new GeneralHistoryStats(early, ontime, late, absent);
-		System.out.println("============================================== departs");
 		
 		below = punchHistoryRepository.countPresenceByState(startDate, endDate, "BELOW");
 		normal = punchHistoryRepository.countPresenceByState(startDate, endDate, "NORMAL");
@@ -76,7 +72,6 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		
 		
 		absences = punchHistoryRepository.countAbsent(startDate, endDate, Boolean.TRUE);
-		System.out.println("============================================== absences");
 		
 		HistoryStats historyStats = new HistoryStats(arrivees, departs, presences, absences);
 		
@@ -110,43 +105,32 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		
 		for (IArea area : areas) {
 			
-			System.out.println("================================ area.getId() : "+area.getId());
 			
 			terminalId = punchHistoryRepository.findDepartmentByAreaId(area.getId());
 			
-			System.out.println("====================================== terminalId : "+terminalId);
-			
-			early = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "EARLY");
-			ontime = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "ONTIME");
-			late = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "LATE");
-			absent = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "ABSENT");
+			early = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "1");
+			ontime = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "2");
+			late = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "3");
+			absent = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "NON DISPONIBLE");
 			
 			arrivees = new GeneralHistoryStats(early, ontime, late, absent);
 			
-			System.out.println("===================================== arrivees : "+arrivees);
-			
-			early = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "EARLY");
-			ontime = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "ONTIME");
-			late = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "LATE");
-			absent = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "ABSENT");
+			early = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "1");
+			ontime = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "2");
+			late = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "3");
+			absent = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "NON DISPONIBLE");
 			
 			departs = new GeneralHistoryStats(early, ontime, late, absent);
-			
-			System.out.println("===================================== departs : "+departs);
 			
 			below = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "BELOW");
 			normal = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "NORMAL");
 			over = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "OVER");
-			absent = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "ABSENT");
+			absent = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "NON DISPONNIBLE");
 			
 			presences = new PresenceHistory(below, normal, over, absent);
 			
-			System.out.println("===================================== presences : "+presences);
-			
 			absences = punchHistoryRepository.countAbsentByArea(area.getId(), startDate, endDate, Boolean.TRUE);
-			
-			System.out.println("===================================== absences : "+absences);
-			areaHistoryStats.add(new AreaHistoryStats(area.getArea(), null, null, arrivees, departs, presences, absences));
+			areaHistoryStats.add(new AreaHistoryStats(area.getArea(), area.getLongitude(), area.getLatituge(), arrivees, departs, presences, absences));
 			
 		}
 		
@@ -367,7 +351,7 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		presences = new PresenceHistory(below, normal, over, absent);
 		absences = punchHistoryRepository.countAbsent(startDate, endDate, Boolean.TRUE);
 		
-		String title = startDate.getDay()+"/"+startDate.getMonth()+"/"+startDate.getYear();
+		String title = startDate.toString();
 		GraphStat graphStat = new  GraphStat(title, arrivees, departs, absences,presences);
 		graphStats.add(graphStat);
 		return graphStats;
@@ -428,14 +412,10 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			absences = punchHistoryRepository.countAbsent(startDate, endDate, Boolean.TRUE);
 			
 			
-			if(i == test){
+			if(i == test)
 				title = joursSemaineFR[1];
-				System.out.println("============================== joursSemaineFR.length : "+joursSemaineFR[1]);
-				}
-			else{
+			else
 				title = joursSemaineFR[i+1];
-				System.out.println("============================== joursSemaineFR.length : "+joursSemaineFR[i+1]);
-				}
 			System.out.println("========================================== startDate : "+startDate);
 			GraphStat graphStat = new  GraphStat(title, arrivees, departs, absences,presences);
 			
@@ -498,8 +478,10 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			
 			absences = punchHistoryRepository.countAbsent(startDate, endDate, Boolean.TRUE);
 			
-			System.out.println("========================================== startDate : "+startDate);
-			title = startDate.getDay()+"";
+			title = i+"";
+			
+			System.out.println("====================================== title : "+title);
+			System.out.println("====================================== startDate : "+startDate);
 			GraphStat graphStat = new  GraphStat(title, arrivees, departs, absences,presences);
 			
 			graphStats.add(graphStat);
