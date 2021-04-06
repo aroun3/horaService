@@ -84,4 +84,10 @@ public class AccueilServiceImpl implements AccueilService{
 		return areaStats;
 	}
 
+	@Override
+	public List<ArrivalPunch> arriveEnTempsReel() {
+		// TODO Auto-generated method stub
+		return arrivalPunchRepository.arriveEnTempsReel();
+	}
+
 }
