@@ -9,9 +9,11 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Immutable;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Immutable
-@Table(name = "arrivalpunch")
+@Table(name = "h_arrival_punch")
 public class ArrivalPunch implements Serializable{
 	
 	@Id
@@ -40,19 +42,30 @@ public class ArrivalPunch implements Serializable{
 	private String area;
     
     @Column(name = "arrival_time")
+    @JsonFormat(pattern = "HH:mm:ss", timezone = "UTC")
 	private String arrivalTime;
     
-    @Column(name = "punch_status")
+    @Column(name = "arrival_status")
 	private String punchStatus;
+    
+    @Column(name = "arrival_id")
+    private Integer arrival_id;
+    
+    @Column(name = "arrival_terminal_id")
+    private Integer arrivalTerminalId;
+    
 	
 	public ArrivalPunch() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 
-	public ArrivalPunch(String empCode, String firstName, String lastName, String ephoto, String edepartment,
-			String eposition, String area, String arrivalTime, String punchStatus) {
+	public ArrivalPunch(Integer id, String empCode, String firstName, String lastName, String ephoto,
+			String edepartment, String eposition, String area, String arrivalTime, String punchStatus,
+			Integer arrival_id, Integer arrivalTerminalId) {
 		super();
+		this.id = id;
 		this.empCode = empCode;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -62,6 +75,8 @@ public class ArrivalPunch implements Serializable{
 		this.area = area;
 		this.arrivalTime = arrivalTime;
 		this.punchStatus = punchStatus;
+		this.arrival_id = arrival_id;
+		this.arrivalTerminalId = arrivalTerminalId;
 	}
 
 	public Integer getId() {

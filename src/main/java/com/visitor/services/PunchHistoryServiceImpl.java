@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.visitor.entities.Area;
 import com.visitor.entities.IArea;
+import com.visitor.entities.IPunchHistory;
 import com.visitor.entities.PunchHistory;
 import com.visitor.payload.response.AreaHistoryStats;
 import com.visitor.payload.response.AreaPresenceHistory;
@@ -44,18 +45,18 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		
 		System.out.println("============================================== debut");
 		
-		early = punchHistoryRepository.countArrivalByState(startDate, endDate, "EARLY");
-		ontime = punchHistoryRepository.countArrivalByState(startDate, endDate, "ONTIME");
-		late = punchHistoryRepository.countArrivalByState(startDate, endDate, "LATE");
-		absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "ABSENT");
+		early = punchHistoryRepository.countArrivalByState(startDate, endDate, "1");
+		ontime = punchHistoryRepository.countArrivalByState(startDate, endDate, "2");
+		late = punchHistoryRepository.countArrivalByState(startDate, endDate, "3");
+		absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "NON DIPONIBLE");
 		
 		arrivees = new GeneralHistoryStats(early, ontime, late, absent);
 		System.out.println("============================================== arrivees");
 		
-		early = punchHistoryRepository.countDepatureByState(startDate, endDate, "EARLY");
-		ontime = punchHistoryRepository.countDepatureByState(startDate, endDate, "ONTIME");
-		late = punchHistoryRepository.countDepatureByState(startDate, endDate, "LATE");
-		absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "ABSENT");
+		early = punchHistoryRepository.countDepatureByState(startDate, endDate, "1");
+		ontime = punchHistoryRepository.countDepatureByState(startDate, endDate, "2");
+		late = punchHistoryRepository.countDepatureByState(startDate, endDate, "3");
+		absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "NON DIPONIBLE");
 		
 		departs = new GeneralHistoryStats(early, ontime, late, absent);
 		System.out.println("============================================== departs");
@@ -63,11 +64,12 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		below = punchHistoryRepository.countPresenceByState(startDate, endDate, "BELOW");
 		normal = punchHistoryRepository.countPresenceByState(startDate, endDate, "NORMAL");
 		over = punchHistoryRepository.countPresenceByState(startDate, endDate, "OVER");
-		absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "ABSENT");
+		absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "NON DIPONIBLE");
 		
 		presences = new PresenceHistory(below, normal, over, absent);
 		
-		absences = punchHistoryRepository.countAbsent(startDate, endDate, "NO");
+		
+		absences = punchHistoryRepository.countAbsent(startDate, endDate, Boolean.TRUE);
 		System.out.println("============================================== absences");
 		
 		HistoryStats historyStats = new HistoryStats(arrivees, departs, presences, absences);
@@ -105,34 +107,34 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			
 			System.out.println("====================================== terminalId : "+terminalId);
 			
-			early = punchHistoryRepository.countArrivalByAreaAndState(terminalId, startDate, endDate, "EARLY");
-			ontime = punchHistoryRepository.countArrivalByAreaAndState(terminalId, startDate, endDate, "ONTIME");
-			late = punchHistoryRepository.countArrivalByAreaAndState(terminalId, startDate, endDate, "LATE");
-			absent = punchHistoryRepository.countArrivalByAreaAndState(terminalId, startDate, endDate, "ABSENT");
+			early = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "EARLY");
+			ontime = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "ONTIME");
+			late = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "LATE");
+			absent = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "ABSENT");
 			
 			arrivees = new GeneralHistoryStats(early, ontime, late, absent);
 			
 			System.out.println("===================================== arrivees : "+arrivees);
 			
-			early = punchHistoryRepository.countDepatureByAreaAndState(terminalId, startDate, endDate, "EARLY");
-			ontime = punchHistoryRepository.countDepatureByAreaAndState(terminalId, startDate, endDate, "ONTIME");
-			late = punchHistoryRepository.countDepatureByAreaAndState(terminalId, startDate, endDate, "LATE");
-			absent = punchHistoryRepository.countDepatureByAreaAndState(terminalId, startDate, endDate, "ABSENT");
+			early = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "EARLY");
+			ontime = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "ONTIME");
+			late = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "LATE");
+			absent = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "ABSENT");
 			
 			departs = new GeneralHistoryStats(early, ontime, late, absent);
 			
 			System.out.println("===================================== departs : "+departs);
 			
-			below = punchHistoryRepository.countPresenceByAreaAndState(terminalId, startDate, endDate, "BELOW");
-			normal = punchHistoryRepository.countPresenceByAreaAndState(terminalId, startDate, endDate, "NORMAL");
-			over = punchHistoryRepository.countPresenceByAreaAndState(terminalId, startDate, endDate, "OVER");
-			absent = punchHistoryRepository.countPresenceByAreaAndState(terminalId, startDate, endDate, "ABSENT");
+			below = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "BELOW");
+			normal = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "NORMAL");
+			over = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "OVER");
+			absent = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "ABSENT");
 			
 			presences = new PresenceHistory(below, normal, over, absent);
 			
 			System.out.println("===================================== presences : "+presences);
 			
-			absences = punchHistoryRepository.countAbsentByArea(terminalId, startDate, endDate, "NO");
+			absences = punchHistoryRepository.countAbsentByArea(area.getId(), startDate, endDate, Boolean.TRUE);
 			
 			System.out.println("===================================== absences : "+absences);
 			areaHistoryStats.add(new AreaHistoryStats(area.getArea(), null, null, arrivees, departs, presences, absences));
@@ -143,40 +145,126 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 	}
 
 	@Override
-	public PunchHistory arrivalMin(Date startDate, Date endDate) {
+	public List<PunchHistory> arrivalMin5(Date startDate, Date endDate) {
 
-		PunchHistory punchHistory = punchHistoryRepository.arrivalMin(startDate, endDate);
-		return punchHistory;
+		List<IPunchHistory> iPunchHistories = punchHistoryRepository.arrivalMin5(startDate, endDate);
+
+		PunchHistory punchHistory;
+		List<PunchHistory> punchHistories = new ArrayList<>();
+		for (IPunchHistory iPunchHistory : iPunchHistories) {
+			
+			punchHistories.add(new PunchHistory(iPunchHistory.getLogDate(), iPunchHistory.getEmpCode(), iPunchHistory.getFirstName(), iPunchHistory.getLastName(), 
+					iPunchHistory.getPosition(), iPunchHistory.getDepartment(), iPunchHistory.getArrivalTime(), iPunchHistory.getDepartureTime(),
+					iPunchHistory.getPresencePeriode(), iPunchHistory.getArrivalState(), iPunchHistory.getDepartureState(), 
+					iPunchHistory.getPresenceState(), iPunchHistory.isAbsent()
+					)
+					);
+		}
+		
+		return punchHistories;
 	}
 
 	@Override
-	public PunchHistory arrivalMax(Date startDate, Date endDate) {
-		PunchHistory punchHistory = punchHistoryRepository.arrivalMax(startDate, endDate);
-		return punchHistory;
+	public List<PunchHistory> arrivalMax5(Date startDate, Date endDate) {
+		List<IPunchHistory> iPunchHistories  = punchHistoryRepository.arrivalMax5(startDate, endDate);
+		
+		PunchHistory punchHistory;
+		List<PunchHistory> punchHistories = new ArrayList<>();
+		for (IPunchHistory iPunchHistory : iPunchHistories) {
+			
+			punchHistories.add(new PunchHistory(iPunchHistory.getLogDate(), iPunchHistory.getEmpCode(), iPunchHistory.getFirstName(), iPunchHistory.getLastName(), 
+					iPunchHistory.getPosition(), iPunchHistory.getDepartment(), iPunchHistory.getArrivalTime(), iPunchHistory.getDepartureTime(),
+					iPunchHistory.getPresencePeriode(), iPunchHistory.getArrivalState(), iPunchHistory.getDepartureState(), 
+					iPunchHistory.getPresenceState(), iPunchHistory.isAbsent()
+					)
+					);
+		}
+		
+		
+		return punchHistories;
 	}
 
 	@Override
-	public Date arrivalMean(Date startDate, Date endDate) {
+	public List<PunchHistory> present5(Date startDate, Date endDate) {
 		// TODO Auto-generated method stub
-		return punchHistoryRepository.arrivalMean(startDate, endDate);
+		
+
+		List<IPunchHistory> iPunchHistories = punchHistoryRepository.present5(startDate, endDate);
+		
+		PunchHistory punchHistory;
+		List<PunchHistory> punchHistories = new ArrayList<>();
+		for (IPunchHistory iPunchHistory : iPunchHistories) {
+			
+			punchHistories.add(new PunchHistory(iPunchHistory.getLogDate(), iPunchHistory.getEmpCode(), iPunchHistory.getFirstName(), iPunchHistory.getLastName(), 
+					iPunchHistory.getPosition(), iPunchHistory.getDepartment(), iPunchHistory.getArrivalTime(), iPunchHistory.getDepartureTime(),
+					iPunchHistory.getPresencePeriode(), iPunchHistory.getArrivalState(), iPunchHistory.getDepartureState(), 
+					iPunchHistory.getPresenceState(), iPunchHistory.isAbsent()
+					)
+					);
+		}
+		
+		return punchHistories;
 	}
 
 	@Override
-	public PunchHistory departureMin(Date startDate, Date endDate) {
-		PunchHistory punchHistory = punchHistoryRepository.departureMin(startDate, endDate);
-		return punchHistory;
+	public List<PunchHistory> departureMin5(Date startDate, Date endDate) {
+		
+		List<IPunchHistory> iPunchHistories = punchHistoryRepository.departureMin5(startDate, endDate);
+		
+		PunchHistory punchHistory;
+		List<PunchHistory> punchHistories = new ArrayList<>();
+		for (IPunchHistory iPunchHistory : iPunchHistories) {
+			
+			punchHistories.add(new PunchHistory(iPunchHistory.getLogDate(), iPunchHistory.getEmpCode(), iPunchHistory.getFirstName(), iPunchHistory.getLastName(), 
+					iPunchHistory.getPosition(), iPunchHistory.getDepartment(), iPunchHistory.getArrivalTime(), iPunchHistory.getDepartureTime(),
+					iPunchHistory.getPresencePeriode(), iPunchHistory.getArrivalState(), iPunchHistory.getDepartureState(), 
+					iPunchHistory.getPresenceState(), iPunchHistory.isAbsent()
+					)
+					);
+		}
+		
+		return punchHistories;
 	}
 
 	@Override
-	public PunchHistory departureMax(Date startDate, Date endDate) {
-		PunchHistory punchHistory = punchHistoryRepository.departureMax(startDate, endDate);
-		return punchHistory;
+	public List<PunchHistory> departureMax5(Date startDate, Date endDate) {
+		
+		List<IPunchHistory> iPunchHistories = punchHistoryRepository.departureMax5(startDate, endDate);
+		
+		PunchHistory punchHistory;
+		List<PunchHistory> punchHistories = new ArrayList<>();
+		for (IPunchHistory iPunchHistory : iPunchHistories) {
+			
+			punchHistories.add(new PunchHistory(iPunchHistory.getLogDate(), iPunchHistory.getEmpCode(), iPunchHistory.getFirstName(), iPunchHistory.getLastName(), 
+					iPunchHistory.getPosition(), iPunchHistory.getDepartment(), iPunchHistory.getArrivalTime(), iPunchHistory.getDepartureTime(),
+					iPunchHistory.getPresencePeriode(), iPunchHistory.getArrivalState(), iPunchHistory.getDepartureState(), 
+					iPunchHistory.getPresenceState(), iPunchHistory.isAbsent()
+					)
+					);
+		}
+		
+		return punchHistories;
 	}
 
 	@Override
-	public Date departureMean(Date startDate, Date endDate) {
+	public List<PunchHistory> absent(Date startDate, Date endDate) {
+		
 		// TODO Auto-generated method stub
-		return punchHistoryRepository.departureMean(startDate, endDate);
+		List<IPunchHistory> iPunchHistories = punchHistoryRepository.absent(startDate, endDate);
+		
+		PunchHistory punchHistory;
+		List<PunchHistory> punchHistories = new ArrayList<>();
+		for (IPunchHistory iPunchHistory : iPunchHistories) {
+			
+			punchHistories.add(new PunchHistory(iPunchHistory.getLogDate(), iPunchHistory.getEmpCode(), iPunchHistory.getFirstName(), iPunchHistory.getLastName(), 
+					iPunchHistory.getPosition(), iPunchHistory.getDepartment(), iPunchHistory.getArrivalTime(), iPunchHistory.getDepartureTime(),
+					iPunchHistory.getPresencePeriode(), iPunchHistory.getArrivalState(), iPunchHistory.getDepartureState(), 
+					iPunchHistory.getPresenceState(), iPunchHistory.isAbsent()
+					)
+					);
+		}
+		
+		return punchHistories;
 	}
 
 }

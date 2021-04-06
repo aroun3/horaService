@@ -120,7 +120,7 @@ begin
 						tmp_row_record.emp_code,
 						_arrival_time,
 						_arrival_id,
-						_arrival_terminal_id
+						_arrival_terminal_id,
 						_departure_time,
 						_departure_id,
 						_departure_terminal_id,

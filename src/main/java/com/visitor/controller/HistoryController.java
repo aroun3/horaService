@@ -42,43 +42,43 @@ public class HistoryController {
 	};
 	
 	@GetMapping("/history/stats/arrival/min")
-	public PunchHistory arrivalMin(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
+	public List<PunchHistory> arrivalMin(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
 			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		PunchHistory punchHistory = punchHistoryService.arrivalMin(startDate, endDate);
-		return punchHistory;
+		List<PunchHistory> punchHistories = punchHistoryService.arrivalMin5(startDate, endDate);
+		return punchHistories;
 	};
 	
 	@GetMapping("/history/stats/arrival/max")
-	public PunchHistory arrivalMax(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
+	public List<PunchHistory> arrivalMax(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
 			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		PunchHistory punchHistory = punchHistoryService.arrivalMax(startDate, endDate);
-		return punchHistory;
+		List<PunchHistory> punchHistories = punchHistoryService.arrivalMax5(startDate, endDate);
+		return punchHistories;
 	};
 	
-	@GetMapping("/history/stats/arrival/mean")
-	public Date arrivalMean(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
+	@GetMapping("/history/stats/present")
+	public List<PunchHistory> present(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
 			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		return punchHistoryService.arrivalMean(startDate, endDate);
+		return punchHistoryService.present5(startDate, endDate);
 	};
 	
 	@GetMapping("/history/stats/departure/min")
-	public PunchHistory departureMin(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
+	public List<PunchHistory> departureMin(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
 			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		PunchHistory punchHistory = punchHistoryService.departureMin(startDate, endDate);
-		return punchHistory;
+		List<PunchHistory> punchHistories = punchHistoryService.departureMin5(startDate, endDate);
+		return punchHistories;
 	};
 	
 	@GetMapping("/history/stats/departure/max")
-	public PunchHistory departureMax(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
+	public List<PunchHistory> departureMax(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
 			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		PunchHistory punchHistory = punchHistoryService.departureMax(startDate, endDate);
-		return punchHistory;
+		List<PunchHistory> punchHistories = punchHistoryService.departureMax5(startDate, endDate);
+		return punchHistories;
 	};
 	
-	@GetMapping("/history/stats/departure/mean")
-	public Date departureMean(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
+	@GetMapping("/history/stats/absent")
+	public List<PunchHistory> adsent(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
 			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		return punchHistoryService.departureMean(startDate, endDate);
+		return punchHistoryService.absent(startDate, endDate);
 	};
 
 }
