@@ -1,10 +1,8 @@
 package com.visitor.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.visitor.entities.PunchHistory;
 import com.visitor.payload.response.AreaHistoryStats;
+import com.visitor.payload.response.GraphStat;
 import com.visitor.payload.response.HistoryStats;
 import com.visitor.service_interfaces.PunchHistoryService;
 
@@ -25,60 +24,54 @@ public class HistoryController {
 	
 
 	@GetMapping("/history/stats")
-	public HistoryStats historyStats( @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
-			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		HistoryStats historyStats = punchHistoryService.historyStats(startDate, endDate);
+	public HistoryStats historyStats(@RequestParam("periode") String periode){
+		HistoryStats historyStats = punchHistoryService.historyStats(periode);
 		return historyStats;
 	};
 	
 	@GetMapping("/history/stats/area")
-	public List<AreaHistoryStats> areaHistoryStats(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
-			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		
-		System.out.println("================================== startDate : "+startDate);
-		System.out.println("================================== endDate : "+endDate);
-		List<AreaHistoryStats> areaHistoryStats = punchHistoryService.areaHistoryStats(startDate, endDate);
+	public List<AreaHistoryStats> areaHistoryStats(@RequestParam("periode") String periode){
+		List<AreaHistoryStats> areaHistoryStats = punchHistoryService.areaHistoryStats(periode);
 		return areaHistoryStats;
 	};
 	
 	@GetMapping("/history/stats/arrival/min")
-	public PunchHistory arrivalMin(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
-			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		PunchHistory punchHistory = punchHistoryService.arrivalMin(startDate, endDate);
-		return punchHistory;
+	public List<PunchHistory> arrivalMin(@RequestParam("periode") String periode){
+		List<PunchHistory> punchHistories = punchHistoryService.arrivalMin5(periode);
+		return punchHistories;
 	};
 	
 	@GetMapping("/history/stats/arrival/max")
-	public PunchHistory arrivalMax(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
-			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		PunchHistory punchHistory = punchHistoryService.arrivalMax(startDate, endDate);
-		return punchHistory;
+	public List<PunchHistory> arrivalMax(@RequestParam("periode") String periode){
+		List<PunchHistory> punchHistories = punchHistoryService.arrivalMax5(periode);
+		return punchHistories;
 	};
 	
-	@GetMapping("/history/stats/arrival/mean")
-	public Date arrivalMean(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
-			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		return punchHistoryService.arrivalMean(startDate, endDate);
+	@GetMapping("/history/stats/present")
+	public List<PunchHistory> present(@RequestParam("periode") String periode){
+		return punchHistoryService.present5(periode);
 	};
 	
 	@GetMapping("/history/stats/departure/min")
-	public PunchHistory departureMin(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
-			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		PunchHistory punchHistory = punchHistoryService.departureMin(startDate, endDate);
-		return punchHistory;
+	public List<PunchHistory> departureMin(@RequestParam("periode") String periode){
+		List<PunchHistory> punchHistories = punchHistoryService.departureMin5(periode);
+		return punchHistories;
 	};
 	
 	@GetMapping("/history/stats/departure/max")
-	public PunchHistory departureMax(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
-			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		PunchHistory punchHistory = punchHistoryService.departureMax(startDate, endDate);
-		return punchHistory;
+	public List<PunchHistory> departureMax(@RequestParam("periode") String periode){
+		List<PunchHistory> punchHistories = punchHistoryService.departureMax5(periode);
+		return punchHistories;
 	};
 	
-	@GetMapping("/history/stats/departure/mean")
-	public Date departureMean(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate, 
-			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate){
-		return punchHistoryService.departureMean(startDate, endDate);
+	@GetMapping("/history/stats/absent")
+	public List<PunchHistory> absent(@RequestParam("periode") String periode){
+		return punchHistoryService.absent(periode);
+	};
+	
+	@GetMapping("/history/stats/graph")
+	public List<GraphStat> graphStats(@RequestParam("periode") String periode){
+		return punchHistoryService.graphStats(periode);
 	};
 
 }

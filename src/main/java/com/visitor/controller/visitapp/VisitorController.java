@@ -36,9 +36,9 @@ public class VisitorController {
 
 
     @PostMapping("/visitor")
-    public ResponseEntity<?> saveVisitor(@RequestPart("visitor") Visitor visitor){
+    public ResponseEntity<?> saveVisitor(@RequestBody Visitor visitor){
         try {
-
+            visitor.setStatus((short)1);
             Visitor data = visitorService.add(visitor);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
         }catch (Exception ex){

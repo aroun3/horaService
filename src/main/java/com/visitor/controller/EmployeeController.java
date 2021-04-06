@@ -1,5 +1,6 @@
 package com.visitor.controller;
 
+import com.visitor.entities.Employee;
 import com.visitor.entities.Role;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
@@ -19,11 +20,18 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
+    @GetMapping("/listEmployee")
+    public List<Employee> getAllEmployee(){
+        return employeeService.findAll();
+    }
+
+
 
     @GetMapping("/employee")
     public List<EmployeeResponse> getEmployeAndDepaetment(){
        return employeeService.getListEmployeeAndDepartment();
     }
+
 
 
 }

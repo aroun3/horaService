@@ -37,17 +37,17 @@ public class AccueilServiceImpl implements AccueilService{
 	@Override
 	public List<ArrivalPunch> absent() {
 		// TODO Auto-generated method stub
-		return arrivalPunchRepository.findByPunchStatus("ABSENT");
+		return arrivalPunchRepository.findByPunchStatus("NON DISPONIBLE");
 	}
 
 	@Override
 	public GeneralStat generalStat() {
 		// TODO Auto-generated method stub
 		
-		Integer early = arrivalPunchRepository.count("EARLY");
-		Integer ontime = arrivalPunchRepository.count("ONTIME");
-		Integer late = arrivalPunchRepository.count("LATE");
-		Integer absent = arrivalPunchRepository.count("ABSENT");
+		Integer early = arrivalPunchRepository.count("1");
+		Integer ontime = arrivalPunchRepository.count("2");
+		Integer late = arrivalPunchRepository.count("3");
+		Integer absent = arrivalPunchRepository.count("NON DISPONIBLE");
 		
 		GeneralStat generalStat = new GeneralStat(early, ontime, late, absent);
 		return generalStat;
@@ -63,10 +63,10 @@ public class AccueilServiceImpl implements AccueilService{
 		Double latitude;
 		
 		for (String area : areaList) {
-			Integer early = arrivalPunchRepository.countByArea(area,"EARLY");
-			Integer ontime = arrivalPunchRepository.countByArea(area,"ONTIME");
-			Integer late = arrivalPunchRepository.countByArea(area,"LATE");
-			Integer absent = arrivalPunchRepository.countByArea(area,"ABSENT");
+			Integer early = arrivalPunchRepository.countByArea(area,"1");
+			Integer ontime = arrivalPunchRepository.countByArea(area,"2");
+			Integer late = arrivalPunchRepository.countByArea(area,"3");
+			Integer absent = arrivalPunchRepository.countByArea(area,"NON DISPONIBLE");
 			
 			List<AreaGps> areaGps = areaGpsRepository.findByArea(area);
 			
