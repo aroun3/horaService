@@ -121,7 +121,7 @@ begin
 						_arrival_id,
 						_departure_time,
 						_departure_id,
-						_departure_terminal_id
+						_departure_terminal_id,
 						_presence_periode,
 						_arrival_state,
 						_departure_state,
