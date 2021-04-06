@@ -68,7 +68,7 @@ public class AccueilServiceImpl implements AccueilService{
 			Integer late = arrivalPunchRepository.countByArea(area,"LATE");
 			Integer absent = arrivalPunchRepository.countByArea(area,"ABSENT");
 			
-			List<AreaGps> areaGps = areaGpsRepository.FindByArea(area);
+			List<AreaGps> areaGps = areaGpsRepository.findByArea(area);
 			
 			if (areaGps.isEmpty()) {
 				longitude = null;
