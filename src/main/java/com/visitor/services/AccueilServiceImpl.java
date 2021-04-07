@@ -1,12 +1,16 @@
 package com.visitor.services;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.visitor.entities.AreaGps;
 import com.visitor.entities.ArrivalPunch;
 import com.visitor.entities.IArea;
 import com.visitor.payload.response.AreaStat;
@@ -24,26 +28,34 @@ public class AccueilServiceImpl implements AccueilService{
 	@Autowired
 	private AreaGpsRepository areaGpsRepository;
 	
+	@PersistenceContext
+    private EntityManager em;
+	
 	@Override
 	public List<ArrivalPunch> top5() {
+		
+		/*Date date1 = new Date();
+		java.sql.Date date = new java.sql.Date(date1.getTime());
+		arrivalPunchRepository.refreshArrival(date);*/
+		
 		return arrivalPunchRepository.top5();
 	}
 
 	@Override
 	public List<ArrivalPunch> last5() {
-		// TODO Auto-generated method stub
+		
+		
 		return arrivalPunchRepository.last5();
 	}
 
 	@Override
 	public List<ArrivalPunch> absent() {
-		// TODO Auto-generated method stub
-		return arrivalPunchRepository.findByPunchStatus("NON DISPONIBLE");
+		
+		return arrivalPunchRepository.findAbsent();
 	}
 
 	@Override
 	public GeneralStat generalStat() {
-		// TODO Auto-generated method stub
 		
 		Integer early = arrivalPunchRepository.count("1");
 		Integer ontime = arrivalPunchRepository.count("2");
@@ -51,14 +63,17 @@ public class AccueilServiceImpl implements AccueilService{
 		Integer absent = arrivalPunchRepository.count("NON DISPONIBLE");
 		
 		GeneralStat generalStat = new GeneralStat(early, ontime, late, absent);
+		
+		System.out.println("================================= generalStat : "+generalStat);
 		return generalStat;
 	}
 
 	@Override
 	public List<AreaStat> areaStats() {
 		
+		//arrivalPunchRepository.refreshArrival();
 		List<String> areaList = arrivalPunchRepository.getArea();
-		AreaStat areaStat;
+		//AreaStat areaStat;
 		List<AreaStat> areaStats = new ArrayList<>();
 		Double longitude;
 		Double latitude;
@@ -67,13 +82,14 @@ public class AccueilServiceImpl implements AccueilService{
 			
 			area = area1.replace("TOUS LES SITES,", "");
 			Integer early = arrivalPunchRepository.countByArea(area,"1");
-			System.out.println("===================================");
+
+			String absent1 = null;
 			Integer ontime = arrivalPunchRepository.countByArea(area,"2");
 			Integer late = arrivalPunchRepository.countByArea(area,"3");
 			Integer absent = arrivalPunchRepository.countByArea(area,"NON DISPONIBLE");
-			System.out.println("===================================+");
+
 			List<IArea> areaGps = areaGpsRepository.findByArea(area);
-			System.out.println("===================================+++++");
+
 			if (areaGps.isEmpty()) {
 				longitude = null;
 				latitude = null;
@@ -90,8 +106,19 @@ public class AccueilServiceImpl implements AccueilService{
 
 	@Override
 	public List<ArrivalPunch> arriveEnTempsReel() {
-		// TODO Auto-generated method stub
+	
 		return arrivalPunchRepository.arriveEnTempsReel();
 	}
+	
+	public String refresh() {
+		
+		
+		Query query = em.createNativeQuery("select * from doArrivalRefresh(?)")           
+                .setParameter(1, Instant.now());
+
+		String result = (String) query.getSingleResult();
+		
+		return result;
+    }
 
 }

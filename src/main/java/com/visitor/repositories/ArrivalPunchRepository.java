@@ -4,20 +4,25 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.visitor.entities.ArrivalPunch;
+import com.visitor.entities.RefreshArrival;
 
 @Repository
 public interface ArrivalPunchRepository extends JpaRepository<ArrivalPunch, Integer>{
 
-	@Query(value = "select * from h_arrival_punch where arrival_state = '1' order by arrival_time asc limit 5", nativeQuery = true)
+	@Query(value = "select * from h_arrival_punch order by arrival_time asc limit 5", nativeQuery = true)
 	List<ArrivalPunch> top5();
 	
-	@Query(value = "select * from h_arrival_punch where arrival_state = '3' order by arrival_time desc limit 5", nativeQuery = true)
+	@Query(value = "select * from h_arrival_punch order by arrival_time desc limit 5", nativeQuery = true)
 	List<ArrivalPunch> last5();
 
+	@Query(value = "select * from h_arrival_punch where arrival_state = 'NON DISPONIBLE' limit 10", nativeQuery = true)
+	List<ArrivalPunch> findAbsent();
+	
 	List<ArrivalPunch> findByPunchStatus(String status);
 
 	@Query("select count(ap.punchStatus) from ArrivalPunch ap where ap.punchStatus = :status")
@@ -31,5 +36,8 @@ public interface ArrivalPunchRepository extends JpaRepository<ArrivalPunch, Inte
 
 	@Query(value = "select * from h_arrival_punch ap where ap.arrival_state <> 'NON DISPONIBLE'", nativeQuery = true)
 	List<ArrivalPunch> arriveEnTempsReel();
+	
+	@Procedure(name = "doArrivalRefresh")
+	RefreshArrival refreshArrival();
 
 }
