@@ -1,6 +1,6 @@
-DROP FUNCTION IF EXISTS public."doArrivalRefresh"(dateSelected date ) CASCADE;
+DROP FUNCTION IF EXISTS public."doArrivalRefresh"() CASCADE;--dateSelected TIMESTAMP
 
-CREATE OR REPLACE FUNCTION public."doArrivalRefresh"(dateSelected date) 
+CREATE OR REPLACE FUNCTION public."doArrivalRefresh"() 
 returns SETOF text
 	language 'plpgsql'
 AS $$ 
@@ -19,6 +19,8 @@ DECLARE
 	
 BEGIN
 
+    dateSelected := CURRENT_TIMESTAMP;
+    
     if dateSelected IS NOT NULL THEN
 
         SELECT * INTO _rec FROM h_params LIMIT 1;
