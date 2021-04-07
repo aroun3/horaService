@@ -33,4 +33,18 @@ public class EmployeeService implements EmployeeServiceInterface {
         }
         return employeeResponseList;
     }
+
+    @Override
+    public List<EmployeeResponse> findByFirstNameOrLastName(String firstName, String lastName) {
+        List<EmployeeResponse> employeeResponseList = new ArrayList<>();
+        List<Object[]> employeeList =  employeeRepository.findByFirstNameOrLastName(firstName, lastName);
+        for(Object[] rs : employeeList){
+            EmployeeResponse emp  = new EmployeeResponse();
+            emp.setFirstName(rs[0]+"");
+            emp.setLastName(rs[1]+"");
+            emp.setDepartment(rs[2]+"");
+            employeeResponseList.add(emp);
+        }
+        return employeeResponseList;
+    }
 }

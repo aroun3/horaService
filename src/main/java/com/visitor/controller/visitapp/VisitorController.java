@@ -33,9 +33,10 @@ public class VisitorController {
 
     @GetMapping("/getListCurrentVisitors")
     public  List<Visitor> getAllVisitor(){
-        List<Visitor> visitors = visitorService.getAll().stream().filter(p -> p.getInDate() == new Date()).collect(Collectors.toList());        //return visitorService.getAll();
-        //return visitors;
+       /*List<Visitor> visitors = visitorService.getAll().stream().filter(p -> p.getFullName().equals("TINA")).collect(Collectors.toList());
+        return visitors;*/
         return visitorService.getAll();
+
 
     }
 
@@ -43,9 +44,12 @@ public class VisitorController {
 
 
     @PostMapping("/visitor")
-    public ResponseEntity<?> saveVisitor(@RequestBody Visitor visitor){
+    public ResponseEntity<?> saveVisitor(@RequestBody Visitor visitor,Principal principal){
         try {
+
+            Optional<User> user = userRepository.findByUsername(principal.getName());
             visitor.setStatus((short)1);
+            visitor.setUser(user.get());
             Visitor data = visitorService.add(visitor);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
         }catch (Exception ex){
@@ -97,6 +101,21 @@ public class VisitorController {
         try {
            Integer count = visitorService.countVisitor();
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], count));
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
+
+
+        }
+    }
+
+    @GetMapping("/getVisitorByCurrentUser")
+    public  ResponseEntity<?> getListVisitorByCurrentUser(Principal principal){
+        try {
+            Optional<User> user = userRepository.findByUsername(principal.getName());
+            //List<Visitor> visitor = visitorService.findByUser(user.get());
+            List<Visitor> visitor = visitorService.findByUserAndInDate(user.get().getId());
+
+            return ResponseEntity.ok().body(new ApiResponse(true, visitor));
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
 

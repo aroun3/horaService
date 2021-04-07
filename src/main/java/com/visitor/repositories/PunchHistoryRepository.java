@@ -37,25 +37,25 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 	
 	
 	@Query(value = "select count(ph.arrival_state) from "
-			+ "h_log_transaction ph, personnel_employee pe, personnel_employee_area pea "
+			+ "h_log_transaction ph, personnel_employee pe, personnel_employee_area pae "
 			+ "where pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
 			+ "and ph.arrival_state = :state and pae.area_id = :areAId and ph.log_date between :startDate and :endDate", nativeQuery = true)
 	Integer countArrivalByAreaAndState(@Param("areAId") Integer areAId, @Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("state") String state);
 	
 	@Query(value = "select count(ph.departure_state) "
-			+ "from h_log_transaction ph, personnel_employee pe, personnel_employee_area pea "
+			+ "from h_log_transaction ph, personnel_employee pe, personnel_employee_area pae "
 			+ "where pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
 			+ "and ph.departure_state = :state and pae.area_id = :areAId and ph.log_date between :startDate and :endDate", nativeQuery = true)
 	Integer countDepatureByAreaAndState(@Param("areAId") Integer areAId, @Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("state") String state);
 
 	@Query(value = "select count(ph.presence_state) "
-			+ "from h_log_transaction ph, personnel_employee pe, personnel_employee_area pea "
+			+ "from h_log_transaction ph, personnel_employee pe, personnel_employee_area pae "
 			+ "where pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
 			+ "and ph.presence_state = :state and pae.area_id = :areAId and ph.log_date between :startDate and :endDate", nativeQuery = true)
 	Integer countPresenceByAreaAndState(@Param("areAId") Integer areAId, @Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("state") String state);
 	
 	@Query(value = "select count(ph.is_absent) "
-			+ "from h_log_transaction ph, personnel_employee pe, personnel_employee_area pea "
+			+ "from h_log_transaction ph, personnel_employee pe, personnel_employee_area pae "
 			+ "where pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
 			+ "and ph.is_absent = :state and pae.area_id = :areAId and ph.log_date between :startDate and :endDate", nativeQuery = true)
 	Integer countAbsentByArea(@Param("areAId") Integer areAId, @Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("state") Boolean state);
@@ -69,7 +69,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			+ "ph.presence_periode as presencePeriode, ph.arrival_state as arrivalState, ph.departure_state as departureState, ph.presence_state as presenceState,"
 			+ "ph.is_absent as isAbsent, ph.log_date as logDate, pe.fisrt_name as firstName, pe.last_name as lastName, "
 			+ "pp.position_name as position, pd.dept_name as departement "
-			+ "from h_log_transaction ph, personnel_employee pe, personnel_employee_area pea, personnel_department pd, personnel_posiotion pp"
+			+ "from h_log_transaction ph, personnel_employee pe, personnel_employee_area pae, personnel_department pd, personnel_posiotion pp"
 			+ "where pp.id = pe.position_id and pd.id = pe.department_id and pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
 			+ "and ph.arrival_state = '1' and ph.log_date between :startDate and :endDate order by ph.arrival_time asc limit 5", nativeQuery = true)
 	List<IPunchHistory> arrivalMin5(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
@@ -79,7 +79,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			+ "ph.presence_periode as presencePeriode, ph.arrival_state as arrivalState, ph.departure_state as departureState, ph.presence_state as presenceState,"
 			+ "ph.is_absent as isAbsent, ph.log_date as logDate, pe.fisrt_name as firstName, pe.last_name as lastName, "
 			+ "pp.position_name as position, pd.dept_name as departement "
-			+ "from h_log_transaction ph, personnel_employee pe, personnel_employee_area pea, personnel_department pd, personnel_posiotion pp"
+			+ "from h_log_transaction ph, personnel_employee pe, personnel_employee_area pae, personnel_department pd, personnel_posiotion pp"
 			+ "where pp.id = pe.position_id and pd.id = pe.department_id and pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
 			+ "and :endDate and ph.arrival_state = '3' and ph.log_date between between :startDate order by ph.arrival_time desc limit 5", nativeQuery = true)
 	List<IPunchHistory> arrivalMax5(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
@@ -89,7 +89,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			+ "ph.presence_periode as presencePeriode, ph.arrival_state as arrivalState, ph.departure_state as departureState, ph.presence_state as presenceState,"
 			+ "ph.is_absent as isAbsent, ph.log_date as logDate, pe.fisrt_name as firstName, pe.last_name as lastName, "
 			+ "pp.position_name as position, pd.dept_name as departement "
-			+ "from h_log_transaction ph, personnel_employee pe, personnel_employee_area pea, personnel_department pd, personnel_posiotion pp"
+			+ "from h_log_transaction ph, personnel_employee pe, personnel_employee_area pae, personnel_department pd, personnel_posiotion pp"
 			+ "where pp.id = pe.position_id and pd.id = pe.department_id and pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
 			+ "and ph.departure_state = '1' and ph.log_date between between :startDate and :endDate order by ph.departure_time asc limit 5", nativeQuery = true)
 	List<IPunchHistory> departureMin5(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
