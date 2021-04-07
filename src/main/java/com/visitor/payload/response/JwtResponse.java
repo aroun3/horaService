@@ -73,6 +73,14 @@ public class JwtResponse {
 		this.email = email;
 	}
 
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -84,6 +92,7 @@ public class JwtResponse {
 	public List<String> getRoles() {
 		return roles;
 	}
+
 
 	public String getToken() {
 		return token;

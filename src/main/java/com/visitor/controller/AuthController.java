@@ -82,8 +82,7 @@ public class AuthController {
 					List<String> roles = userDetails.getAuthorities().stream()
 							.map(item -> item.getAuthority())
 							.collect(Collectors.toList());
-					
-					System.out.println("username ============>> " + loginRequest.getUsername());
+					//System.out.println("username ============>> " + loginRequest.getUsername());
 					
 	
 					return ResponseEntity.ok(new ApiResponse(
