@@ -1,6 +1,7 @@
 package com.visitor.entities.visitor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.visitor.entities.User;
 import com.visitor.entities.audit.UserDateAudit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -88,6 +89,10 @@ public class Visitor extends UserDateAudit {
 
     @NotBlank
     private String phone;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
 }

@@ -1,5 +1,6 @@
 package com.visitor.services.visitor;
 
+import com.visitor.entities.User;
 import com.visitor.entities.visitor.Visitor;
 import com.visitor.repositories.VisitorRepository;
 import com.visitor.service_interfaces.VisitorServiceInterface;
@@ -85,5 +86,16 @@ public class VisitorService implements VisitorServiceInterface {
     @Override
     public Integer countVisitor() {
         return visitorRepository.countVisitor();
+    }
+
+    @Override
+    public List<Visitor> findByUser(User user) {
+        return visitorRepository.findByUser(user);
+    }
+
+    @Override
+    public List<Visitor> findByUserAndInDate(Integer userId) {
+
+        return visitorRepository.findByUserAndInDate(userId);
     }
 }

@@ -8,4 +8,5 @@ import java.util.List;
 public interface EmployeeServiceInterface {
     public List<Employee> findAll();
     public List<EmployeeResponse> getListEmployeeAndDepartment();
+    public List<EmployeeResponse> findByFirstNameOrLastName(String firstName, String lastName);
 }

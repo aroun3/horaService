@@ -8,6 +8,7 @@ import com.visitor.payload.response.EmployeeResponse;
 import com.visitor.services.EmployeeService;
 import com.visitor.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,9 @@ public class EmployeeController {
        return employeeService.getListEmployeeAndDepartment();
     }
 
-
+    @GetMapping("/getEmployeeByFirstNameOrLastName")
+    public List<EmployeeResponse> findByFirstNameOrLastName(@RequestParam(value ="firstName")  String firstName, @RequestParam(value="lastName") String lastName){
+        return employeeService.findByFirstNameOrLastName(firstName, lastName);
+    }
 
 }
