@@ -28,7 +28,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/getEmployeeByCode/{code}")
-    public List<EmployeeResponse> getEmployeeByCode(String code){
+    public List<EmployeeResponse> getEmployeeByCode(@PathVariable String code){
         return  employeeService.getEmployeeByCode(code);
     }
 
