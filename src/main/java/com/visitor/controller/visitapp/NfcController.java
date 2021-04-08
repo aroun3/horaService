@@ -3,6 +3,7 @@ package com.visitor.controller.visitapp;
 import com.visitor.entities.visitor.Nfc;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
+import com.visitor.payload.response.NfcResponse;
 import com.visitor.repositories.UserRepository;
 import com.visitor.services.visitor.NfcService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,10 +72,10 @@ public class NfcController {
     public  ResponseEntity<?> getStatusNfc(@PathVariable String nfcId){
         try {
             Nfc nfc = NfcService.findByNfcId(nfcId);
-            Map<String, Object> map = new HashMap<>();
-            map.put("status",nfc.getStatus());
-            map.put("nfcId",nfc.getNfcId());
-            return ResponseEntity.ok().body(new ApiResponse(true,map));
+            NfcResponse nfcResponse = new NfcResponse();
+            nfcResponse.setNfcId(nfc.getNfcId());
+            nfcResponse.setStatus(nfc.getStatus());
+            return ResponseEntity.ok().body(new ApiResponse(true,nfcResponse));
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
 
