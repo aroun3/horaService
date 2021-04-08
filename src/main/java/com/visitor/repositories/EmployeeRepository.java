@@ -28,7 +28,7 @@ public interface EmployeeRepository extends JpaRepository<Employee,String> {
     public List<Object[]> getListEmployeeAndDepartment();
 
     @Query(value ="SELECT pe.first_name, pe.last_name, pd.dept_name FROM personnel_employee pe\n" +
-            "INNER JOIN personnel_department pd ON  pd.id = pe.department_id " +
+            "INNER JOIN personnel_department pd ON  pd.id = pe.department_id \n" +
             "WHERE pe.first_name = :firstName OR pe.last_name = :lastName", nativeQuery = true)
     List<Object[]> findByFirstNameOrLastName(@Param("firstName")String firstName, @Param("lastName")String lastName);
 

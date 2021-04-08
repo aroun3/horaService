@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service("employeeServiceInterface")
 public class EmployeeService implements EmployeeServiceInterface {
@@ -38,6 +37,7 @@ public class EmployeeService implements EmployeeServiceInterface {
     public List<EmployeeResponse> findByFirstNameOrLastName(String firstName, String lastName) {
         List<EmployeeResponse> employeeResponseList = new ArrayList<>();
         List<Object[]> employeeList =  employeeRepository.findByFirstNameOrLastName(firstName, lastName);
+        System.out.println("emp list "+employeeList);
         for(Object[] rs : employeeList){
             EmployeeResponse emp  = new EmployeeResponse();
             emp.setFirstName(rs[0]+"");
