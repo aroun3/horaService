@@ -1,5 +1,6 @@
 package com.visitor.entities.visitor;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.visitor.entities.User;
 import com.visitor.entities.audit.UserDateAudit;
@@ -18,7 +19,7 @@ import java.util.Date;
 @Table(name = "h_visitors")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+//@Data
 @ToString
 public class Visitor extends UserDateAudit {
     /**
@@ -93,6 +94,128 @@ public class Visitor extends UserDateAudit {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getByAppointment() {
+        return byAppointment;
+    }
+
+    public void setByAppointment(String byAppointment) {
+        this.byAppointment = byAppointment;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getPersonalEmployee() {
+        return personalEmployee;
+    }
+
+    public void setPersonalEmployee(String personalEmployee) {
+        this.personalEmployee = personalEmployee;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getCniType() {
+        return cniType;
+    }
+
+    public void setCniType(String cniType) {
+        this.cniType = cniType;
+    }
+
+    public String getNfcCode() {
+        return nfcCode;
+    }
+
+    public void setNfcCode(String nfcCode) {
+        this.nfcCode = nfcCode;
+    }
+
+    public String getCardCode() {
+        return cardCode;
+    }
+
+    public void setCardCode(String cardCode) {
+        this.cardCode = cardCode;
+    }
+
+    @JsonFormat(pattern = "HH:mm:ss", timezone = "UTC")
+    public Date getInDate() {
+        return inDate;
+    }
+
+    public void setInDate(Date inDate) {
+        this.inDate = inDate;
+    }
+
+    @JsonFormat(pattern = "HH:mm:ss", timezone = "UTC")
+    public Date getOutDate() {
+        return outDate;
+    }
+
+    public void setOutDate(Date outDate) {
+        this.outDate = outDate;
+    }
+
+    public Short getStatus() {
+        return status;
+    }
+
+    public void setStatus(Short status) {
+        this.status = status;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 
 }

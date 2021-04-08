@@ -27,6 +27,7 @@ public class Nfc {
 
     @NotBlank
     @Size(max =100)
+    @Column(unique = true)
     private String nfcId;
 
     @NotBlank

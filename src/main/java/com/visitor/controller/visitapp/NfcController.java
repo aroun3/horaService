@@ -1,11 +1,10 @@
 package com.visitor.controller.visitapp;
 
-import com.visitor.entities.visitor.Coupling;
+import com.visitor.entities.visitor.Nfc;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
 import com.visitor.repositories.UserRepository;
-import com.visitor.services.visitor.CouplingService;
-
+import com.visitor.services.visitor.NfcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,37 +14,37 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/v1")
-public class CouplingController {
+public class NfcController {
 
-    private static final Logger logger = Logger.getLogger(CouplingController.class.getName());
+    private static final Logger logger = Logger.getLogger(NfcController.class.getName());
 
     @Autowired
-    private CouplingService couplingService;
+    private NfcService NfcService;
 
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/coupling")
-    public  List<Coupling> getAllCoupling(){
-        return couplingService.getAll();
+    @GetMapping("/nfc")
+    public  List<Nfc> getAllNfc(){
+        return NfcService.getAll();
     }
 
 
-    @PostMapping("/coupling")
-    public ResponseEntity<?> saveCoupling(@RequestBody Coupling coupling){
+    @PostMapping("/nfc")
+    public ResponseEntity<?> saveNfc(@RequestBody Nfc Nfc){
         try {
-            Coupling data = couplingService.add(coupling);
+            Nfc data = NfcService.add(Nfc);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
 
         }
     }
-    @PutMapping("/coupling/{id}")
-    public ResponseEntity<?> updateCoupling(@RequestBody Coupling coupling, @PathVariable Integer id){
+    @PutMapping("/nfc/{id}")
+    public ResponseEntity<?> updateNfc(@RequestBody Nfc Nfc, @PathVariable Integer id){
         try {
-            coupling.setId(id);
-            Coupling data = couplingService.update(coupling);
+            Nfc.setId(id);
+            Nfc data = NfcService.update(Nfc);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_UPDATED[1], data));
         }catch(Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
@@ -54,11 +53,11 @@ public class CouplingController {
     }
 
 
-    @GetMapping("/coupling/{id}")
-    public  ResponseEntity<?> getCoupling(@PathVariable Integer id){
+    @GetMapping("/nfc/{id}")
+    public  ResponseEntity<?> getNfc(@PathVariable Integer id){
             try {
-                Coupling coupling = couplingService.getOneById(id);
-                return ResponseEntity.ok().body(new ApiResponse(true, coupling));
+                Nfc Nfc = NfcService.getOneById(id);
+                return ResponseEntity.ok().body(new ApiResponse(true, Nfc));
             }catch (Exception ex){
                 return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
 
@@ -66,10 +65,22 @@ public class CouplingController {
             }
     }
 
-    @DeleteMapping("/coupling/{id}")
-    public ResponseEntity<?> deleteCoupling(@PathVariable Integer id){
+    @GetMapping("/nfc/{nfcId}")
+    public  ResponseEntity<?> getStatusNfc(@PathVariable String nfcId){
         try {
-            couplingService.delete(id);
+            Nfc Nfc = NfcService.findByNfcId(nfcId);
+            return ResponseEntity.ok().body(new ApiResponse(true, Nfc.getStatus()));
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
+
+
+        }
+    }
+
+    @DeleteMapping("/nfc/{id}")
+    public ResponseEntity<?> deleteNfc(@PathVariable Integer id){
+        try {
+            NfcService.delete(id);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], null));
         }catch (Exception ex){
             System.out.println("Erreur de supp "+ex.getMessage() );
