@@ -5,6 +5,7 @@ import com.visitor.entities.visitor.Visitor;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
 import com.visitor.repositories.UserRepository;
+import com.visitor.services.visitor.NfcService;
 import com.visitor.services.visitor.VisitorService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,14 @@ public class VisitorController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private NfcService nfcService;
+
     @GetMapping("/getListCurrentVisitors")
     public  List<Visitor> getAllVisitor(){
        /*List<Visitor> visitors = visitorService.getAll().stream().filter(p -> p.getFullName().equals("TINA")).collect(Collectors.toList());
         return visitors;*/
         return visitorService.getAll();
-
-
     }
 
 
@@ -57,6 +59,21 @@ public class VisitorController {
 
         }
     }
+
+
+    @PostMapping("/decoupling/visitor")
+    public ResponseEntity<?> decoupleVisitor(@PathVariable Integer id){
+        try {
+            Visitor visitor = visitorService.getOneById(id);
+            visitor.setStatus((short)2);
+            Visitor data = visitorService.add(visitor);
+            return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
+
+        }
+    }
+
     
     @PutMapping("/visitor/{id}")
     public ResponseEntity<?> updateVisitor(@RequestPart("visitor") Visitor visitor,  @PathVariable Integer id){

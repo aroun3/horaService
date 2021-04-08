@@ -32,4 +32,7 @@ public class Nfc {
     @NotBlank
     @Size(max = 100)
     private String nfcRef;
+
+    @NotBlank
+    private Boolean status;
 }

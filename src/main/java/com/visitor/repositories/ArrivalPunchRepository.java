@@ -34,7 +34,7 @@ public interface ArrivalPunchRepository extends JpaRepository<ArrivalPunch, Inte
 	@Query("select count(ap.punchStatus) from ArrivalPunch ap where ap.punchStatus = :status and ap.area = :area")
 	Integer countByArea(@Param("area") String area, @Param("status") String status);
 
-	@Query(value = "select * from h_arrival_punch ap where ap.arrival_state <> '0'", nativeQuery = true)
+	@Query(value = "select * from h_arrival_punch ap where ap.arrival_state <> '0' ORDER BY ap.arrival_time desc", nativeQuery = true)
 	List<ArrivalPunch> arriveEnTempsReel();
 	
 	@Query(value = "select * from doarrivalaefresh() as status",nativeQuery = true)

@@ -22,8 +22,14 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     @GetMapping("/listEmployee")
-    public List<Employee> getAllEmployee(){
-        return employeeService.findAll();
+    public List<EmployeeResponse> getAllEmployee(){
+        //return employeeService.findAll();
+        return  employeeService.getAllEmployee();
+    }
+
+    @GetMapping("/getEmployeeByCode/{code}")
+    public List<EmployeeResponse> getEmployeeByCode(String code){
+        return  employeeService.getEmployeeByCode(code);
     }
 
 

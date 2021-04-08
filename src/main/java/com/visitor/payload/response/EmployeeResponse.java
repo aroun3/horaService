@@ -25,6 +25,8 @@ public class EmployeeResponse {
 
     private String department;
 
+    private String fonction;
+
     public EmployeeResponse() {
     }
 
@@ -32,6 +34,14 @@ public class EmployeeResponse {
         this.firstName = firstName;
         this.lastName = lastName;
         this.department = department;
+    }
+
+    public EmployeeResponse(String empCode, String firstName, String lastName, String department, String fonction) {
+        this.empCode = empCode;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.department = department;
+        this.fonction = fonction;
     }
 
     public String getEmpCode() {
@@ -120,5 +130,13 @@ public class EmployeeResponse {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public String getFonction() {
+        return fonction;
+    }
+
+    public void setFonction(String fonction) {
+        this.fonction = fonction;
     }
 }
