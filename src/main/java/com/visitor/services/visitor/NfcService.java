@@ -42,4 +42,9 @@ public class NfcService implements NfcInterface {
     public void delete(Integer id) {
         nfcRepository.deleteById(id);
     }
+
+    @Override
+    public Nfc findByNfcId(String nfcRef) {
+        return nfcRepository.findByNfcRef(nfcRef);
+    }
 }

@@ -75,7 +75,7 @@ public class Visitor extends UserDateAudit {
     @Column(name = "card_code")
     private String cardCode;
 
-    @Column(name="in_date")
+    @Column(name="in_date", updatable = false)
     @JsonIgnore
     //@NotBlank
     private Date inDate = new Date();

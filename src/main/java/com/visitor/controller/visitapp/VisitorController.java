@@ -1,6 +1,7 @@
 package com.visitor.controller.visitapp;
 
 import com.visitor.entities.User;
+import com.visitor.entities.visitor.Nfc;
 import com.visitor.entities.visitor.Visitor;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
@@ -48,7 +49,6 @@ public class VisitorController {
     @PostMapping("/visitor")
     public ResponseEntity<?> saveVisitor(@RequestBody Visitor visitor,Principal principal){
         try {
-
             Optional<User> user = userRepository.findByUsername(principal.getName());
             visitor.setStatus((short)1);
             visitor.setUser(user.get());
@@ -61,18 +61,12 @@ public class VisitorController {
     }
 
 
-    @PostMapping("/decoupling/visitor")
-    public ResponseEntity<?> decoupleVisitor(@PathVariable Integer id){
-        try {
-            Visitor visitor = visitorService.getOneById(id);
-            visitor.setStatus((short)2);
-            Visitor data = visitorService.add(visitor);
-            return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
-        }catch (Exception ex){
-            return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
 
-        }
+    @PostMapping("/decoupling/visitor")
+    public ResponseEntity<?> decoupleVisitor(@RequestParam Integer visitorId, @RequestParam String code){
+       return visitorService.decoupleVisitor(visitorId,code);
     }
+
 
     
     @PutMapping("/visitor/{id}")
