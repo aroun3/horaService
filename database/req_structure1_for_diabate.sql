@@ -12,7 +12,7 @@ arrival, -- timestamp arrivee
 arrival_id, -- id pointage arrivee
 departure, -- timestamp depart
 departure_id, -- id pointage depart
-presence, -- temps de presence (en heure), depart - arrivee
+presence, -- temps de presence (en heure), (depart - arrivee)
 arrival_state, -- tot? a lheure? tard? absent?
 departure_state, -- absent? tard? a lheure? tot
 presence_state, -- Moins normal plus 

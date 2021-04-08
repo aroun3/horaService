@@ -54,14 +54,14 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		early = punchHistoryRepository.countArrivalByState(startDate, endDate, "1");
 		ontime = punchHistoryRepository.countArrivalByState(startDate, endDate, "2");
 		late = punchHistoryRepository.countArrivalByState(startDate, endDate, "3");
-		absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "NON DIPONIBLE");
+		absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "0");
 		
 		arrivees = new GeneralHistoryStats(early, ontime, late, absent);
 		System.out.println("=====================================");
 		early = punchHistoryRepository.countDepatureByState(startDate, endDate, "1");
 		ontime = punchHistoryRepository.countDepatureByState(startDate, endDate, "2");
 		late = punchHistoryRepository.countDepatureByState(startDate, endDate, "3");
-		absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "NON DIPONIBLE");
+		absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "0");
 		
 		departs = new GeneralHistoryStats(early, ontime, late, absent);
 		System.out.println("=====================================");
@@ -394,14 +394,14 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			early = punchHistoryRepository.countArrivalByState(startDate, endDate, "1");
 			ontime = punchHistoryRepository.countArrivalByState(startDate, endDate, "2");
 			late = punchHistoryRepository.countArrivalByState(startDate, endDate, "3");
-			absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "NON DIPONIBLE");
+			absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "0");
 			
 			arrivees = new GeneralHistoryStats(early, ontime, late, absent);
 			
 			early = punchHistoryRepository.countDepatureByState(startDate, endDate, "1");
 			ontime = punchHistoryRepository.countDepatureByState(startDate, endDate, "2");
 			late = punchHistoryRepository.countDepatureByState(startDate, endDate, "3");
-			absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "NON DIPONIBLE");
+			absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "0");
 			
 			departs = new GeneralHistoryStats(early, ontime, late, absent);
 			

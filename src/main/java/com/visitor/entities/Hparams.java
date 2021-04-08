@@ -56,6 +56,11 @@ public class Hparams implements Serializable{
     @Temporal(TemporalType.TIME)
     @NotBlank
     private java.util.Date hearlyCheckout;
+    
+    @Column(name = "late_checkout")
+    @Temporal(TemporalType.TIME)
+    @NotBlank
+    private java.util.Date lateCheckout;
 
     @Column(name = "h_checkout")
     @Temporal(TemporalType.TIME)
