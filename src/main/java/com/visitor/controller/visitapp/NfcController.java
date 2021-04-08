@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
@@ -65,11 +67,14 @@ public class NfcController {
             }
     }
 
-    @GetMapping("/nfc/{nfcId}")
+    @GetMapping("/nfc/status/{nfcId}")
     public  ResponseEntity<?> getStatusNfc(@PathVariable String nfcId){
         try {
-            Nfc Nfc = NfcService.findByNfcId(nfcId);
-            return ResponseEntity.ok().body(new ApiResponse(true, Nfc.getStatus()));
+            Nfc nfc = NfcService.findByNfcId(nfcId);
+            Map<String, Object> map = new HashMap<>();
+            map.put("status",nfc.getStatus());
+            map.put("nfcId",nfc.getNfcId());
+            return ResponseEntity.ok().body(new ApiResponse(true,map));
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
 
