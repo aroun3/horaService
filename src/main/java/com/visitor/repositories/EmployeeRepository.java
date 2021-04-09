@@ -42,7 +42,7 @@ public interface EmployeeRepository extends JpaRepository<Employee,String> {
             " GROUP BY pe.emp_code, pe.first_name, pe.last_name,pd.dept_name, pp.position_name,pe.gender, pe.mobile", nativeQuery = true)
     List<Object[]> getAllEmployee();
 
-    @Query(value = "SELECT pe.emp_code, pe.first_name, pe.last_name, pd.dept_name, pp.position_name, pe.gender, pe.mobile, STRING_AGG(pa.area_name,',') FROM personnel_employee pe \n" +
+    @Query(value ="SELECT pe.emp_code, pe.first_name, pe.last_name, pd.dept_name, pp.position_name, pe.gender, pe.mobile, STRING_AGG(pa.area_name,',') FROM personnel_employee pe \n" +
             " INNER JOIN personnel_department pd ON  pd.id = pe.department_id " +
             " INNER JOIN personnel_position pp ON pp.id = pe.position_id" +
             " INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id\n" +
@@ -51,6 +51,13 @@ public interface EmployeeRepository extends JpaRepository<Employee,String> {
             " GROUP BY pe.emp_code, pe.first_name, pe.last_name,pd.dept_name, pp.position_name,pe.gender, pe.mobile", nativeQuery = true)
     List<Object[]> getEmployeeByCode(@Param("empCode") String empCode);
 
-
+   /* @Query(value = "SELECT new com.visitor.payload.response.EmployeeResponse(pe.emp_code, pe.first_name, pe.last_name, pd.dept_name, pp.position_name, pe.gender, pe.mobile, STRING_AGG(pa.area_name,',') ) FROM personnel_employee pe \n" +
+            " INNER JOIN personnel_department pd ON  pd.id = pe.department_id " +
+            " INNER JOIN personnel_position pp ON pp.id = pe.position_id" +
+            " INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id\n" +
+            " INNER JOIN personnel_area pa ON pa.id = pea.area_id " +
+            " WHERE pe.emp_code= :empCode "+
+            " GROUP BY pe.emp_code, pe.first_name, pe.last_name,pd.dept_name, pp.position_name,pe.gender, pe.mobile", nativeQuery = true)
+    List<EmployeeResponse> getEmployeeByCode(@Param("empCode") String empCode);*/
 
 }

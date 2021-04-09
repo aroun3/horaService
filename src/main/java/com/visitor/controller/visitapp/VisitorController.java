@@ -5,6 +5,7 @@ import com.visitor.entities.visitor.Nfc;
 import com.visitor.entities.visitor.Visitor;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
+import com.visitor.payload.response.VisitorTotalResponse;
 import com.visitor.repositories.UserRepository;
 import com.visitor.services.visitor.NfcService;
 import com.visitor.services.visitor.VisitorService;
@@ -132,6 +133,12 @@ public class VisitorController {
 
 
         }
+    }
+
+       @GetMapping("/listCountVistor")
+    public List<VisitorTotalResponse> getListCountVisitor(){
+        return visitorService.getTotalVistor();
+
     }
 
     /*@GetMapping("/getPersonals")

@@ -23,11 +23,13 @@ public interface VisitorRepository extends JpaRepository<Visitor, Integer> {
             "AND EXTRACT(DAY from v.in_date) = EXTRACT(DAY from now())", nativeQuery = true)
     public  List<Visitor> findByUserAndInDate(@Param("userId") Integer userId);
 
-
     @Query(value = "SELECT COUNT(*) FROM article",nativeQuery = true)
     public Integer countVisitor();
 
-
+    @Query(value = "SELECT COUNT(v.id),(SELECT COUNT(*) FROM h_visitors v \n" +
+            "WHERE v.by_appointment ='0') AS srdv,(SELECT COUNT(*) FROM h_visitors v \n" +
+            "WHERE v.by_appointment ='1') AS rdv FROM h_visitors v", nativeQuery = true)
+    public List<Object[]> getTotalVistor();
 
     
 }

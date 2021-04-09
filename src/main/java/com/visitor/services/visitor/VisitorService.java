@@ -5,6 +5,7 @@ import com.visitor.entities.visitor.Nfc;
 import com.visitor.entities.visitor.Visitor;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
+import com.visitor.payload.response.VisitorTotalResponse;
 import com.visitor.repositories.VisitorRepository;
 import com.visitor.repositories.visitor.NfcRepository;
 import com.visitor.service_interfaces.VisitorServiceInterface;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.beans.Transient;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -127,6 +129,21 @@ public class VisitorService implements VisitorServiceInterface {
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
 
         }
+    }
+
+    @Override
+    public List<VisitorTotalResponse> getTotalVistor() {
+        List<VisitorTotalResponse> visitorTotalResponseList = new ArrayList<>();
+        List<Object[]> listCount = visitorRepository.getTotalVistor();
+        for(Object[] rs : listCount){
+            VisitorTotalResponse visitorTotalResponse = new VisitorTotalResponse();
+            visitorTotalResponse.setTotal(Integer.valueOf(rs[0]+""));
+            visitorTotalResponse.setTotal_srdv(Integer.valueOf(rs[1]+""));
+            visitorTotalResponse.setTotal_rdv(Integer.valueOf(rs[2]+""));
+            visitorTotalResponseList.add(visitorTotalResponse);
+        }
+
+        return visitorTotalResponseList;
     }
 
 

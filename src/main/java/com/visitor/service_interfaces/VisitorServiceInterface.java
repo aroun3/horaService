@@ -2,6 +2,7 @@ package com.visitor.service_interfaces;
 
 import com.visitor.entities.User;
 import com.visitor.entities.visitor.Visitor;
+import com.visitor.payload.response.VisitorTotalResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,4 +15,5 @@ public interface VisitorServiceInterface extends BaseServiceInterface<Visitor>{
     public List<Visitor> findByUser(User user);
     public  List<Visitor> findByUserAndInDate(Integer userId);
     ResponseEntity<?> decoupleVisitor(Integer visitorId, String code);
+    public List<VisitorTotalResponse> getTotalVistor();
 }
