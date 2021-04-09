@@ -142,6 +142,7 @@ public class VisitorService implements VisitorServiceInterface {
             visitorTotalResponse.setTotal(Integer.valueOf(rs[0]+""));
             visitorTotalResponse.setTotal_srdv(Integer.valueOf(rs[1]+""));
             visitorTotalResponse.setTotal_rdv(Integer.valueOf(rs[2]+""));
+            visitorTotalResponse.setTotal_current_visitor(Integer.valueOf(rs[3]+""));
             visitorTotalResponseList.add(visitorTotalResponse);
         }
 
