@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service("visitorService")
 public class VisitorService implements VisitorServiceInterface {
@@ -52,7 +53,8 @@ public class VisitorService implements VisitorServiceInterface {
 
     @Override
     public Visitor getOneById(Integer id) {
-        return visitorRepository.getOne(id);
+        Optional<Visitor> visitor = visitorRepository.findById(id);
+        return visitor.get();
     }
 
     @Override
