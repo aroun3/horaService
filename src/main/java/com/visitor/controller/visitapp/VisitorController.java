@@ -37,7 +37,7 @@ public class VisitorController {
     @Autowired
     private NfcService nfcService;
 
-    @GetMapping("/getListCurrentVisitors")
+    @GetMapping("/visitors")
     public  List<Visitor> getAllVisitor(){
        /*List<Visitor> visitors = visitorService.getAll().stream().filter(p -> p.getFullName().equals("TINA")).collect(Collectors.toList());
         return visitors;*/
@@ -124,9 +124,7 @@ public class VisitorController {
     public  ResponseEntity<?> getListVisitorByCurrentUser(Principal principal){
         try {
             Optional<User> user = userRepository.findByUsername(principal.getName());
-            //List<Visitor> visitor = visitorService.findByUser(user.get());
             List<Visitor> visitor = visitorService.findByUserAndInDate(user.get().getId());
-
             return ResponseEntity.ok().body(new ApiResponse(true, visitor));
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
