@@ -37,7 +37,7 @@ public class AccueilServiceImpl implements AccueilService{
 		/*Date date1 = new Date();
 		java.sql.Date date = new java.sql.Date(date1.getTime());
 		arrivalPunchRepository.refreshArrival(date);*/
-		
+		//arrivalPunchRepository.refreshArrival();
 		return arrivalPunchRepository.top5();
 	}
 

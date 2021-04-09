@@ -1,10 +1,13 @@
 package com.visitor.controller.visitapp;
 
 import com.visitor.entities.User;
+import com.visitor.entities.visitor.Nfc;
 import com.visitor.entities.visitor.Visitor;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
+import com.visitor.payload.response.VisitorTotalResponse;
 import com.visitor.repositories.UserRepository;
+import com.visitor.services.visitor.NfcService;
 import com.visitor.services.visitor.VisitorService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +34,14 @@ public class VisitorController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/getListCurrentVisitors")
+    @Autowired
+    private NfcService nfcService;
+
+    @GetMapping("/visitors")
     public  List<Visitor> getAllVisitor(){
        /*List<Visitor> visitors = visitorService.getAll().stream().filter(p -> p.getFullName().equals("TINA")).collect(Collectors.toList());
         return visitors;*/
         return visitorService.getAll();
-
-
     }
 
 
@@ -46,7 +50,6 @@ public class VisitorController {
     @PostMapping("/visitor")
     public ResponseEntity<?> saveVisitor(@RequestBody Visitor visitor,Principal principal){
         try {
-
             Optional<User> user = userRepository.findByUsername(principal.getName());
             visitor.setStatus((short)1);
             visitor.setUser(user.get());
@@ -57,6 +60,15 @@ public class VisitorController {
 
         }
     }
+
+
+
+    @PostMapping("/decoupling/visitor")
+    public ResponseEntity<?> decoupleVisitor(@RequestParam Integer visitorId, @RequestParam String code){
+       return visitorService.decoupleVisitor(visitorId,code);
+    }
+
+
     
     @PutMapping("/visitor/{id}")
     public ResponseEntity<?> updateVisitor(@RequestPart("visitor") Visitor visitor,  @PathVariable Integer id){
@@ -112,15 +124,19 @@ public class VisitorController {
     public  ResponseEntity<?> getListVisitorByCurrentUser(Principal principal){
         try {
             Optional<User> user = userRepository.findByUsername(principal.getName());
-            //List<Visitor> visitor = visitorService.findByUser(user.get());
             List<Visitor> visitor = visitorService.findByUserAndInDate(user.get().getId());
-
             return ResponseEntity.ok().body(new ApiResponse(true, visitor));
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
 
 
         }
+    }
+
+       @GetMapping("/listCountVistor")
+    public List<VisitorTotalResponse> getListCountVisitor(){
+        return visitorService.getTotalVistor();
+
     }
 
     /*@GetMapping("/getPersonals")

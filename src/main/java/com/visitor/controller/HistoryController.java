@@ -2,6 +2,8 @@ package com.visitor.controller;
 
 import java.util.List;
 
+import com.visitor.entities.IArea;
+import com.visitor.repositories.PunchHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +22,9 @@ public class HistoryController {
 	
 	@Autowired
 	private PunchHistoryService punchHistoryService;
-	
-	
+
+	@Autowired
+	private PunchHistoryRepository punchHistoryRepository;
 
 	@GetMapping("/history/stats")
 	public HistoryStats historyStats(@RequestParam("periode") String periode){
@@ -74,4 +77,9 @@ public class HistoryController {
 		return punchHistoryService.graphStats(periode);
 	};
 
+
+	@GetMapping("/listArea")
+	public List<IArea> getListArea(){
+		return  punchHistoryRepository.findAreaList();
+	}
 }

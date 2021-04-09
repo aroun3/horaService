@@ -25,13 +25,22 @@ public class EmployeeResponse {
 
     private String department;
 
+    private String fonction;
+
     public EmployeeResponse() {
     }
 
-    public EmployeeResponse(String firstName, String lastName, String department) {
+
+    public EmployeeResponse(String empCode, String firstName, String lastName, String department, String fonction, String gender, String mobile, String city) {
+        this.empCode = empCode;
         this.firstName = firstName;
         this.lastName = lastName;
         this.department = department;
+        this.fonction = fonction;
+        this.gender = gender;
+        this.mobile = mobile;
+        this.city = city;
+
     }
 
     public String getEmpCode() {
@@ -120,5 +129,31 @@ public class EmployeeResponse {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public String getFonction() {
+        return fonction;
+    }
+
+    public void setFonction(String fonction) {
+        this.fonction = fonction;
+    }
+
+    @Override
+    public String toString() {
+        return "EmployeeResponse{" +
+                "empCode='" + empCode + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", photo='" + photo + '\'' +
+                ", gender='" + gender + '\'' +
+                ", contactTel='" + contactTel + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", city='" + city + '\'' +
+                ", status=" + status +
+                ", address='" + address + '\'' +
+                ", department='" + department + '\'' +
+                ", fonction='" + fonction + '\'' +
+                '}';
     }
 }

@@ -20,7 +20,7 @@ public interface ArrivalPunchRepository extends JpaRepository<ArrivalPunch, Inte
 	@Query(value = "select * from h_arrival_punch order by arrival_time desc limit 5", nativeQuery = true)
 	List<ArrivalPunch> last5();
 
-	@Query(value = "select * from h_arrival_punch where arrival_state = 'NON DISPONIBLE' limit 10", nativeQuery = true)
+	@Query(value = "select * from h_arrival_punch where arrival_state = '0' limit 10", nativeQuery = true)
 	List<ArrivalPunch> findAbsent();
 	
 	List<ArrivalPunch> findByPunchStatus(String status);
@@ -34,10 +34,10 @@ public interface ArrivalPunchRepository extends JpaRepository<ArrivalPunch, Inte
 	@Query("select count(ap.punchStatus) from ArrivalPunch ap where ap.punchStatus = :status and ap.area = :area")
 	Integer countByArea(@Param("area") String area, @Param("status") String status);
 
-	@Query(value = "select * from h_arrival_punch ap where ap.arrival_state <> 'NON DISPONIBLE'", nativeQuery = true)
+	@Query(value = "select * from h_arrival_punch ap where ap.arrival_state <> '0' ORDER BY ap.arrival_time desc", nativeQuery = true)
 	List<ArrivalPunch> arriveEnTempsReel();
 	
-	@Procedure(name = "doArrivalRefresh")
+	@Query(value = "select * from doarrivalaefresh() as status",nativeQuery = true)
 	RefreshArrival refreshArrival();
 
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service("employeeServiceInterface")
 public class EmployeeService implements EmployeeServiceInterface {
@@ -38,11 +37,50 @@ public class EmployeeService implements EmployeeServiceInterface {
     public List<EmployeeResponse> findByFirstNameOrLastName(String firstName, String lastName) {
         List<EmployeeResponse> employeeResponseList = new ArrayList<>();
         List<Object[]> employeeList =  employeeRepository.findByFirstNameOrLastName(firstName, lastName);
+        System.out.println("emp list "+employeeList);
         for(Object[] rs : employeeList){
             EmployeeResponse emp  = new EmployeeResponse();
             emp.setFirstName(rs[0]+"");
             emp.setLastName(rs[1]+"");
             emp.setDepartment(rs[2]+"");
+            employeeResponseList.add(emp);
+        }
+        return employeeResponseList;
+    }
+
+    @Override
+    public List<EmployeeResponse> getAllEmployee() {
+        List<EmployeeResponse> employeeResponseList = new ArrayList<>();
+        List<Object[]> employeeList =  employeeRepository.getAllEmployee();
+        for(Object[] rs : employeeList){
+            EmployeeResponse emp  = new EmployeeResponse();
+            emp.setEmpCode(rs[0]+"");
+            emp.setFirstName(rs[1]+"");
+            emp.setLastName(rs[2]+"");
+            emp.setDepartment(rs[3]+"");
+            emp.setFonction(rs[4]+"");
+            emp.setGender(rs[5]+"");
+            emp.setMobile(rs[6]+"");
+            emp.setCity(rs[7]+"");
+            employeeResponseList.add(emp);
+        }
+        return employeeResponseList;
+    }
+
+    @Override
+    public List<EmployeeResponse> getEmployeeByCode(String empCode) {
+        List<EmployeeResponse> employeeResponseList = new ArrayList<>();
+        List<Object[]> employeeList =  employeeRepository.getEmployeeByCode(empCode);
+        for(Object[] rs : employeeList){
+            EmployeeResponse emp  = new EmployeeResponse();
+            emp.setEmpCode(rs[0]+"");
+            emp.setFirstName(rs[1]+"");
+            emp.setLastName(rs[2]+"");
+            emp.setDepartment(rs[3]+"");
+            emp.setFonction(rs[4]+"");
+            emp.setGender(rs[5]+"");
+            emp.setMobile(rs[6]+"");
+            emp.setCity(rs[7]+"");
             employeeResponseList.add(emp);
         }
         return employeeResponseList;
