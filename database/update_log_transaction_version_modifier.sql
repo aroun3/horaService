@@ -1,5 +1,4 @@
-
-DROP FUNCTION if exists public."log_transaction"();
+DROP FUNCTION if exists public."log_transaction"() CASCADE;
 
 create or replace function public."log_transaction"() returns setof varchar
 	language 'plpgsql'
@@ -38,6 +37,7 @@ begin
 		if logDateParam.nextDate::date is NULL then
 			res := 'La date callback est vide';
 		else
+		
 			daySelect := logDateParam.nextDate::date;
 			
 			-- creation de table temporaire
@@ -60,25 +60,41 @@ begin
 			) ON COMMIT DROP;
 			
 			-- =============== TEST VALUE ===========
-			daySelect = '2021-02-18'::date;
+			--daySelect = '2021-02-18'::date;
 			-- ======================================
 			
-			for tmp_row_record in SELECT * FROM iclock_transaction it WHERE it.punch_time::date = daySelect::date --logDateParam.nextDate::date
+			for tmp_row_record in SELECT * FROM employee_view
 
 			loop
-		
+				-- Pour eviter les doublons pour une journée
 				SELECT COUNT(*) INTO _count_inlog FROM h_log_transaction hlt WHERE hlt.emp_code = tmp_row_record.emp_code AND hlt.log_date = daySelect::date;
 				
-				if _count_inlog = 0 then -- Pour eviter d'ajouter deux fois 
+				if _count_inlog = 0 then
 					-- le status de arrival (NON_DISPONIBE = 0, EARLY = 1, ONTIME = 2, LATE = 3)
-					SELECT gapr.id, gapr.arrival_time::time, gapr.arrival_state, gapr.arrival_terminal_id into _arrival_id,_arrival_time,_arrival_state,_arrival_terminal_id FROM public."getArrivalPunchRecord"(tmp_row_record.emp_code::text,daySelect::date) gapr(id Integer,arrival_time time,arrival_state text,arrival_terminal_id Integer);
+					SELECT gapr.id, 
+					gapr.arrival_time::time, 
+					gapr.arrival_state, 
+					gapr.arrival_terminal_id into 
+					_arrival_id,
+					_arrival_time,
+					_arrival_state,
+					_arrival_terminal_id 
+					FROM public."getArrivalPunchRecord"(tmp_row_record.emp_code::text,daySelect::date) gapr(id Integer,arrival_time time,arrival_state text,arrival_terminal_id Integer);
 
 					-- le status de depart (NON_DISPONIBE = 0, EARLY = 1, ONTIME = 2, LATE = 3)
-					SELECT gdpr.id, gdpr.departure_time::time,gdpr.departure_state,gdpr.departure_terminal_id into _departure_id,_departure_time,_departure_state,_departure_terminal_id FROM public."getDeparturePunchRecord"(tmp_row_record.emp_code::text,daySelect::date) gdpr(id Integer, departure_time time,departure_state text, departure_terminal_id Integer);
+					SELECT gdpr.id, 
+					gdpr.departure_time::time,
+					gdpr.departure_state,
+					gdpr.departure_terminal_id into 
+					_departure_id,
+					_departure_time,
+					_departure_state,
+					_departure_terminal_id 
+					FROM public."getDeparturePunchRecord"(tmp_row_record.emp_code::text,daySelect::date) gdpr(id Integer, departure_time time,departure_state text, departure_terminal_id Integer);
 
 					-- Diffrence de temps : On ne peut calculer le temps que si departure_time et arrival_time sont non nul
-					if _departure_time::time IS NOT NULL AND _arrival_time::time IS NOT NULL then
-						_presence_periode = _departure_time::time - _arrival_time::time;
+					if _departure_time::time <> NULL AND _arrival_time::time <> NULL then
+						_presence_periode = _arrival_time::time - _departure_time::time;
 					else
 						_presence_periode = '00:00:00';
 					end if;
@@ -186,17 +202,3 @@ end
 $$;
 	
 select * from public."log_transaction"(); --as (id int, emp_codes char varying,punch_times timestamp) ;
-
-
-
-
-
-
-/*select emp_code,punch_time,
-  CASE
-    WHEN (select count(*) from iclock_transaction WHERE emp_code = emp_code AND  punch_time::timestamp::time BETWEEN '08:00:00' AND '10:30:00') > 0 THEN 'Present'
-	WHEN (select count(*) from iclock_transaction WHERE emp_code = emp_code AND  punch_time::timestamp::time BETWEEN '08:00:00' AND '10:30:00') < 0 THEN 'Present'
-    ELSE ''
-  END  
-  as status
-from iclock_transaction WHERE punch_time::timestamp::time BETWEEN '07:00:00' AND '07:30:00'*/;

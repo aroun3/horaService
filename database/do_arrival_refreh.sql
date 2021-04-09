@@ -17,6 +17,8 @@ DECLARE
 	_arrival_id Integer;
 	_arrival_terminal_id Integer;
 	
+	dateSelected timestamp;
+	
 BEGIN
 
     dateSelected := CURRENT_TIMESTAMP;
@@ -102,4 +104,4 @@ BEGIN
 END
 $$;
 
-select * from public."doArrivalRefresh"('2021-02-18'::date) ;
+--select * from public."doArrivalRefresh"('2021-02-18'::date) ;

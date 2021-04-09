@@ -1,6 +1,114 @@
 
--- ================== log_transaction ===============================
-DROP FUNCTION if exists public."log_transaction"();
+-- ==================== getArrivalPunchRecord ==================
+DROP FUNCTION IF EXISTS public."getArrivalPunchRecord"(empCode text, dateSelected date ) CASCADE;
+
+CREATE OR REPLACE FUNCTION public."getArrivalPunchRecord"(empCode text, dateSelected date) 
+returns SETOF record
+	language 'plpgsql'
+AS $$ 
+DECLARE
+    _result RECORD;
+    rec RECORD;
+BEGIN
+    IF empCode <> '' AND empCode IS NOT NULL THEN
+
+        SELECT * INTO rec FROM h_params LIMIT 1;
+
+        SELECT INTO _result
+            it.id as id,
+        	it.punch_time::time without time zone as arrival_time,
+			CASE
+				WHEN it.punch_time::time without time zone >= rec.min_checkin::time AND it.punch_time::time without time zone < rec.h_checkin::time THEN '1'::text
+				WHEN it.punch_time::time without time zone >= rec.h_checkin::time AND it.punch_time::time without time zone < rec.late_checkin::time THEN '2'::text
+				WHEN it.punch_time::time without time zone >= rec.late_checkin::time AND it.punch_time::time without time zone < rec.max_checkin::time  THEN '3'::text
+				ELSE '0'::text
+			END as arrival_state,
+			it.terminal_id as arrival_terminal_id
+
+        FROM iclock_transaction it
+        WHERE it.emp_code = empCode AND 
+		it.punch_time::date = dateSelected::date AND 
+		it.punch_time::time >= rec.min_checkin::time AND 
+		it.punch_time::time <= rec.max_checkin::time 
+        ORDER BY it.punch_time ASC LIMIT 1;
+
+		IF _result.arrival_state IS NULL THEN
+			_result.arrival_state = '0';
+		END IF;
+    END IF;
+	
+	return NEXT _result;
+END
+$$;
+
+-- ===================== getDeparturePunchRecord ================
+
+DROP FUNCTION IF EXISTS public."getDeparturePunchRecord"(empCode text, dateSelected date ) CASCADE;
+
+CREATE OR REPLACE FUNCTION public."getDeparturePunchRecord"(empCode text, dateSelected date) 
+returns SETOF RECORD
+	language 'plpgsql'
+AS $$ 
+DECLARE
+    _result RECORD;
+	rec RECORD;
+BEGIN
+    IF empCode <> '' AND empCode IS NOT NULL THEN
+
+        SELECT * INTO rec FROM h_params LIMIT 1;
+
+        SELECT INTO _result
+        it.id as id,
+        it.punch_time::time without time zone as departure_time,
+		CASE
+            WHEN it.punch_time::time without time zone >= rec.min_checkout::time AND it.punch_time::time without time zone < rec.early_checkout::time THEN '1'::text
+            WHEN it.punch_time::time without time zone >= rec.early_checkout::time AND it.punch_time::time without time zone < rec.h_checkout::time THEN '2'::text
+            WHEN it.punch_time::time without time zone >= rec.h_checkout::time AND it.punch_time::time without time zone < rec.max_checkout::time  THEN '3'::text
+            ELSE '0'::text
+        END as departure_state,
+		it.terminal_id as departure_terminal_id
+		
+        FROM iclock_transaction it
+        WHERE it.emp_code = empCode AND 
+		it.punch_time::date = dateSelected::date AND 
+		it.punch_time::time >= rec.min_checkout::time AND 
+		it.punch_time::time <= rec.max_checkout::time 
+        ORDER BY it.punch_time ASC LIMIT 1;
+
+		IF _result.departure_state IS NULL THEN
+			_result.departure_state = '0';
+		END IF;
+    END IF;
+	
+    RETURN NEXT _result;
+END
+$$;
+
+--- ==================== getEmployeeArea ====================
+
+DROP FUNCTION IF EXISTS public."getEmployeeArea"(empId Integer) CASCADE;
+
+CREATE OR replace FUNCTION public."getEmployeeArea"(empId Integer) returns setof varchar
+	language 'plpgsql'
+AS $$ 
+DECLARE
+    res varchar;
+BEGIN
+    IF empId > 0 AND empId IS NOT NULL THEN
+        SELECT string_agg(pa.area_name::text, ','::text) AS string_agg INTO res
+        FROM personnel_area pa 
+        WHERE pa.id IN (SELECT pea.area_id FROM personnel_employee_area as pea WHERE pea.employee_id = empId);
+    END IF;
+
+    RETURN NEXT res;
+END
+$$;
+
+--- EXCUTION DE LA VUE EMPLOYEE ==========
+
+
+-- ================== log_transaction FUNCTION POUR LE SCRIPT TACHE PLANIFIER ===============================
+DROP FUNCTION if exists public."log_transaction"() CASCADE;
 
 create or replace function public."log_transaction"() returns setof varchar
 	language 'plpgsql'
@@ -39,6 +147,7 @@ begin
 		if logDateParam.nextDate::date is NULL then
 			res := 'La date callback est vide';
 		else
+		
 			daySelect := logDateParam.nextDate::date;
 			
 			-- creation de table temporaire
@@ -61,25 +170,41 @@ begin
 			) ON COMMIT DROP;
 			
 			-- =============== TEST VALUE ===========
-			daySelect = '2021-02-18'::date;
+			daySelect = '2021-04-05'::date;
 			-- ======================================
 			
-			for tmp_row_record in SELECT * FROM iclock_transaction it WHERE it.punch_time::date = daySelect::date --logDateParam.nextDate::date
+			for tmp_row_record in SELECT * FROM employee_view
 
 			loop
-		
+				-- Pour eviter les doublons pour une journée
 				SELECT COUNT(*) INTO _count_inlog FROM h_log_transaction hlt WHERE hlt.emp_code = tmp_row_record.emp_code AND hlt.log_date = daySelect::date;
 				
-				if _count_inlog = 0 then -- Pour eviter d'ajouter deux fois 
+				if _count_inlog = 0 then
 					-- le status de arrival (NON_DISPONIBE = 0, EARLY = 1, ONTIME = 2, LATE = 3)
-					SELECT gapr.id, gapr.arrival_time::time, gapr.arrival_state, gapr.arrival_terminal_id into _arrival_id,_arrival_time,_arrival_state,_arrival_terminal_id FROM public."getArrivalPunchRecord"(tmp_row_record.emp_code::text,daySelect::date) gapr(id Integer,arrival_time time,arrival_state text,arrival_terminal_id Integer);
+					SELECT gapr.id, 
+					gapr.arrival_time::time, 
+					gapr.arrival_state, 
+					gapr.arrival_terminal_id into 
+					_arrival_id,
+					_arrival_time,
+					_arrival_state,
+					_arrival_terminal_id 
+					FROM public."getArrivalPunchRecord"(tmp_row_record.emp_code::text,daySelect::date) gapr(id Integer,arrival_time time,arrival_state text,arrival_terminal_id Integer);
 
 					-- le status de depart (NON_DISPONIBE = 0, EARLY = 1, ONTIME = 2, LATE = 3)
-					SELECT gdpr.id, gdpr.departure_time::time,gdpr.departure_state,gdpr.departure_terminal_id into _departure_id,_departure_time,_departure_state,_departure_terminal_id FROM public."getDeparturePunchRecord"(tmp_row_record.emp_code::text,daySelect::date) gdpr(id Integer, departure_time time,departure_state text, departure_terminal_id Integer);
+					SELECT gdpr.id, 
+					gdpr.departure_time::time,
+					gdpr.departure_state,
+					gdpr.departure_terminal_id into 
+					_departure_id,
+					_departure_time,
+					_departure_state,
+					_departure_terminal_id 
+					FROM public."getDeparturePunchRecord"(tmp_row_record.emp_code::text,daySelect::date) gdpr(id Integer, departure_time time,departure_state text, departure_terminal_id Integer);
 
 					-- Diffrence de temps : On ne peut calculer le temps que si departure_time et arrival_time sont non nul
-					if _departure_time::time <> NULL AND _arrival_time::time <> NULL then
-						_presence_periode = _arrival_time::time - _departure_time::time;
+					if _departure_time::time IS NOT NULL AND _arrival_time::time IS NOT NULL then
+						_presence_periode = _departure_time::time - _arrival_time::time;
 					else
 						_presence_periode = '00:00:00';
 					end if;
@@ -190,9 +315,9 @@ select * from public."log_transaction"(); --as (id int, emp_codes char varying,p
 
 --================ doArrival_refresh =======================
 
-DROP FUNCTION IF EXISTS public."doArrivalRefresh"(dateSelected date ) CASCADE;
+DROP FUNCTION IF EXISTS public."doarrivalrefresh"() CASCADE;
 
-CREATE OR REPLACE FUNCTION public."doArrivalRefresh"(dateSelected date) 
+CREATE OR REPLACE FUNCTION public."doarrivalrefresh"() 
 returns SETOF text
 	language 'plpgsql'
 AS $$ 
@@ -208,12 +333,14 @@ DECLARE
     _arrival_time time;
 	_arrival_id Integer;
 	_arrival_terminal_id Integer;
+
+	dateSelected timestamp;
 	
 BEGIN
 
-    if dateSelected IS NOT NULL THEN
+	dateSelected := CURRENT_TIMESTAMP::date;
 
-        SELECT * INTO _rec FROM h_params LIMIT 1;
+    if dateSelected IS NOT NULL THEN
 
         DROP TABLE IF EXISTS h_arrival_punch CASCADE;
 
@@ -292,46 +419,12 @@ BEGIN
 END
 $$;
 
-select * from public."doArrivalRefresh"('2021-02-18'::date) ;
 
--- ==================== getArrivalPunchRecord ==================
+--- TEST DES FUNCTION =====================
+select * from public."doarrivalrefresh"() ;
 
-DROP FUNCTION IF EXISTS public."getArrivalPunchRecord"(empCode text, dateSelected date ) CASCADE;
-
-CREATE OR REPLACE FUNCTION public."getArrivalPunchRecord"(empCode text, dateSelected date) 
-returns SETOF record
-	language 'plpgsql'
-AS $$ 
-DECLARE
-    _result RECORD;
-    rec RECORD;
-BEGIN
-    IF empCode <> '' AND empCode IS NOT NULL THEN
-
-        SELECT * INTO rec FROM h_params LIMIT 1;
-
-        SELECT INTO _result
-            it.id as id,
-        	it.punch_time::time without time zone as arrival_time,
-			CASE
-				WHEN it.punch_time::time without time zone >= rec.min_checkin::time AND it.punch_time::time without time zone < rec.h_checkin::time THEN '1'::text
-				WHEN it.punch_time::time without time zone >= rec.h_checkin::time AND it.punch_time::time without time zone < rec.late_checkin::time THEN '2'::text
-				WHEN it.punch_time::time without time zone >= rec.late_checkin::time AND it.punch_time::time without time zone < rec.max_checkin::time  THEN '3'::text
-				ELSE '0'::text
-			END as arrival_state,
-			it.terminal_id as arrival_terminal_id
-
-        FROM iclock_transaction it
-        WHERE it.emp_code = empCode AND 
-		it.punch_time::date = dateSelected::date AND 
-		it.punch_time::time >= rec.min_checkin::time AND 
-		it.punch_time::time <= rec.max_checkin::time 
-        ORDER BY it.punch_time ASC LIMIT 1;
-    END IF;
-	
-	return NEXT _result;
-END
-$$;
+select * from public."getDeparturePunchRecord"('753','2021-02-18'::date)
+as (id Integer, departure_time time,departure_state text, departure_terminal_id Integer);
 
 select * from public."getArrivalPunchRecord"('792','2021-02-18'::date) 
 as (
@@ -340,66 +433,3 @@ as (
 	arrival_state text,
 	arrival_terminal_id Integer
 );
-
-
--- ===================== getDeparturePunchRecord ================
-
-DROP FUNCTION IF EXISTS public."getDeparturePunchRecord"(empCode text, dateSelected date ) CASCADE;
-
-CREATE OR REPLACE FUNCTION public."getDeparturePunchRecord"(empCode text, dateSelected date) 
-returns SETOF RECORD
-	language 'plpgsql'
-AS $$ 
-DECLARE
-    _result RECORD;
-	rec RECORD;
-BEGIN
-    IF empCode <> '' AND empCode IS NOT NULL THEN
-
-        SELECT * INTO rec FROM h_params LIMIT 1;
-
-        SELECT INTO _result
-        it.id as id,
-        it.punch_time::time without time zone as departure_time,
-		CASE
-            WHEN it.punch_time::time without time zone >= rec.min_checkout::time AND it.punch_time::time without time zone < rec.h_checkout::time THEN '1'::text
-            WHEN it.punch_time::time without time zone >= rec.h_checkout::time AND it.punch_time::time without time zone < rec.late_checkout::time THEN '2'::text
-            WHEN it.punch_time::time without time zone >= rec.late_checkout::time AND it.punch_time::time without time zone < rec.max_checkout::time  THEN '3'::text
-            ELSE '0'::text
-        END as departure_state,
-		it.terminal_id as departure_terminal_id
-		
-        FROM iclock_transaction it
-        WHERE it.emp_code = empCode AND 
-		it.punch_time::date = dateSelected::date AND 
-		it.punch_time::time >= rec.min_checkout::time AND 
-		it.punch_time::time <= rec.max_checkout::time 
-        ORDER BY it.punch_time ASC LIMIT 1;
-    END IF;
-	
-    RETURN NEXT _result;
-END
-$$;
-
-select * from public."getDeparturePunchRecord"('753','2021-02-18'::date)
-as (id Integer, departure_time time,departure_state text, departure_terminal_id Integer);
-
---- ==================== getEmployeeArea ====================
-
-DROP FUNCTION IF EXISTS public."getEmployeeArea"(empId Integer);
-
-CREATE OR replace FUNCTION public."getEmployeeArea"(empId Integer) returns setof varchar
-	language 'plpgsql'
-AS $$ 
-DECLARE
-    res varchar;
-BEGIN
-    IF empId > 0 AND empId IS NOT NULL THEN
-        SELECT string_agg(pa.area_name::text, ','::text) AS string_agg INTO res
-        FROM personnel_area pa 
-        WHERE pa.id IN (SELECT pea.area_id FROM personnel_employee_area as pea WHERE pea.employee_id = empId);
-    END IF;
-
-    RETURN NEXT res;
-END
-$$;
