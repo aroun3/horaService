@@ -1,12 +1,7 @@
-DROP VIEW IF EXISTS arrivalPunchView CASCADE;
-CREATE OR REPLACE VIEW arrivalPunchView AS
+DROP VIEW IF EXISTS h_arrival_punch_view CASCADE;
+CREATE OR REPLACE VIEW h_arrival_punch_view AS
 
- SELECT
- 	pe.*,
-	"getArrivalPunchTime"(pe.emp_code::text,'2021-02-18'::date) as arrival_time, --CURRENT_TIMESTAMP
-	"getArrivalPunchState"(pe.emp_code::text,'2021-02-18'::date) as punch_status --CURRENT_TIMESTAMP
-	-- id du terminal 
-	-- id du area du pointage
- FROM employee_view pe;
+	SELECT public."doarrivalrefresh"();
+	SELECT * FROM h_arrival_punch;
  
- select * FROM arrivalPunchView;
+ select * FROM h_arrival_punch_view;
