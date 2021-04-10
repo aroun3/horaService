@@ -10,6 +10,7 @@ import com.visitor.repositories.VisitorRepository;
 import com.visitor.repositories.visitor.NfcRepository;
 import com.visitor.service_interfaces.VisitorServiceInterface;
 
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class VisitorService implements VisitorServiceInterface {
     public Visitor add(Visitor visitor) {
         return visitorRepository.save(visitor);
     }
+
 
     @Override
     public Visitor update(Visitor visitor) {
@@ -82,6 +84,28 @@ public class VisitorService implements VisitorServiceInterface {
     }
 
     @Override
+    @Transactional(rollbackFor=Exception.class)
+    public ResponseEntity<?> addVisitors(Visitor visitor, User user) {
+        try{
+            Nfc nf = nfcService.findByNfcRef(visitor.getNfcRef());
+            if(nf.getStatus()==false) {
+                nf.setId(nf.getId());
+                nf.setStatus(true);
+                Nfc nfc = nfcService.update(nf);
+                visitor.setStatus(true);
+                visitor.setUser(user);
+                Visitor data = add(visitor);
+                return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
+            }else{
+                throw new IllegalStateException("La carte est déjà attribué a un visiteur") ;
+            }
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
+
+        }
+    }
+
+    @Override
     public Visitor updateVisitor(Visitor visitor, MultipartFile multipartFile) {
         Visitor vis = null;
         /*try {
@@ -116,14 +140,14 @@ public class VisitorService implements VisitorServiceInterface {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     public ResponseEntity<?> decoupleVisitor(Integer visitorId, String code) {
         try {
             Nfc nf = nfcService.findByNfcId(code);
             nf.setStatus(false);
             Nfc nfc = nfcService.update(nf);
             Visitor visitor = getOneById(visitorId);
-            visitor.setStatus((short)2);
+            visitor.setStatus(false);
             visitor.setOutDate(new Date());
             Visitor vi = update(visitor);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], vi));

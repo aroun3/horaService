@@ -4,4 +4,5 @@ import com.visitor.entities.visitor.Nfc;
 
 public interface NfcInterface extends BaseServiceInterface<Nfc>{
     public Nfc findByNfcId(String nfcRef);
+    public Nfc findByNfcRef(String nfcRef);
 }

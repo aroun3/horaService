@@ -68,8 +68,8 @@ public class Visitor extends UserDateAudit {
 
     @NotBlank
     @Size(max = 100)
-    @Column(name = "nfc_code")
-    private String nfcCode;
+    @Column(name = "nfc_ref")
+    private String nfcRef;
 
     @NotBlank
     @Size(max = 100)
@@ -86,7 +86,8 @@ public class Visitor extends UserDateAudit {
     //@NotBlank
     private Date outDate = new Date();
 
-    private Short status;
+    //@JsonIgnore
+    private Boolean status;
 
     @NotBlank
     private String phone;
@@ -159,12 +160,16 @@ public class Visitor extends UserDateAudit {
         this.cniType = cniType;
     }
 
-    public String getNfcCode() {
-        return nfcCode;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public void setNfcCode(String nfcCode) {
-        this.nfcCode = nfcCode;
+    public String getNfcRef() {
+        return nfcRef;
+    }
+
+    public void setNfcRef(String nfcRef) {
+        this.nfcRef = nfcRef;
     }
 
     public String getCardCode() {
@@ -175,7 +180,7 @@ public class Visitor extends UserDateAudit {
         this.cardCode = cardCode;
     }
 
-    @JsonFormat(pattern = "HH:mm:ss", timezone = "UTC")
+    //@JsonFormat(pattern = "HH:mm:ss", timezone = "UTC")
     public Date getInDate() {
         return inDate;
     }
@@ -184,7 +189,7 @@ public class Visitor extends UserDateAudit {
         this.inDate = inDate;
     }
 
-    @JsonFormat(pattern = "HH:mm:ss", timezone = "UTC")
+    //@JsonFormat(pattern = "HH:mm:ss", timezone = "UTC")
     public Date getOutDate() {
         return outDate;
     }
@@ -193,11 +198,11 @@ public class Visitor extends UserDateAudit {
         this.outDate = outDate;
     }
 
-    public Short getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Short status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 

@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface VisitorServiceInterface extends BaseServiceInterface<Visitor>{
     public Visitor addVisitor(Visitor visitor, MultipartFile multipartFile);
+    public ResponseEntity<?> addVisitors(Visitor visitor, User user);
     public Visitor updateVisitor(Visitor visitor, MultipartFile multipartFile);
     public Integer countVisitor();
     public List<Visitor> findByUser(User user);

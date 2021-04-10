@@ -30,51 +30,46 @@ public class Hparams implements Serializable{
     @Column(name = "min_checkin")
     @Temporal(TemporalType.TIME)
     @NotBlank
-    private java.util.Date minCheckin;
+    private Date minCheckin;
 
     @Column(name = "h_checkin")
     @Temporal(TemporalType.TIME)
     @NotBlank
-    private java.util.Date hCheckin;
+    private Date hCheckin;
 
     @Column(name = "late_checkin")
     @Temporal(TemporalType.TIME)
     @NotBlank
-    private java.util.Date lateCheckin;
+    private Date lateCheckin;
 
     @Column(name = "max_checkin")
     @Temporal(TemporalType.TIME)
     @NotBlank
-    private java.util.Date maxCheckin;
+    private Date maxCheckin;
 
     @Column(name = "min_checkout")
     @Temporal(TemporalType.TIME)
     @NotBlank
-    private java.util.Date minCheckout;
+    private Date minCheckout;
 
     @Column(name = "early_checkout")
     @Temporal(TemporalType.TIME)
     @NotBlank
-    private java.util.Date hearlyCheckout;
-    
-    @Column(name = "late_checkout")
-    @Temporal(TemporalType.TIME)
-    @NotBlank
-    private java.util.Date lateCheckout;
+    private Date hearlyCheckout;
 
     @Column(name = "h_checkout")
     @Temporal(TemporalType.TIME)
     @NotBlank
-    private java.util.Date hCheckout;
+    private Date hCheckout;
 
     @Column(name = "max_checkout")
     @Temporal(TemporalType.TIME)
     @NotBlank
-    private java.util.Date maxChectout;
+    private Date maxChectout;
 
-    @Column(name = "h_group")
+    @Column(name = "area_id")
     @NotBlank
-    private String hGroup;
+    private Integer areaId;
 
     @Column(name = "callback_date")
     @NotBlank

@@ -47,4 +47,9 @@ public class NfcService implements NfcInterface {
     public Nfc findByNfcId(String nfcRef) {
         return nfcRepository.findByNfcId(nfcRef);
     }
+
+    @Override
+    public Nfc findByNfcRef(String nfcRef) {
+        return nfcRepository.findByNfcRef(nfcRef);
+    }
 }

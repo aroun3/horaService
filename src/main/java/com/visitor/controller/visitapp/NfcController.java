@@ -19,18 +19,18 @@ public class NfcController {
     private static final Logger logger = Logger.getLogger(NfcController.class.getName());
 
     @Autowired
-    private NfcService NfcService;
+    private NfcService nfcService;
 
     @GetMapping("/nfc")
     public  List<Nfc> getAllNfc(){
-        return NfcService.getAll();
+        return nfcService.getAll();
     }
 
 
     @PostMapping("/nfc")
     public ResponseEntity<?> saveNfc(@RequestBody Nfc nfc){
         try {
-            Nfc data = NfcService.add(nfc);
+            Nfc data = nfcService.add(nfc);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
@@ -41,7 +41,7 @@ public class NfcController {
     public ResponseEntity<?> updateNfc(@RequestBody Nfc nfc, @PathVariable Integer id){
         try {
             nfc.setId(id);
-            Nfc data = NfcService.update(nfc);
+            Nfc data = nfcService.update(nfc);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_UPDATED[1], data));
         }catch(Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
@@ -53,7 +53,7 @@ public class NfcController {
     @GetMapping("/nfc/{id}")
     public  ResponseEntity<?> getNfc(@PathVariable Integer id){
             try {
-                Nfc nfc = NfcService.getOneById(id);
+                Nfc nfc = nfcService.getOneById(id);
                 if(nfc != null) {
                 return ResponseEntity.ok().body(new ApiResponse(true, nfc));
                 }else{
@@ -69,10 +69,11 @@ public class NfcController {
     @GetMapping("/nfc/status/{nfcId}")
     public  ResponseEntity<?> getStatusNfc(@PathVariable String nfcId){
         try {
-            Nfc nfc = NfcService.findByNfcId(nfcId);
+            Nfc nfc = nfcService.findByNfcId(nfcId);
             if(nfc != null) {
                 NfcResponse nfcResponse = new NfcResponse();
                 nfcResponse.setNfcId(nfc.getNfcId());
+                nfcResponse.setNfcRef(nfc.getNfcRef());
                 nfcResponse.setStatus(nfc.getStatus());
                 return ResponseEntity.ok().body(new ApiResponse(true, nfcResponse));
             }else{
@@ -88,7 +89,7 @@ public class NfcController {
     @DeleteMapping("/nfc/{id}")
     public ResponseEntity<?> deleteNfc(@PathVariable Integer id){
         try {
-            NfcService.delete(id);
+            nfcService.delete(id);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], null));
         }catch (Exception ex){
             System.out.println("Erreur de supp "+ex.getMessage() );

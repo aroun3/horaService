@@ -49,16 +49,8 @@ public class VisitorController {
 
     @PostMapping("/visitor")
     public ResponseEntity<?> saveVisitor(@RequestBody Visitor visitor,Principal principal){
-        try {
             Optional<User> user = userRepository.findByUsername(principal.getName());
-            visitor.setStatus((short)1);
-            visitor.setUser(user.get());
-            Visitor data = visitorService.add(visitor);
-            return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
-        }catch (Exception ex){
-            return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
-
-        }
+            return visitorService.addVisitors(visitor,user.get());
     }
 
 

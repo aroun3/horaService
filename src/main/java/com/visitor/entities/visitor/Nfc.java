@@ -25,15 +25,16 @@ public class Nfc {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
+    //@NotBlank
     @Size(max =100)
     @Column(unique = true)
     private String nfcId;
 
-    @NotBlank
+    //@NotBlank
     @Size(max = 100)
+    @Column(unique = true)
     private String nfcRef;
 
-    @NotBlank
+    //@NotBlank
     private Boolean status;
 }
