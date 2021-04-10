@@ -37,7 +37,7 @@ public interface ArrivalPunchRepository extends JpaRepository<ArrivalPunch, Inte
 	@Query(value = "select * from h_arrival_punch ap where ap.arrival_state <> '0' ORDER BY ap.arrival_time desc", nativeQuery = true)
 	List<ArrivalPunch> arriveEnTempsReel();
 	
-	@Query(value = "select * from doarrivalaefresh() as status",nativeQuery = true)
+	@Query(value = "select * from doarrivalrefresh() as status",nativeQuery = true)
 	RefreshArrival refreshArrival();
 
 }

@@ -2,6 +2,7 @@ package com.visitor.controller;
 
 import java.util.List;
 
+import com.visitor.entities.RefreshArrival;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,5 +58,9 @@ public class AccueilController {
 		List<ArrivalPunch> arrivalPunchs = accueilService.arriveEnTempsReel();
         return arrivalPunchs;
     }
-	
+
+    @GetMapping("/accueil/refreshArrival")
+    public RefreshArrival refreshArrival(){
+	    return accueilService.refreshArrival();
+    }
 }

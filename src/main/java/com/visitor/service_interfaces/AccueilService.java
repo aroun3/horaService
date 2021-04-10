@@ -3,6 +3,7 @@ package com.visitor.service_interfaces;
 import java.util.List;
 
 import com.visitor.entities.ArrivalPunch;
+import com.visitor.entities.RefreshArrival;
 import com.visitor.payload.response.AreaStat;
 import com.visitor.payload.response.GeneralStat;
 
@@ -14,4 +15,5 @@ public interface AccueilService {
 		GeneralStat generalStat();
 		List<AreaStat> areaStats();
 		List<ArrivalPunch> arriveEnTempsReel();
+		RefreshArrival refreshArrival();
 }
