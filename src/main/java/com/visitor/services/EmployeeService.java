@@ -33,7 +33,7 @@ public class EmployeeService implements EmployeeServiceInterface {
         return employeeResponseList;
     }
 
-    @Override
+   /* @Override
     public List<EmployeeResponse> findByFirstNameOrLastName(String firstName, String lastName) {
         List<EmployeeResponse> employeeResponseList = new ArrayList<>();
         List<Object[]> employeeList =  employeeRepository.findByFirstNameOrLastName(firstName, lastName);
@@ -46,7 +46,7 @@ public class EmployeeService implements EmployeeServiceInterface {
             employeeResponseList.add(emp);
         }
         return employeeResponseList;
-    }
+    }*/
 
     @Override
     public List<EmployeeResponse> getAllEmployee() {
@@ -81,6 +81,22 @@ public class EmployeeService implements EmployeeServiceInterface {
             emp.setGender(rs[5]+"");
             emp.setMobile(rs[6]+"");
             emp.setCity(rs[7]+"");
+            employeeResponseList.add(emp);
+        }
+        return employeeResponseList;
+    }
+
+    @Override
+    public List<EmployeeResponse> searchEmployee(String firstName) {
+        List<EmployeeResponse> employeeResponseList = new ArrayList<>();
+        List<Object[]> employeeList =  employeeRepository.searchEmployee(firstName);
+        for(Object[] rs : employeeList){
+            EmployeeResponse emp  = new EmployeeResponse();
+            emp.setEmpCode(rs[0]+"");
+            emp.setFirstName(rs[1]+"");
+            emp.setLastName(rs[2]+"");
+            emp.setGender(rs[3]+"");
+            emp.setMobile(rs[4]+"");
             employeeResponseList.add(emp);
         }
         return employeeResponseList;

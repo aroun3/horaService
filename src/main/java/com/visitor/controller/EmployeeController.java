@@ -32,6 +32,10 @@ public class EmployeeController {
         return  employeeService.getEmployeeByCode(code);
     }
 
+    @GetMapping("/searchEmployee/{firstName}")
+    public List<EmployeeResponse> searchEmployee(@PathVariable String firstName){
+        return  employeeService.searchEmployee(firstName);
+    }
 
 
     @GetMapping("/employee")
@@ -39,9 +43,9 @@ public class EmployeeController {
        return employeeService.getListEmployeeAndDepartment();
     }
 
-    @GetMapping("/getEmployeeByFirstNameOrLastName")
+    /*@GetMapping("/getEmployeeByFirstNameOrLastName")
     public List<EmployeeResponse> findByFirstNameOrLastName(@RequestParam(value ="firstName")  String firstName, @RequestParam(value="lastName") String lastName){
         return employeeService.findByFirstNameOrLastName(firstName, lastName);
-    }
+    }*/
 
 }
