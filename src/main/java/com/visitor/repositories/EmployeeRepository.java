@@ -35,10 +35,10 @@ public interface EmployeeRepository extends JpaRepository<Employee,String> {
     Optional<Employee> findByEmpCode(String  codeEmploye);
 
     @Query(value = "SELECT pe.emp_code, pe.first_name, pe.last_name, pd.dept_name, pp.position_name, pe.gender, pe.mobile, STRING_AGG(pa.area_name,',') FROM personnel_employee pe \n" +
-            " INNER JOIN personnel_department pd ON  pd.id = pe.department_id " +
-            " INNER JOIN personnel_position pp ON pp.id = pe.position_id" +
-            " INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id\n" +
-            " INNER JOIN personnel_area pa ON pa.id = pea.area_id " +
+            " LEFT JOIN personnel_department pd ON  pd.id = pe.department_id " +
+            " LEFT JOIN personnel_position pp ON pp.id = pe.position_id" +
+            " LEFT JOIN personnel_employee_area pea ON pea.employee_id = pe.id\n" +
+            " LEFT JOIN personnel_area pa ON pa.id = pea.area_id " +
             " GROUP BY pe.emp_code, pe.first_name, pe.last_name,pd.dept_name, pp.position_name,pe.gender, pe.mobile", nativeQuery = true)
     List<Object[]> getAllEmployee();
 

@@ -63,7 +63,7 @@ public class NfcController {
                 if(nfc != null) {
                 return ResponseEntity.ok().body(new ApiResponse(true, nfc));
                 }else{
-                    throw  new IllegalStateException("La carte nfc n'existe pas");
+                    return ResponseEntity.ok().body(new ApiResponse(true, null));
                 }
             }catch (Exception ex){
                 return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
@@ -82,7 +82,7 @@ public class NfcController {
                 nfcResponse.setStatus(nfc.getStatus());
                 return ResponseEntity.ok().body(new ApiResponse(true, nfcResponse));
             }else{
-                throw  new IllegalStateException("La carte nfc n'existe pas");
+                return ResponseEntity.ok().body(new ApiResponse(true, null));
             }
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
