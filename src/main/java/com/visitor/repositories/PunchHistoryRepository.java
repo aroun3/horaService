@@ -144,4 +144,28 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			+ "where pp.id = pe.position_id and pd.id = pe.department_id and pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
 			+ "and ph.is_absent = true and ph.log_date between between :startDate and :endDate", nativeQuery = true)
 	List<IPunchHistory> absent(Date startDate, Date endDate);
+
+
+	/*===============================================
+	DETAIL PAR EMPLOYEE(EmpCode)
+	===============================================*/
+
+	@Query(value = "select count(ph.arrival_state) "
+			+ "from h_log_transaction ph where ph.arrival_state = :state and ph.log_date between :startDate and :endDate AND ph.emp_code= :empCode", nativeQuery = true)
+	Integer countArrivalByStateAndEmpCode(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("state") String state,String empCode);
+
+	@Query(value = "select count(ph.departure_state) "
+			+ "from h_log_transaction ph "
+			+ "where ph.departure_state = :state and ph.log_date between :startDate and :endDate AND ph.emp_code= :empCode", nativeQuery = true)
+	Integer countDepatureByStateAndEmpCode(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("state") String state,String empCode);
+
+	@Query(value = "select count(ph.presence_state) "
+			+ "from h_log_transaction ph "
+			+ "where ph.presence_state = :state and ph.log_date between :startDate and :endDate AND ph.emp_code= :empCode", nativeQuery = true)
+	Integer countPresenceByStateAndEmpCode(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("state") String state,String empCode);
+
+	@Query(value = "select count(ph.is_absent) from h_log_transaction ph where ph.is_absent = :state and ph.log_date between :startDate and :endDate AND ph.emp_code= :empCode", nativeQuery = true)
+	Integer countAbsentAndEmpCode(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("state") Boolean state,String empCode);
+
+
 }

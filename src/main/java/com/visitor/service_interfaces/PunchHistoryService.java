@@ -19,4 +19,5 @@ public interface PunchHistoryService {
 	List<PunchHistory> departureMax5(String periode);
 	List<PunchHistory> present5(String periode);
 	List<GraphStat> graphStats(String periode);
+	HistoryStats areaHistoryStatsByEmployee(String periode, String empCode);
 }

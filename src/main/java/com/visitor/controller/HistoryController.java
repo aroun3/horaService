@@ -31,7 +31,7 @@ public class HistoryController {
 		HistoryStats historyStats = punchHistoryService.historyStats(periode);
 		return historyStats;
 	};
-	
+
 	@GetMapping("/history/stats/area")
 	public List<AreaHistoryStats> areaHistoryStats(@RequestParam("periode") String periode){
 		List<AreaHistoryStats> areaHistoryStats = punchHistoryService.areaHistoryStats(periode);
@@ -82,4 +82,13 @@ public class HistoryController {
 	public List<IArea> getListArea(){
 		return  punchHistoryRepository.findAreaList();
 	}
+
+	/*DETAIL*/
+
+	@GetMapping("/history/statsByEmployee")
+	public HistoryStats historyStatsByEmployeeCode(@RequestParam("periode") String periode, @RequestParam("empCode")String empCode){
+		HistoryStats historyStats = punchHistoryService.areaHistoryStatsByEmployee(periode, empCode);
+		return historyStats;
+	};
+
 }

@@ -310,6 +310,7 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		return graphStats;
 	}
 
+
 	public List<GraphStat> graphStatsJour(){
 		
 		List<GraphStat> graphStats = new ArrayList<>(); 
@@ -697,5 +698,64 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			break;
 	}
 	}
-	
+
+
+
+	/*===========================
+		DETAIL PAR EMPLOYEE
+	=========================== */
+
+	@Override
+	public HistoryStats areaHistoryStatsByEmployee(String periode, String empCode) {
+
+		GeneralHistoryStats arrivees;
+		GeneralHistoryStats departs;
+		PresenceHistory presences;
+		Integer absences;
+
+		Integer early;
+		Integer ontime;
+		Integer late;
+		Integer absent;
+
+		Integer below;
+		Integer normal;
+		Integer over;
+
+		Date startDate = new Date();
+		Date endDate = new Date();
+		getStartAndEndDate(periode, startDate, endDate);
+
+		System.out.println("=====================================");
+
+		early = punchHistoryRepository.countArrivalByStateAndEmpCode(startDate, endDate, "1", empCode);
+		ontime = punchHistoryRepository.countArrivalByStateAndEmpCode(startDate, endDate, "2", empCode);
+		late = punchHistoryRepository.countArrivalByStateAndEmpCode(startDate, endDate, "3", empCode);
+		absent = punchHistoryRepository.countArrivalByStateAndEmpCode(startDate, endDate, "0",empCode);
+
+		arrivees = new GeneralHistoryStats(early, ontime, late, absent);
+		System.out.println("=====================================");
+		early = punchHistoryRepository.countDepatureByStateAndEmpCode(startDate, endDate, "1", empCode);
+		ontime = punchHistoryRepository.countDepatureByStateAndEmpCode(startDate, endDate, "2",empCode);
+		late = punchHistoryRepository.countDepatureByStateAndEmpCode(startDate, endDate, "3", empCode);
+		absent = punchHistoryRepository.countDepatureByStateAndEmpCode(startDate, endDate, "0", empCode);
+
+		departs = new GeneralHistoryStats(early, ontime, late, absent);
+		System.out.println("=====================================");
+		below = punchHistoryRepository.countPresenceByStateAndEmpCode(startDate, endDate, "BELOW", empCode);
+		normal = punchHistoryRepository.countPresenceByStateAndEmpCode(startDate, endDate, "NORMAL", empCode);
+		over = punchHistoryRepository.countPresenceByStateAndEmpCode(startDate, endDate, "OVER", empCode);
+		absent = punchHistoryRepository.countPresenceByStateAndEmpCode(startDate, endDate, "NON DIPONIBLE", empCode);
+
+		presences = new PresenceHistory(below, normal, over, absent);
+
+		System.out.println("=====================================");
+		absences = punchHistoryRepository.countAbsentAndEmpCode(startDate, endDate, Boolean.TRUE,empCode);
+
+		HistoryStats historyStats = new HistoryStats(arrivees, departs, presences, absences);
+
+		return historyStats;
+	}
+
+
 }
