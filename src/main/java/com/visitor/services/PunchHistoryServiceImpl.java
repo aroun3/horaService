@@ -8,17 +8,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.visitor.payload.response.*;
+import com.visitor.repositories.AreaGpsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import com.visitor.entities.IArea;
 import com.visitor.entities.IPunchHistory;
 import com.visitor.entities.PunchHistory;
-import com.visitor.payload.response.AreaHistoryStats;
-import com.visitor.payload.response.GeneralHistoryStats;
-import com.visitor.payload.response.GraphStat;
-import com.visitor.payload.response.HistoryStats;
-import com.visitor.payload.response.PresenceHistory;
 import com.visitor.repositories.PunchHistoryRepository;
 import com.visitor.service_interfaces.PunchHistoryService;
 
@@ -26,7 +24,10 @@ import com.visitor.service_interfaces.PunchHistoryService;
 public class PunchHistoryServiceImpl implements PunchHistoryService{
 	
 	@Autowired
-	private PunchHistoryRepository punchHistoryRepository; 
+	private PunchHistoryRepository punchHistoryRepository;
+
+	@Autowired
+	private AreaGpsRepository areaGpsRepository;
 
 	@Override
 	public HistoryStats historyStats(String periode) {
@@ -755,6 +756,23 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		HistoryStats historyStats = new HistoryStats(arrivees, departs, presences, absences);
 
 		return historyStats;
+	}
+
+	@Override
+	public List<PersonnelArea> getAllEmployeArea() {
+		List<PersonnelArea> personnelAreaList = new ArrayList<>();
+		List<Object[]> listArea = areaGpsRepository.getAllEmployeArea();
+		for(Object rs []: listArea){
+			PersonnelArea personnelArea = new PersonnelArea();
+			personnelArea.setId(Integer.valueOf(rs[0]+""));
+			personnelArea.setAreaCode(rs[1]+"");
+			personnelArea.setAreaName(rs[2]+"");
+			//personnelArea.isDefault();
+			personnelArea.setParentAreaId(rs[3]+"");
+			personnelAreaList.add(personnelArea);
+
+		}
+		return personnelAreaList;
 	}
 
 

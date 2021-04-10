@@ -7,6 +7,7 @@ import com.visitor.entities.PunchHistory;
 import com.visitor.payload.response.AreaHistoryStats;
 import com.visitor.payload.response.GraphStat;
 import com.visitor.payload.response.HistoryStats;
+import com.visitor.payload.response.PersonnelArea;
 
 public interface PunchHistoryService {
 
@@ -20,4 +21,5 @@ public interface PunchHistoryService {
 	List<PunchHistory> present5(String periode);
 	List<GraphStat> graphStats(String periode);
 	HistoryStats areaHistoryStatsByEmployee(String periode, String empCode);
+	public List<PersonnelArea> getAllEmployeArea();
 }

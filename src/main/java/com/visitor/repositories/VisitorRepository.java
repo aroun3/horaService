@@ -35,5 +35,9 @@ public interface VisitorRepository extends JpaRepository<Visitor, Integer> {
             " FROM h_visitors v", nativeQuery = true)
     public List<Object[]> getTotalVistor();
 
+
+    @Query(value = "SELECT * FROM h_visitors v WHERE v.nfc_ref= :nfcRef AND v.status is true", nativeQuery = true)
+    public Visitor findVisitorByNfcRef(String nfcRef);
+
     
 }

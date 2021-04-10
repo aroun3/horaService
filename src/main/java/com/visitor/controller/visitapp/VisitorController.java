@@ -55,9 +55,9 @@ public class VisitorController {
 
 
 
-    @PostMapping("/decoupling/visitor")
-    public ResponseEntity<?> decoupleVisitor(@RequestParam Integer visitorId, @RequestParam String code){
-       return visitorService.decoupleVisitor(visitorId,code);
+    @GetMapping("/makeout/visitor/{code}")
+    public ResponseEntity<?> decoupleVisitor(@PathVariable String code){
+       return visitorService.decoupleVisitor(code);
     }
 
 

@@ -5,6 +5,7 @@ import com.visitor.entities.visitor.Nfc;
 import com.visitor.entities.visitor.Visitor;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
+import com.visitor.payload.response.NfcResponse;
 import com.visitor.payload.response.VisitorTotalResponse;
 import com.visitor.repositories.VisitorRepository;
 import com.visitor.repositories.visitor.NfcRepository;
@@ -83,27 +84,6 @@ public class VisitorService implements VisitorServiceInterface {
         return vis;
     }
 
-    @Override
-    @Transactional(rollbackFor=Exception.class)
-    public ResponseEntity<?> addVisitors(Visitor visitor, User user) {
-        try{
-            Nfc nf = nfcService.findByNfcRef(visitor.getNfcRef());
-            if(nf.getStatus()==false) {
-                nf.setId(nf.getId());
-                nf.setStatus(true);
-                Nfc nfc = nfcService.update(nf);
-                visitor.setStatus(true);
-                visitor.setUser(user);
-                Visitor data = add(visitor);
-                return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
-            }else{
-                throw new IllegalStateException("La carte est déjà attribué a un visiteur") ;
-            }
-        }catch (Exception ex){
-            return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
-
-        }
-    }
 
     @Override
     public Visitor updateVisitor(Visitor visitor, MultipartFile multipartFile) {
@@ -141,17 +121,48 @@ public class VisitorService implements VisitorServiceInterface {
 
     @Override
     @Transactional(rollbackFor=Exception.class)
-    public ResponseEntity<?> decoupleVisitor(Integer visitorId, String code) {
-        try {
-            Nfc nf = nfcService.findByNfcId(code);
-            nf.setStatus(false);
-            Nfc nfc = nfcService.update(nf);
-            Visitor visitor = getOneById(visitorId);
-            visitor.setStatus(false);
-            visitor.setOutDate(new Date());
-            Visitor vi = update(visitor);
-            return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], vi));
+    public ResponseEntity<?> addVisitors(Visitor visitor, User user) {
+        try{
+            Nfc nf = nfcService.findByNfcRef(visitor.getNfcRef());
+            if(nf.getStatus()==false) {
+                nf.setId(nf.getId());
+                nf.setStatus(true);
+                Nfc nfc = nfcService.update(nf);
+                visitor.setStatus(true);
+                visitor.setUser(user);
+                Visitor data = add(visitor);
+                return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
+            }else{
+                throw new IllegalStateException("La carte est déjà attribué a un visiteur") ;
+            }
         }catch (Exception ex){
+            return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
+
+        }
+    }
+
+
+    @Override
+    @Transactional(rollbackFor=Exception.class)
+    public ResponseEntity<?> decoupleVisitor(String code) {
+        try {
+            Nfc nf = nfcService.findByNfcRef(code);
+            if (nf.getStatus() == true) {
+                nf.setStatus(false);
+                Nfc nfc = nfcService.update(nf);
+                Visitor visitor = findVisitorByNfcRef(nf.getNfcRef());
+                visitor.setStatus(false);
+                visitor.setOutDate(new Date());
+                Visitor vi = update(visitor);
+                NfcResponse nfcResponse = new NfcResponse();
+                nfcResponse.setNfcId(nfc.getNfcId());
+                nfcResponse.setNfcRef(nfc.getNfcRef());
+                nfcResponse.setStatus(nfc.getStatus());
+                return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], nfcResponse));
+            }else{
+                throw new IllegalStateException("Erreur Veuillez verifier le statut de la carte") ;
+            }
+        } catch (Exception ex) {
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
 
         }
@@ -171,6 +182,11 @@ public class VisitorService implements VisitorServiceInterface {
         }
 
         return visitorTotalResponseList;
+    }
+
+    @Override
+    public Visitor findVisitorByNfcRef(String nfcRef) {
+        return visitorRepository.findVisitorByNfcRef(nfcRef);
     }
 
 

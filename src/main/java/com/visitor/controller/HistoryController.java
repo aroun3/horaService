@@ -3,6 +3,7 @@ package com.visitor.controller;
 import java.util.List;
 
 import com.visitor.entities.IArea;
+import com.visitor.payload.response.PersonnelArea;
 import com.visitor.repositories.PunchHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -89,6 +90,12 @@ public class HistoryController {
 	public HistoryStats historyStatsByEmployeeCode(@RequestParam("periode") String periode, @RequestParam("empCode")String empCode){
 		HistoryStats historyStats = punchHistoryService.areaHistoryStatsByEmployee(periode, empCode);
 		return historyStats;
+	};
+
+
+	@GetMapping("/history/personnelArea")
+	public List<PersonnelArea> getPersonnelArea(){
+		return punchHistoryService.getAllEmployeArea();
 	};
 
 }

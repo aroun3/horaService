@@ -15,6 +15,7 @@ public interface VisitorServiceInterface extends BaseServiceInterface<Visitor>{
     public Integer countVisitor();
     public List<Visitor> findByUser(User user);
     public  List<Visitor> findByUserAndInDate(Integer userId);
-    ResponseEntity<?> decoupleVisitor(Integer visitorId, String code);
+    ResponseEntity<?> decoupleVisitor(String code);
     public List<VisitorTotalResponse> getTotalVistor();
+    public Visitor findVisitorByNfcRef(String nfcRef);
 }
