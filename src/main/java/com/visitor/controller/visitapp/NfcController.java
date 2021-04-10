@@ -34,9 +34,9 @@ public class NfcController {
 
 
     @PostMapping("/nfc")
-    public ResponseEntity<?> saveNfc(@RequestBody Nfc Nfc){
+    public ResponseEntity<?> saveNfc(@RequestBody Nfc nfc){
         try {
-            Nfc data = NfcService.add(Nfc);
+            Nfc data = NfcService.add(nfc);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
@@ -44,10 +44,10 @@ public class NfcController {
         }
     }
     @PutMapping("/nfc/{id}")
-    public ResponseEntity<?> updateNfc(@RequestBody Nfc Nfc, @PathVariable Integer id){
+    public ResponseEntity<?> updateNfc(@RequestBody Nfc nfc, @PathVariable Integer id){
         try {
-            Nfc.setId(id);
-            Nfc data = NfcService.update(Nfc);
+            nfc.setId(id);
+            Nfc data = NfcService.update(nfc);
             return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_UPDATED[1], data));
         }catch(Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
@@ -59,8 +59,12 @@ public class NfcController {
     @GetMapping("/nfc/{id}")
     public  ResponseEntity<?> getNfc(@PathVariable Integer id){
             try {
-                Nfc Nfc = NfcService.getOneById(id);
-                return ResponseEntity.ok().body(new ApiResponse(true, Nfc));
+                Nfc nfc = NfcService.getOneById(id);
+                if(nfc != null) {
+                return ResponseEntity.ok().body(new ApiResponse(true, nfc));
+                }else{
+                    throw  new IllegalStateException("La carte nfc n'existe pas");
+                }
             }catch (Exception ex){
                 return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
 
@@ -72,10 +76,14 @@ public class NfcController {
     public  ResponseEntity<?> getStatusNfc(@PathVariable String nfcId){
         try {
             Nfc nfc = NfcService.findByNfcId(nfcId);
-            NfcResponse nfcResponse = new NfcResponse();
-            nfcResponse.setNfcId(nfc.getNfcId());
-            nfcResponse.setStatus(nfc.getStatus());
-            return ResponseEntity.ok().body(new ApiResponse(true,nfcResponse));
+            if(nfc != null) {
+                NfcResponse nfcResponse = new NfcResponse();
+                nfcResponse.setNfcId(nfc.getNfcId());
+                nfcResponse.setStatus(nfc.getStatus());
+                return ResponseEntity.ok().body(new ApiResponse(true, nfcResponse));
+            }else{
+                throw  new IllegalStateException("La carte nfc n'existe pas");
+            }
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
 

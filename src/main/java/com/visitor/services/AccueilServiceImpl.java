@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.visitor.entities.RefreshArrival;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -109,7 +110,12 @@ public class AccueilServiceImpl implements AccueilService{
 	
 		return arrivalPunchRepository.arriveEnTempsReel();
 	}
-	
+
+	@Override
+	public RefreshArrival refreshArrival() {
+		return arrivalPunchRepository.refreshArrival();
+	}
+
 	public String refresh() {
 		
 		
