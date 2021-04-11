@@ -59,6 +59,26 @@ public class AccueilController {
         return arrivalPunchs;
     }
 
+    /*LISTE TOTAL DES TOP, LAST ET ABSENT*/
+    @GetMapping("/accueil/getAllTop")
+    public List<ArrivalPunch> getAllTop(){
+        List<ArrivalPunch> arrivalPunchs = accueilService.getAllTop();
+        return arrivalPunchs;
+    }
+
+    @GetMapping("/accueil/getAllLast")
+    public List<ArrivalPunch> getAllLast(){
+        List<ArrivalPunch> arrivalPunchs = accueilService.getAllLast();
+        return arrivalPunchs;
+    }
+
+
+    @GetMapping("/accueil/getAllAbsent")
+    public List<ArrivalPunch> getAllAbsent(){
+        List<ArrivalPunch> arrivalPunchs = accueilService.getAllAbsent();
+        return arrivalPunchs;
+    }
+
     @GetMapping("/accueil/refreshArrival")
     public RefreshArrival refreshArrival(){
 	    return accueilService.refreshArrival();

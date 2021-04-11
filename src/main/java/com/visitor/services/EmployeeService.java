@@ -19,6 +19,8 @@ public class EmployeeService implements EmployeeServiceInterface {
         return employeeRepository.findAll();
     }
 
+
+    /* RECUPERER LA LISTE DES EMPLOYEES ET LES DEPARTEMENT*/
     @Override
     public List<EmployeeResponse> getListEmployeeAndDepartment() {
         List<EmployeeResponse> employeeResponseList = new ArrayList<>();
@@ -33,21 +35,8 @@ public class EmployeeService implements EmployeeServiceInterface {
         return employeeResponseList;
     }
 
-   /* @Override
-    public List<EmployeeResponse> findByFirstNameOrLastName(String firstName, String lastName) {
-        List<EmployeeResponse> employeeResponseList = new ArrayList<>();
-        List<Object[]> employeeList =  employeeRepository.findByFirstNameOrLastName(firstName, lastName);
-        System.out.println("emp list "+employeeList);
-        for(Object[] rs : employeeList){
-            EmployeeResponse emp  = new EmployeeResponse();
-            emp.setFirstName(rs[0]+"");
-            emp.setLastName(rs[1]+"");
-            emp.setDepartment(rs[2]+"");
-            employeeResponseList.add(emp);
-        }
-        return employeeResponseList;
-    }*/
 
+    /* RECUPERER LA LISTE DES EMPLOYEES*/
     @Override
     public List<EmployeeResponse> getAllEmployee() {
         List<EmployeeResponse> employeeResponseList = new ArrayList<>();
@@ -67,6 +56,8 @@ public class EmployeeService implements EmployeeServiceInterface {
         return employeeResponseList;
     }
 
+
+    /* RECHERCHE EMPLOYEE PAR EMPLOYEE CODE*/
     @Override
     public List<EmployeeResponse> getEmployeeByCode(String empCode) {
         List<EmployeeResponse> employeeResponseList = new ArrayList<>();
@@ -86,10 +77,11 @@ public class EmployeeService implements EmployeeServiceInterface {
         return employeeResponseList;
     }
 
+    /* RECHERCHE EMPLOYEE PAR MOT CLE*/
     @Override
-    public List<EmployeeResponse> searchEmployee(String firstName) {
+    public List<EmployeeResponse> searchEmployee(String motcle) {
         List<EmployeeResponse> employeeResponseList = new ArrayList<>();
-        List<Object[]> employeeList =  employeeRepository.searchEmployee(firstName);
+        List<Object[]> employeeList =  employeeRepository.searchEmployee(motcle);
         for(Object[] rs : employeeList){
             EmployeeResponse emp  = new EmployeeResponse();
             emp.setEmpCode(rs[0]+"");

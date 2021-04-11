@@ -116,6 +116,23 @@ public class AccueilServiceImpl implements AccueilService{
 		return arrivalPunchRepository.refreshArrival();
 	}
 
+
+	/*LISTE TOTAL DES TOP, LAST ET ABSCENT*/
+	@Override
+	public List<ArrivalPunch> getAllTop() {
+		return arrivalPunchRepository.getAllTop();
+	}
+
+	@Override
+	public List<ArrivalPunch> getAllLast() {
+		return arrivalPunchRepository.getAllLast();
+	}
+
+	@Override
+	public List<ArrivalPunch> getAllAbsent() {
+		return arrivalPunchRepository.getAllAbsent();
+	}
+
 	public String refresh() {
 		
 		

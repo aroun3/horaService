@@ -40,4 +40,15 @@ public interface ArrivalPunchRepository extends JpaRepository<ArrivalPunch, Inte
 	@Query(value = "select * from doarrivalrefresh() as status",nativeQuery = true)
 	RefreshArrival refreshArrival();
 
+
+
+	@Query(value = "select * from h_arrival_punch order by arrival_time asc ", nativeQuery = true)
+	List<ArrivalPunch> getAllTop();
+
+	@Query(value = "select * from h_arrival_punch order by arrival_time desc", nativeQuery = true)
+	List<ArrivalPunch> getAllLast();
+
+	@Query(value = "select * from h_arrival_punch where arrival_state = '0'", nativeQuery = true)
+	List<ArrivalPunch> getAllAbsent();
+
 }

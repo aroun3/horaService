@@ -16,4 +16,7 @@ public interface AccueilService {
 		List<AreaStat> areaStats();
 		List<ArrivalPunch> arriveEnTempsReel();
 		RefreshArrival refreshArrival();
+		List<ArrivalPunch> getAllTop();
+		List<ArrivalPunch> getAllLast();
+		List<ArrivalPunch> getAllAbsent();
 }

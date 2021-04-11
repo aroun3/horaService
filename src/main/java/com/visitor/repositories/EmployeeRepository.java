@@ -28,7 +28,6 @@ public interface EmployeeRepository extends JpaRepository<Employee,String> {
     public List<Object[]> getListEmployeeAndDepartment();
 
 
-
     Optional<Employee> findByEmpCode(String  codeEmploye);
 
     @Query(value = "SELECT pe.emp_code, pe.first_name, pe.last_name, pd.dept_name, pp.position_name, pe.gender, pe.mobile, STRING_AGG(pa.area_name,',') FROM personnel_employee pe \n" +
@@ -49,17 +48,10 @@ public interface EmployeeRepository extends JpaRepository<Employee,String> {
     List<Object[]> getEmployeeByCode(@Param("empCode") String empCode);
 
     @Query(value ="SELECT pe.emp_code, pe.first_name, pe.last_name, pe.gender, pe.mobile FROM personnel_employee pe \n" +
-            " WHERE pe.first_name like %:firstName% ", nativeQuery = true)
-    List<Object[]> searchEmployee(@Param("firstName") String firstName);
+            " WHERE LOWER(pe.first_name) like lower(concat( :motcle,'%')) OR LOWER(pe.last_name) like lower(concat( :motcle,'%')) ", nativeQuery = true)
+    List<Object[]> searchEmployee(@Param("motcle") String motcle);
 
    /*
-
-       @Query(value ="SELECT pe.first_name, pe.last_name, pd.dept_name FROM personnel_employee pe\n" +
-            "INNER JOIN personnel_department pd ON  pd.id = pe.department_id \n" +
-            "WHERE pe.first_name = :firstName OR pe.last_name = :lastName", nativeQuery = true)
-    List<Object[]> findByFirstNameOrLastName(@Param("firstName")String firstName, @Param("lastName")String lastName);
-
-
     @Query(value = "SELECT new com.visitor.payload.response.EmployeeResponse(pe.emp_code, pe.first_name, pe.last_name, pd.dept_name, pp.position_name, pe.gender, pe.mobile, STRING_AGG(pa.area_name,',') ) FROM personnel_employee pe \n" +
             " INNER JOIN personnel_department pd ON  pd.id = pe.department_id " +
             " INNER JOIN personnel_position pp ON pp.id = pe.position_id" +
