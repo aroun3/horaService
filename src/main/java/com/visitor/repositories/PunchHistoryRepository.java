@@ -166,12 +166,12 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 	@Query(value = "select count(ph.is_absent) from h_log_transaction ph where ph.is_absent = :state and ph.log_date between :startDate and :endDate AND ph.emp_code= :empCode", nativeQuery = true)
 	Integer countAbsentAndEmpCode(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("state") Boolean state,String empCode);
 
-	@Query(value = "SELECT hlt.id, pe.emp_code,pe.first_name, pe.gender, pe.email, pe.mobile, pe.last_name, STRING_AGG(pa.area_name, ','), hlt.arrival_time, hlt.arrival_state, hlt.departure_time, hlt.departure_state, hlt.presence_periode FROM h_log_transaction hlt\n" +
+	/*@Query(value = "SELECT hlt.id, pe.emp_code,pe.first_name, pe.gender, pe.email, pe.mobile, pe.last_name, STRING_AGG(pa.area_name, ','), hlt.arrival_time, hlt.arrival_state, hlt.departure_time, hlt.departure_state, hlt.presence_periode FROM h_log_transaction hlt\n" +
 			"INNER JOIN personnel_employee pe ON hlt.emp_code = pe.emp_code\n" +
 			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id\n" +
 			"INNER JOIN personnel_area pa ON pa.id = pea.area_id\n" +
 			"WHERE pe.emp_code = ':empCode'\n" +
 			"GROUP BY hlt.id, pe.emp_code,pe.first_name, pe.gender, pe.email, pe.mobile, pe.last_name")
-	List<Object[]> historyPointageByEmpCode(@Param("emp.code") String empCode);
+	List<Object[]> historyPointageByEmpCode(@Param("emp.code") String empCode);*/
 
 }
