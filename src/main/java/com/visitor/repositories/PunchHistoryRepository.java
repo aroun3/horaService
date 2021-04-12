@@ -91,7 +91,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			+ " pp.position_name as position, pd.dept_name as departement "
 			+ " from h_log_transaction ph, personnel_employee pe, personnel_employee_area pae, personnel_department pd, personnel_position pp"
 			+ " where pp.id = pe.position_id and pd.id = pe.department_id and pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
-			+ " and ph.departure_state = '1' and ph.log_date between between :startDate and :endDate order by ph.departure_time asc limit 5", nativeQuery = true)
+			+ " and ph.departure_state = '1' and ph.log_date between  :startDate and :endDate order by ph.departure_time asc limit 5", nativeQuery = true)
 	List<IPunchHistory> departureMin5(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 	@Query(value = "select pe.emp_code as empCode, ph.arrival_time as arrivalTime, ph.arrival_id as arrivalId, ph.arrival_terminal_id as arrivalTerminalId,"
@@ -101,7 +101,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			+ " pp.position_name as position, pd.dept_name as departement "
 			+ " from h_log_transaction ph, personnel_employee pe, personnel_employee_area pea, personnel_department pd, personnel_position pp"
 			+ " where pp.id = pe.position_id and pd.id = pe.department_id and pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
-			+ " and ph.departure_state = '3' and ph.log_date between between :startDate and :endDate order by ph.departure_time desc limit 5", nativeQuery = true)
+			+ " and ph.departure_state = '3' and ph.log_date between :startDate and :endDate order by ph.departure_time desc limit 5", nativeQuery = true)
 	List<IPunchHistory> departureMax5(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 	
@@ -167,7 +167,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 	@Query(value = "select count(ph.is_absent) from h_log_transaction ph where ph.is_absent = :state and ph.log_date between :startDate and :endDate AND ph.emp_code= :empCode", nativeQuery = true)
 	Integer countAbsentAndEmpCode(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("state") Boolean state,String empCode);
 
-	/*@Query(value = "SELECT hlt.id as id , pe.emp_code as empCode ,pe.first_name, pe.gender, pe.email, pe.mobile, pe.last_name, STRING_AGG(pa.area_name, ','), hlt.arrival_time, hlt.arrival_state, hlt.departure_time, hlt.departure_state, hlt.presence_periode FROM h_log_transaction hlt\n" +
+	/*@Query(value = "SELECT hlt.id as id , pe.emp_code as empCode ,pe.first_name AS firstName pe.last_name AS lastName, pe.gender AS gender , pe.email AS email, pe.mobile AS mobile, pe.last_name, STRING_AGG(pa.area_name, ','), hlt.arrival_time, hlt.arrival_state, hlt.departure_time, hlt.departure_state, hlt.presence_periode FROM h_log_transaction hlt\n" +
 			"INNER JOIN personnel_employee pe ON hlt.emp_code = pe.emp_code " +
 			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id " +
 			"INNER JOIN personnel_area pa ON pa.id = pea.area_id " +
