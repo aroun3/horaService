@@ -25,7 +25,7 @@ public interface PunchHistoryService {
 	public List<PersonnelArea> getAllEmployeArea();
 	List<HistoryPointage>historyPointageByEmpCode(String empCode);
 	List<HistoryAllPointage>historyAllPointage(String empCode);
-	List<EmployeTop>employeTop5ByPresencePeriode();
-	List<EmployeTop>employeLast5ByPresencePeriode();
-	TotalTopLast totalEmployeTopLastByPresencePeriode();
+	List<EmployeTop>employeTop5ByPresencePeriode(String periode);
+	List<EmployeTop>employeLast5ByPresencePeriode(String periode);
+	TotalTopLast totalEmployeTopLastByPresencePeriode(String periode);
 }

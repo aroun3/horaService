@@ -109,19 +109,19 @@ public class HistoryController {
 
 	/*LES EMPLOYEE TOP 5 QUI FONT 8 OU PLUS DE TRAVAIL*/
 	@GetMapping("/history/employee/top5")
-	public List<EmployeTop> employeTop5ByPresencePeriode(){
-		return punchHistoryService.employeTop5ByPresencePeriode();
+	public List<EmployeTop> employeTop5ByPresencePeriode(@RequestParam("periode")String periode){
+		return punchHistoryService.employeTop5ByPresencePeriode(periode);
 	};
 
 	/*LES EMPLOYEE LAST 5 QUI FONT 8 OU PLUS DE TRAVAIL*/
 	@GetMapping("/history/employee/last5")
-	public List<EmployeTop> employeLast5ByPresencePeriode(){
-		return punchHistoryService.employeLast5ByPresencePeriode();
+	public List<EmployeTop> employeLast5ByPresencePeriode(@RequestParam("periode")String periode){
+		return punchHistoryService.employeLast5ByPresencePeriode(periode);
 	};
 
 	@GetMapping("/history/employee/totalTopLast")
-	public TotalTopLast totalEmployeTopLastByPresencePeriode(){
-		return punchHistoryService.totalEmployeTopLastByPresencePeriode();
+	public TotalTopLast totalEmployeTopLastByPresencePeriode(@RequestParam("periode")String periode){
+		return punchHistoryService.totalEmployeTopLastByPresencePeriode(periode);
 	};
 
 }

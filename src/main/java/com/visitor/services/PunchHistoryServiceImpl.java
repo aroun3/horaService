@@ -12,6 +12,7 @@ import com.visitor.entities.*;
 import com.visitor.payload.response.*;
 import com.visitor.repositories.AreaGpsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
@@ -787,20 +788,29 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 	}
 
 	@Override
-	public List<EmployeTop> employeTop5ByPresencePeriode() {
-		return punchHistoryRepository.employeTop5ByPresencePeriode();
+	public List<EmployeTop> employeTop5ByPresencePeriode(String periode) {
+		Date startDate = new Date();
+		Date endDate = new Date();
+		getStartAndEndDate(periode, startDate, endDate);
+		return punchHistoryRepository.employeTop5ByPresencePeriode(startDate,endDate);
 	}
 
 	@Override
-	public List<EmployeTop> employeLast5ByPresencePeriode() {
-		return punchHistoryRepository.employeLast5ByPresencePeriode();
+	public List<EmployeTop> employeLast5ByPresencePeriode(String periode) {
+		Date startDate = new Date();
+		Date endDate = new Date();
+		getStartAndEndDate(periode, startDate, endDate);
+		return punchHistoryRepository.employeLast5ByPresencePeriode(startDate,endDate);
 	}
 
 	@Override
 	@Transactional
-	public TotalTopLast totalEmployeTopLastByPresencePeriode() {
-		List<EmployeTop> listEmployeTop = punchHistoryRepository.totalEmployeTopByPresencePeriode();
-		List<EmployeTop> listEmployeLast = punchHistoryRepository.totalEmployeLastByPresencePeriode();
+	public TotalTopLast totalEmployeTopLastByPresencePeriode(String periode) {
+		Date startDate = new Date();
+		Date endDate = new Date();
+		getStartAndEndDate(periode, startDate, endDate);
+		List<EmployeTop> listEmployeTop = punchHistoryRepository.totalEmployeTopByPresencePeriode(startDate,endDate);
+		List<EmployeTop> listEmployeLast = punchHistoryRepository.totalEmployeLastByPresencePeriode(startDate,endDate);
 		TotalTopLast totalTopLast = new TotalTopLast();
 		totalTopLast.setListEmployeTop(listEmployeTop);
 		totalTopLast.setListEmployeLast(listEmployeLast);

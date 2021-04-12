@@ -129,7 +129,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			+ " from h_log_transaction ph, personnel_employee pe, personnel_employee_area pea, personnel_department pd, personnel_position pp"
 			+ " where pp.id = pe.position_id and pd.id = pe.department_id and pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
 			+ " and ph.is_absent = false and ph.log_date between between :startDate and :endDate order by ph.presence_periode desc limit 5", nativeQuery = true)
-	List<IPunchHistory> present5(Date startDate, Date endDate);
+	List<IPunchHistory> present5(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 	@Query(value = "select pe.emp_code as empCode, ph.arrival_time as arrivalTime, ph.arrival_id as arrivalId, ph.arrival_terminal_id as arrivalTerminalId,"
 			+ " ph.departure_time as departureTime, ph.departure_id as departureId, ph.departure_terminal_id as departureTerminalId,"
@@ -139,7 +139,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			+ " from h_log_transaction ph, personnel_employee pe, personnel_employee_area pea, personnel_department pd, personnel_position pp"
 			+ " where pp.id = pe.position_id and pd.id = pe.department_id and pea.employee_id = pe.id and ph.emp_code = pe.emp_code "
 			+ " and ph.is_absent = true and ph.log_date between :startDate and :endDate", nativeQuery = true)
-	List<IPunchHistory> absent(Date startDate, Date endDate);
+	List<IPunchHistory> absent(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 
 	/*===============================================
@@ -178,20 +178,21 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 	List<HistoryAllPointage>historyAllPointage(@Param("empCode") String empCode);
 
 
-	/*LES EMPLOYEES TOP 5 QUI FONT 8 OU PLUS DE TRAVAIL*/
-	@Query(value = "SELECT pe.id AS id, pe.emp_code AS empCode, pe.first_name AS firstName, pe.last_name AS lastName, pe.gender AS gender, pe.mobile AS mobile, pe.email AS email, pp.position_name AS positionName, pd.dept_name AS departmentName, STRING_AGG(pa.area_name, ',') AS areaName, ph.presence_periode AS presencePeriode from h_log_transaction ph \n" +
-			"INNER JOIN personnel_employee pe ON ph.emp_code = pe.emp_code\n" +
-			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id\n" +
-			"INNER JOIN personnel_area pa ON pa.id = pea.area_id\t\n" +
-			"INNER JOIN personnel_position pp ON pe.position_id = pp.id  \n" +
-			"INNER JOIN personnel_department pd ON pe.department_id = pd.id\n" +
-			"WHERE ph.presence_periode >= '08:00:00'\n" +
+	/*LES EMPLOYEES TOP 5 QUI FONT 8h OU PLUS DE TRAVAIL*/
+	@Query(value = "SELECT pe.id AS id, pe.emp_code AS empCode, pe.first_name AS firstName, pe.last_name AS lastName, pe.gender AS gender, pe.mobile AS mobile, pe.email AS email, pp.position_name AS positionName, pd.dept_name AS departmentName, STRING_AGG(pa.area_name, ',') AS areaName, ph.presence_periode AS presencePeriode from h_log_transaction ph " +
+			"INNER JOIN personnel_employee pe ON ph.emp_code = pe.emp_code " +
+			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id " +
+			"INNER JOIN personnel_area pa ON pa.id = pea.area_id " +
+			"INNER JOIN personnel_position pp ON pe.position_id = pp.id " +
+			"INNER JOIN personnel_department pd ON pe.department_id = pd.id " +
+			"WHERE ph.presence_periode >= '08:00:00' " +
+			"AND ph.log_date between :startDate and :endDate "+
 			"GROUP BY pe.id, pe.emp_code, pe.first_name, pe.last_name,ph.presence_periode,pp.position_name, pd.dept_name, pe.gender, pe.mobile, pe.email\n" +
 			"ORDER BY  ph.presence_periode desc LIMIT 5", nativeQuery = true)
-	List<EmployeTop>employeTop5ByPresencePeriode();
+	List<EmployeTop>employeTop5ByPresencePeriode(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 
-	/*LES EMPLOYEES LAST 5 QUI FONT MOINS DE 8 TRAVAIL*/
+	/*LES EMPLOYEES LAST 5 QUI FONT MOINS DE 8h TRAVAIL*/
 	@Query(value = "SELECT pe.id AS id, pe.emp_code AS empCode, pe.first_name AS firstName, pe.last_name AS lastName, pe.gender AS gender, pe.mobile AS mobile, pe.email AS email, pp.position_name AS positionName, pd.dept_name AS departmentName, STRING_AGG(pa.area_name, ',') AS areaName, ph.presence_periode AS presencePeriode from h_log_transaction ph " +
 			"INNER JOIN personnel_employee pe ON ph.emp_code = pe.emp_code " +
 			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id " +
@@ -200,22 +201,24 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			"INNER JOIN personnel_department pd ON pe.department_id = pd.id " +
 			"WHERE ph.presence_periode < '08:00:00' " +
 			"AND ph.presence_periode > '00:00:00' "+
+			"AND ph.log_date between :startDate and :endDate "+
 			"GROUP BY pe.id, pe.emp_code, pe.first_name, pe.last_name,ph.presence_periode,pp.position_name, pd.dept_name, pe.gender, pe.mobile, pe.email " +
 			"ORDER BY ph.presence_periode asc LIMIT 5", nativeQuery = true)
-	List<EmployeTop>employeLast5ByPresencePeriode();
+	List<EmployeTop>employeLast5ByPresencePeriode(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 
 	/*LISTE TOTAL EMPLOYEES TOP QUI FONT 8 OU PLUS DE TRAVAIL*/
 	@Query(value = "SELECT pe.id AS id, pe.emp_code AS empCode, pe.first_name AS firstName, pe.last_name AS lastName, pe.gender AS gender, pe.mobile AS mobile, pe.email AS email, pp.position_name AS positionName, pd.dept_name AS departmentName, STRING_AGG(pa.area_name, ',') AS areaName, ph.presence_periode AS presencePeriode from h_log_transaction ph \n" +
-			"INNER JOIN personnel_employee pe ON ph.emp_code = pe.emp_code\n" +
-			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id\n" +
-			"INNER JOIN personnel_area pa ON pa.id = pea.area_id\t\n" +
-			"INNER JOIN personnel_position pp ON pe.position_id = pp.id  \n" +
-			"INNER JOIN personnel_department pd ON pe.department_id = pd.id\n" +
-			"WHERE ph.presence_periode >= '08:00:00'\n" +
+			"INNER JOIN personnel_employee pe ON ph.emp_code = pe.emp_code " +
+			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id " +
+			"INNER JOIN personnel_area pa ON pa.id = pea.area_id " +
+			"INNER JOIN personnel_position pp ON pe.position_id = pp.id   " +
+			"INNER JOIN personnel_department pd ON pe.department_id = pd.id " +
+			"WHERE ph.presence_periode >= '08:00:00' " +
+			"AND ph.log_date between :startDate and :endDate "+
 			"GROUP BY pe.id, pe.emp_code, pe.first_name, pe.last_name,ph.presence_periode,pp.position_name, pd.dept_name, pe.gender, pe.mobile, pe.email\n" +
 			"ORDER BY  ph.presence_periode desc", nativeQuery = true)
-	List<EmployeTop>totalEmployeTopByPresencePeriode();
+	List<EmployeTop>totalEmployeTopByPresencePeriode(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 
 	/*LISTE TOTAL EMPLOYEES LAST QUI FONT MOINS DE 8 TRAVAIL*/
@@ -226,8 +229,9 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			"INNER JOIN personnel_position pp ON pe.position_id = pp.id   " +
 			"INNER JOIN personnel_department pd ON pe.department_id = pd.id " +
 			"WHERE ph.presence_periode < '08:00:00' " +
+			"AND ph.log_date between :startDate and :endDate "+
 			"GROUP BY pe.id, pe.emp_code, pe.first_name, pe.last_name,ph.presence_periode,pp.position_name, pd.dept_name, pe.gender, pe.mobile, pe.email " +
 			"ORDER BY ph.presence_periode asc", nativeQuery = true)
-	List<EmployeTop>totalEmployeLastByPresencePeriode();
+	List<EmployeTop>totalEmployeLastByPresencePeriode(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 }
