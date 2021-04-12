@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Table(name = "h_nfc")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+//@Data
 @ToString
 public class Nfc {
     /**
@@ -37,4 +37,37 @@ public class Nfc {
 
     //@NotBlank
     private Boolean status;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNfcId() {
+        return nfcId;
+    }
+
+    public void setNfcId(String nfcId) {
+        this.nfcId = nfcId;
+    }
+
+    public String getNfcRef() {
+        return nfcRef;
+    }
+
+    public void setNfcRef(String nfcRef) {
+        this.nfcRef = nfcRef;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
 }
