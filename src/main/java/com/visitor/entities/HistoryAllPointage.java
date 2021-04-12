@@ -2,7 +2,7 @@ package com.visitor.entities;
 
 import java.util.Date;
 
-public interface HistoryPointage {
+public interface HistoryAllPointage {
     Integer getId();
     String getEmpCode();
     String getFirstName();
@@ -11,9 +11,6 @@ public interface HistoryPointage {
     String getEmail();
     String getMobile();
     String getAreaName();
-    Date getArrivalTime();
-    String getArrivalState();
-    Date getDepartureTime();
-    String getDepartureState();
-    String getPresencePeriode();
+    Date getPunchTime();
+    String getTerminalName();
 }

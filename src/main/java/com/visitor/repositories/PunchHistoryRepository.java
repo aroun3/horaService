@@ -3,13 +3,10 @@ package com.visitor.repositories;
 import java.util.Date;
 import java.util.List;
 
+import com.visitor.entities.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import com.visitor.entities.IArea;
-import com.visitor.entities.IPunchHistory;
-import com.visitor.entities.PunchHistory;
 
 public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Integer>{
 
@@ -166,12 +163,18 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 	@Query(value = "select count(ph.is_absent) from h_log_transaction ph where ph.is_absent = :state and ph.log_date between :startDate and :endDate AND ph.emp_code= :empCode", nativeQuery = true)
 	Integer countAbsentAndEmpCode(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("state") Boolean state,String empCode);
 
-	/*@Query(value = "SELECT hlt.id as id , pe.emp_code as empCode ,pe.first_name AS firstName pe.last_name AS lastName, pe.gender AS gender , pe.email AS email, pe.mobile AS mobile, pe.last_name, STRING_AGG(pa.area_name, ','), hlt.arrival_time, hlt.arrival_state, hlt.departure_time, hlt.departure_state, hlt.presence_periode FROM h_log_transaction hlt\n" +
-			"INNER JOIN personnel_employee pe ON hlt.emp_code = pe.emp_code " +
-			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id " +
-			"INNER JOIN personnel_area pa ON pa.id = pea.area_id " +
-			"WHERE pe.emp_code = :empCode " +
-			"GROUP BY hlt.id, pe.emp_code,pe.first_name, pe.gender, pe.email, pe.mobile, pe.last_name",nativeQuery = true)
-	List<HistoryPointage>historyPointageByEmpCode(@Param("empCode") String empCode);*/
+	@Query(value ="SELECT hlt.id as id, pe.emp_code as empCode ,pe.first_name AS firstName, pe.last_name AS lastName, pe.gender AS gender, pe.email AS email, pe.mobile AS mobile, STRING_AGG(pa.area_name, ',') AS areaName, hlt.arrival_time AS arrivalTime, hlt.arrival_state AS arrivalState, hlt.departure_time AS departumeTime, hlt.departure_state AS departureState, hlt.presence_periode AS presencePeriode FROM h_log_transaction hlt\n" +
+			" INNER JOIN personnel_employee pe ON hlt.emp_code = pe.emp_code " +
+			" INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id " +
+			" INNER JOIN personnel_area pa ON pa.id = pea.area_id " +
+			" WHERE pe.emp_code= :empcode " +
+			" GROUP BY hlt.id, pe.emp_code,pe.first_name, pe.gender, pe.email, pe.mobile, pe.last_name",nativeQuery = true)
+	List<HistoryPointage>historyPointageByEmpCode(@Param("empcode") String empcode);
+
+	@Query(value ="SELECT it.id as id, pe.emp_code as empCode ,pe.first_name AS firstName, pe.last_name AS lastName, pe.gender AS gender, pe.email AS email, pe.mobile AS mobile, it.punch_time AS punchTime, iter.sn AS terminalName FROM iclock_transaction it " +
+			" INNER JOIN personnel_employee pe ON it.emp_id = pe.id " +
+			" INNER JOIN iclock_terminal iter ON iter.id = it.terminal_id " +
+			" WHERE it.emp_code = :empCode", nativeQuery = true)
+	List<HistoryAllPointage>historyAllPointage(@Param("empCode") String empCode);
 
 }

@@ -8,15 +8,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.visitor.entities.*;
 import com.visitor.payload.response.*;
 import com.visitor.repositories.AreaGpsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import com.visitor.entities.IArea;
-import com.visitor.entities.IPunchHistory;
-import com.visitor.entities.PunchHistory;
 import com.visitor.repositories.PunchHistoryRepository;
 import com.visitor.service_interfaces.PunchHistoryService;
 
@@ -69,7 +67,7 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		below = punchHistoryRepository.countPresenceByState(startDate, endDate, "BELOW");
 		normal = punchHistoryRepository.countPresenceByState(startDate, endDate, "NORMAL");
 		over = punchHistoryRepository.countPresenceByState(startDate, endDate, "OVER");
-		absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "NON DIPONIBLE");
+		absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "0");
 		
 		presences = new PresenceHistory(below, normal, over, absent);
 		
@@ -114,21 +112,21 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			early = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "1");
 			ontime = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "2");
 			late = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "3");
-			absent = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "NON DIPONIBLE");
+			absent = punchHistoryRepository.countArrivalByAreaAndState(area.getId(), startDate, endDate, "0");
 			
 			arrivees = new GeneralHistoryStats(early, ontime, late, absent);
 			System.out.println("=====================================================");
 			early = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "1");
 			ontime = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "2");
 			late = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "3");
-			absent = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "NON DIPONIBLE");
+			absent = punchHistoryRepository.countDepatureByAreaAndState(area.getId(), startDate, endDate, "0");
 			
 			departs = new GeneralHistoryStats(early, ontime, late, absent);
 			System.out.println("=====================================================");
 			below = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "BELOW");
 			normal = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "NORMAL");
 			over = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "OVER");
-			absent = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "NON DIPONIBLE");
+			absent = punchHistoryRepository.countPresenceByAreaAndState(area.getId(), startDate, endDate, "0");
 			
 			presences = new PresenceHistory(below, normal, over, absent);
 			System.out.println("=====================================================");
@@ -337,21 +335,21 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		early = punchHistoryRepository.countArrivalByState(startDate, endDate, "1");
 		ontime = punchHistoryRepository.countArrivalByState(startDate, endDate, "2");
 		late = punchHistoryRepository.countArrivalByState(startDate, endDate, "3");
-		absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "NON DIPONIBLE");
+		absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "0");
 		
 		arrivees = new GeneralHistoryStats(early, ontime, late, absent);
 		
 		early = punchHistoryRepository.countDepatureByState(startDate, endDate, "1");
 		ontime = punchHistoryRepository.countDepatureByState(startDate, endDate, "2");
 		late = punchHistoryRepository.countDepatureByState(startDate, endDate, "3");
-		absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "NON DIPONIBLE");
+		absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "0");
 		
 		departs = new GeneralHistoryStats(early, ontime, late, absent);
 		
 		below = punchHistoryRepository.countPresenceByState(startDate, endDate, "BELOW");
 		normal = punchHistoryRepository.countPresenceByState(startDate, endDate, "NORMAL");
 		over = punchHistoryRepository.countPresenceByState(startDate, endDate, "OVER");
-		absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "NON DIPONIBLE");
+		absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "0");
 		
 		presences = new PresenceHistory(below, normal, over, absent);
 		absences = punchHistoryRepository.countAbsent(startDate, endDate, Boolean.TRUE);
@@ -410,7 +408,7 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			below = punchHistoryRepository.countPresenceByState(startDate, endDate, "BELOW");
 			normal = punchHistoryRepository.countPresenceByState(startDate, endDate, "NORMAL");
 			over = punchHistoryRepository.countPresenceByState(startDate, endDate, "OVER");
-			absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "NON DIPONIBLE");
+			absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "0");
 			
 			presences = new PresenceHistory(below, normal, over, absent);
 			
@@ -463,21 +461,21 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			early = punchHistoryRepository.countArrivalByState(startDate, endDate, "1");
 			ontime = punchHistoryRepository.countArrivalByState(startDate, endDate, "2");
 			late = punchHistoryRepository.countArrivalByState(startDate, endDate, "3");
-			absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "NON DIPONIBLE");
+			absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "0");
 			
 			arrivees = new GeneralHistoryStats(early, ontime, late, absent);
 			
 			early = punchHistoryRepository.countDepatureByState(startDate, endDate, "1");
 			ontime = punchHistoryRepository.countDepatureByState(startDate, endDate, "2");
 			late = punchHistoryRepository.countDepatureByState(startDate, endDate, "3");
-			absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "NON DIPONIBLE");
+			absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "0");
 			
 			departs = new GeneralHistoryStats(early, ontime, late, absent);
 			
 			below = punchHistoryRepository.countPresenceByState(startDate, endDate, "BELOW");
 			normal = punchHistoryRepository.countPresenceByState(startDate, endDate, "NORMAL");
 			over = punchHistoryRepository.countPresenceByState(startDate, endDate, "OVER");
-			absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "NON DIPONIBLE");
+			absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "0");
 			
 			presences = new PresenceHistory(below, normal, over, absent);
 			
@@ -533,21 +531,21 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			early = punchHistoryRepository.countArrivalByState(startDate, endDate, "1");
 			ontime = punchHistoryRepository.countArrivalByState(startDate, endDate, "2");
 			late = punchHistoryRepository.countArrivalByState(startDate, endDate, "3");
-			absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "NON DIPONIBLE");
+			absent = punchHistoryRepository.countArrivalByState(startDate, endDate, "0");
 			
 			arrivees = new GeneralHistoryStats(early, ontime, late, absent);
 			
 			early = punchHistoryRepository.countDepatureByState(startDate, endDate, "1");
 			ontime = punchHistoryRepository.countDepatureByState(startDate, endDate, "2");
 			late = punchHistoryRepository.countDepatureByState(startDate, endDate, "3");
-			absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "NON DIPONIBLE");
+			absent = punchHistoryRepository.countDepatureByState(startDate, endDate, "0");
 			
 			departs = new GeneralHistoryStats(early, ontime, late, absent);
 			
 			below = punchHistoryRepository.countPresenceByState(startDate, endDate, "BELOW");
 			normal = punchHistoryRepository.countPresenceByState(startDate, endDate, "NORMAL");
 			over = punchHistoryRepository.countPresenceByState(startDate, endDate, "OVER");
-			absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "NON DIPONIBLE");
+			absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "0");
 			
 			presences = new PresenceHistory(below, normal, over, absent);
 			
@@ -746,7 +744,7 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		below = punchHistoryRepository.countPresenceByStateAndEmpCode(startDate, endDate, "BELOW", empCode);
 		normal = punchHistoryRepository.countPresenceByStateAndEmpCode(startDate, endDate, "NORMAL", empCode);
 		over = punchHistoryRepository.countPresenceByStateAndEmpCode(startDate, endDate, "OVER", empCode);
-		absent = punchHistoryRepository.countPresenceByStateAndEmpCode(startDate, endDate, "NON DIPONIBLE", empCode);
+		absent = punchHistoryRepository.countPresenceByStateAndEmpCode(startDate, endDate, "0", empCode);
 
 		presences = new PresenceHistory(below, normal, over, absent);
 
@@ -773,6 +771,18 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 
 		}
 		return personnelAreaList;
+	}
+
+	/*LISTE DES POINTAGES DE L'EMPLOYE PAR SON CODE*/
+
+	@Override
+	public List<HistoryPointage> historyPointageByEmpCode(String empCode) {
+		return punchHistoryRepository.historyPointageByEmpCode(empCode);
+	}
+
+	@Override
+	public List<HistoryAllPointage> historyAllPointage(String empCode) {
+		return punchHistoryRepository.historyAllPointage(empCode);
 	}
 
 

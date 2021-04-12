@@ -2,6 +2,8 @@ package com.visitor.controller;
 
 import java.util.List;
 
+import com.visitor.entities.HistoryAllPointage;
+import com.visitor.entities.HistoryPointage;
 import com.visitor.entities.IArea;
 import com.visitor.payload.response.PersonnelArea;
 import com.visitor.repositories.PunchHistoryRepository;
@@ -98,4 +100,16 @@ public class HistoryController {
 		return punchHistoryService.getAllEmployeArea();
 	};
 
+
+	/*ARRIVER ET DEPART DE L'EMPLOYE PAR SON CODE*/
+	@GetMapping("/history/historyPointage")
+	public List<HistoryPointage> getHistoryPointageByEmpcode(@RequestParam("empCode") String empCode){
+		return punchHistoryService.historyPointageByEmpCode(empCode);
+	};
+
+	/*LISTE DE LES  POINTAGES DE L'EMPLOYE PAR SON CODE*/
+	@GetMapping("/history/historyAllPointage")
+	public List<HistoryAllPointage> historyAllPointage(@RequestParam("empCode") String empCode){
+		return punchHistoryService.historyAllPointage(empCode);
+	};
 }
