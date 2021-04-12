@@ -177,4 +177,30 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			" WHERE it.emp_code = :empCode ORDER BY punch_time desc", nativeQuery = true)
 	List<HistoryAllPointage>historyAllPointage(@Param("empCode") String empCode);
 
+
+	/*LES EMPLOYEES TOP 5 QUI FONT 8 OU PLUS DE TRAVAIL*/
+	@Query(value = "SELECT pe.id AS id, pe.emp_code AS empCode, pe.first_name AS firstName, pe.last_name AS lastName, pe.gender AS gender, pe.mobile AS mobile, pe.email AS email, pp.position_name AS positionName, pd.dept_name AS departmentName, STRING_AGG(pa.area_name, ',') AS areaName, ph.presence_periode AS presencePeriode from h_log_transaction ph \n" +
+			"INNER JOIN personnel_employee pe ON ph.emp_code = pe.emp_code\n" +
+			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id\n" +
+			"INNER JOIN personnel_area pa ON pa.id = pea.area_id\t\n" +
+			"INNER JOIN personnel_position pp ON pe.position_id = pp.id  \n" +
+			"INNER JOIN personnel_department pd ON pe.department_id = pd.id\n" +
+			"WHERE ph.presence_periode >= '08:00:00'\n" +
+			"GROUP BY pe.id, pe.emp_code, pe.first_name, pe.last_name,ph.presence_periode,pp.position_name, pd.dept_name, pe.gender, pe.mobile, pe.email\n" +
+			"ORDER BY  ph.presence_periode desc LIMIT 5", nativeQuery = true)
+	List<EmployeTop>employeTop5ByPresencePeriode();
+
+
+	/*LES EMPLOYEES LAST 5 QUI FONT MOINS DE 8 TRAVAIL*/
+	@Query(value = "SELECT pe.id AS id, pe.emp_code AS empCode, pe.first_name AS firstName, pe.last_name AS lastName, pe.gender AS gender, pe.mobile AS mobile, pe.email AS email, pp.position_name AS positionName, pd.dept_name AS departmentName, STRING_AGG(pa.area_name, ',') AS areaName, ph.presence_periode AS presencePeriode from h_log_transaction ph \n" +
+			"INNER JOIN personnel_employee pe ON ph.emp_code = pe.emp_code\n" +
+			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id\n" +
+			"INNER JOIN personnel_area pa ON pa.id = pea.area_id\t\n" +
+			"INNER JOIN personnel_position pp ON pe.position_id = pp.id  \n" +
+			"INNER JOIN personnel_department pd ON pe.department_id = pd.id\n" +
+			"WHERE ph.presence_periode < '08:00:00'\n" +
+			"GROUP BY pe.id, pe.emp_code, pe.first_name, pe.last_name,ph.presence_periode,pp.position_name, pd.dept_name, pe.gender, pe.mobile, pe.email\n" +
+			"ORDER BY  ph.presence_periode desc LIMIT 5", nativeQuery = true)
+	List<EmployeTop>employeLast5ByPresencePeriode();
+
 }

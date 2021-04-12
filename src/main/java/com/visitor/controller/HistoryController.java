@@ -2,9 +2,7 @@ package com.visitor.controller;
 
 import java.util.List;
 
-import com.visitor.entities.HistoryAllPointage;
-import com.visitor.entities.HistoryPointage;
-import com.visitor.entities.IArea;
+import com.visitor.entities.*;
 import com.visitor.payload.response.PersonnelArea;
 import com.visitor.repositories.PunchHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.visitor.entities.PunchHistory;
 import com.visitor.payload.response.AreaHistoryStats;
 import com.visitor.payload.response.GraphStat;
 import com.visitor.payload.response.HistoryStats;
@@ -111,5 +108,17 @@ public class HistoryController {
 	@GetMapping("/history/historyAllPointage")
 	public List<HistoryAllPointage> historyAllPointage(@RequestParam("empCode") String empCode){
 		return punchHistoryService.historyAllPointage(empCode);
+	};
+
+	/*LES EMPLOYEE TOP 5 QUI FONT 8 OU PLUS DE TRAVAIL*/
+	@GetMapping("/history/employee/top5")
+	public List<EmployeTop> employeTop5ByPresencePeriode(){
+		return punchHistoryService.employeTop5ByPresencePeriode();
+	};
+
+	/*LES EMPLOYEE LAST 5 QUI FONT 8 OU PLUS DE TRAVAIL*/
+	@GetMapping("/history/employee/last5")
+	public List<EmployeTop> employeLast5ByPresencePeriode(){
+		return punchHistoryService.employeLast5ByPresencePeriode();
 	};
 }

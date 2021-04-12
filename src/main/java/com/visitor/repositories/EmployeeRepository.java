@@ -55,7 +55,7 @@ public interface EmployeeRepository extends JpaRepository<Employee,String> {
 
 
 
-    /*LISTE DES COMPTES ARRIVE,PRESENT, ABSENT POUR UN EMPLOYEE*/
+    /*LISTE DES COMPTES ARRIVE,PRESENT ET ABSENT POUR UN EMPLOYEE*/
 
     @Query(value = "select count(ph.arrival_state) "
             + " from h_log_transaction ph where ph.arrival_state = :state and ph.log_date between :startDate and :endDate AND ph.emp_code = :empCode", nativeQuery = true)

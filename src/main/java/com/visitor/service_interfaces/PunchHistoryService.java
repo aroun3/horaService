@@ -3,6 +3,7 @@ package com.visitor.service_interfaces;
 import java.util.Date;
 import java.util.List;
 
+import com.visitor.entities.EmployeTop;
 import com.visitor.entities.HistoryAllPointage;
 import com.visitor.entities.HistoryPointage;
 import com.visitor.entities.PunchHistory;
@@ -27,4 +28,6 @@ public interface PunchHistoryService {
 	public List<PersonnelArea> getAllEmployeArea();
 	List<HistoryPointage>historyPointageByEmpCode(String empCode);
 	List<HistoryAllPointage>historyAllPointage(String empCode);
+	List<EmployeTop>employeTop5ByPresencePeriode();
+	List<EmployeTop>employeLast5ByPresencePeriode();
 }

@@ -349,7 +349,7 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		below = punchHistoryRepository.countPresenceByState(startDate, endDate, "BELOW");
 		normal = punchHistoryRepository.countPresenceByState(startDate, endDate, "NORMAL");
 		over = punchHistoryRepository.countPresenceByState(startDate, endDate, "OVER");
-		absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "0");
+		absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "NON DISPONIBLE");
 		
 		presences = new PresenceHistory(below, normal, over, absent);
 		absences = punchHistoryRepository.countAbsent(startDate, endDate, Boolean.TRUE);
@@ -408,7 +408,7 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			below = punchHistoryRepository.countPresenceByState(startDate, endDate, "BELOW");
 			normal = punchHistoryRepository.countPresenceByState(startDate, endDate, "NORMAL");
 			over = punchHistoryRepository.countPresenceByState(startDate, endDate, "OVER");
-			absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "0");
+			absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "NON DISPONIBLE");
 			
 			presences = new PresenceHistory(below, normal, over, absent);
 			
@@ -475,7 +475,7 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			below = punchHistoryRepository.countPresenceByState(startDate, endDate, "BELOW");
 			normal = punchHistoryRepository.countPresenceByState(startDate, endDate, "NORMAL");
 			over = punchHistoryRepository.countPresenceByState(startDate, endDate, "OVER");
-			absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "0");
+			absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "NON DISPONIBLE");
 			
 			presences = new PresenceHistory(below, normal, over, absent);
 			
@@ -545,7 +545,7 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 			below = punchHistoryRepository.countPresenceByState(startDate, endDate, "BELOW");
 			normal = punchHistoryRepository.countPresenceByState(startDate, endDate, "NORMAL");
 			over = punchHistoryRepository.countPresenceByState(startDate, endDate, "OVER");
-			absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "0");
+			absent = punchHistoryRepository.countPresenceByState(startDate, endDate, "NON DISPONIBLE");
 			
 			presences = new PresenceHistory(below, normal, over, absent);
 			
@@ -783,6 +783,16 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 	@Override
 	public List<HistoryAllPointage> historyAllPointage(String empCode) {
 		return punchHistoryRepository.historyAllPointage(empCode);
+	}
+
+	@Override
+	public List<EmployeTop> employeTop5ByPresencePeriode() {
+		return punchHistoryRepository.employeTop5ByPresencePeriode();
+	}
+
+	@Override
+	public List<EmployeTop> employeLast5ByPresencePeriode() {
+		return punchHistoryRepository.employeLast5ByPresencePeriode();
 	}
 
 
