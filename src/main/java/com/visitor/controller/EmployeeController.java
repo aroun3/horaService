@@ -1,6 +1,7 @@
 package com.visitor.controller;
 
 import com.visitor.payload.response.EmployeeResponse;
+import com.visitor.payload.response.GraphStat;
 import com.visitor.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,12 @@ public class EmployeeController {
     public List<EmployeeResponse> getEmployeAndDepaetment(){
        return employeeService.getListEmployeeAndDepartment();
     }
+
+    @GetMapping("/employee/stats/graph")
+    public List<GraphStat> employeGraphStats(@RequestParam("periode") String periode,@RequestParam("empCode") String empCode){
+        return employeeService.employeGraphStats(periode, empCode);
+    }
+
 
 
 }
