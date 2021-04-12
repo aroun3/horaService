@@ -61,7 +61,7 @@ public class AccueilServiceImpl implements AccueilService{
 		Integer early = arrivalPunchRepository.count("1");
 		Integer ontime = arrivalPunchRepository.count("2");
 		Integer late = arrivalPunchRepository.count("3");
-		Integer absent = arrivalPunchRepository.count("NON DISPONIBLE");
+		Integer absent = arrivalPunchRepository.count("0");
 		
 		GeneralStat generalStat = new GeneralStat(early, ontime, late, absent);
 		
@@ -87,7 +87,7 @@ public class AccueilServiceImpl implements AccueilService{
 			String absent1 = null;
 			Integer ontime = arrivalPunchRepository.countByArea(area,"2");
 			Integer late = arrivalPunchRepository.countByArea(area,"3");
-			Integer absent = arrivalPunchRepository.countByArea(area,"NON DISPONIBLE");
+			Integer absent = arrivalPunchRepository.countByArea(area,"0");
 
 			List<IArea> areaGps = areaGpsRepository.findByArea(area);
 
