@@ -174,7 +174,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 	@Query(value ="SELECT it.id as id, pe.emp_code as empCode ,pe.first_name AS firstName, pe.last_name AS lastName, pe.gender AS gender, pe.email AS email, pe.mobile AS mobile, it.punch_time AS punchTime, iter.sn AS terminalName FROM iclock_transaction it " +
 			" INNER JOIN personnel_employee pe ON it.emp_id = pe.id " +
 			" INNER JOIN iclock_terminal iter ON iter.id = it.terminal_id " +
-			" WHERE it.emp_code = :empCode", nativeQuery = true)
+			" WHERE it.emp_code = :empCode ORDER BY punch_time desc", nativeQuery = true)
 	List<HistoryAllPointage>historyAllPointage(@Param("empCode") String empCode);
 
 }
