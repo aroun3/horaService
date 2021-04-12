@@ -3,7 +3,7 @@ package com.visitor.controller;
 import java.util.List;
 
 import com.visitor.entities.*;
-import com.visitor.payload.response.PersonnelArea;
+import com.visitor.payload.response.*;
 import com.visitor.repositories.PunchHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.visitor.payload.response.AreaHistoryStats;
-import com.visitor.payload.response.GraphStat;
-import com.visitor.payload.response.HistoryStats;
 import com.visitor.service_interfaces.PunchHistoryService;
 
 @RestController
@@ -121,4 +118,10 @@ public class HistoryController {
 	public List<EmployeTop> employeLast5ByPresencePeriode(){
 		return punchHistoryService.employeLast5ByPresencePeriode();
 	};
+
+	@GetMapping("/history/employee/totalTopLast")
+	public TotalTopLast totalEmployeTopLastByPresencePeriode(){
+		return punchHistoryService.totalEmployeTopLastByPresencePeriode();
+	};
+
 }

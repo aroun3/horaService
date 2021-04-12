@@ -7,10 +7,7 @@ import com.visitor.entities.EmployeTop;
 import com.visitor.entities.HistoryAllPointage;
 import com.visitor.entities.HistoryPointage;
 import com.visitor.entities.PunchHistory;
-import com.visitor.payload.response.AreaHistoryStats;
-import com.visitor.payload.response.GraphStat;
-import com.visitor.payload.response.HistoryStats;
-import com.visitor.payload.response.PersonnelArea;
+import com.visitor.payload.response.*;
 import org.springframework.data.repository.query.Param;
 
 public interface PunchHistoryService {
@@ -30,4 +27,5 @@ public interface PunchHistoryService {
 	List<HistoryAllPointage>historyAllPointage(String empCode);
 	List<EmployeTop>employeTop5ByPresencePeriode();
 	List<EmployeTop>employeLast5ByPresencePeriode();
+	TotalTopLast totalEmployeTopLastByPresencePeriode();
 }

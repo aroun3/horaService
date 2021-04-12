@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.visitor.repositories.PunchHistoryRepository;
 import com.visitor.service_interfaces.PunchHistoryService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PunchHistoryServiceImpl implements PunchHistoryService{
@@ -793,6 +794,17 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 	@Override
 	public List<EmployeTop> employeLast5ByPresencePeriode() {
 		return punchHistoryRepository.employeLast5ByPresencePeriode();
+	}
+
+	@Override
+	@Transactional
+	public TotalTopLast totalEmployeTopLastByPresencePeriode() {
+		List<EmployeTop> listEmployeTop = punchHistoryRepository.totalEmployeTopByPresencePeriode();
+		List<EmployeTop> listEmployeLast = punchHistoryRepository.totalEmployeLastByPresencePeriode();
+		TotalTopLast totalTopLast = new TotalTopLast();
+		totalTopLast.setListEmployeTop(listEmployeTop);
+		totalTopLast.setListEmployeLast(listEmployeLast);
+		return totalTopLast;
 	}
 
 
