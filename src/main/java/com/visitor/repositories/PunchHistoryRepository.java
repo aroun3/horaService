@@ -3,7 +3,6 @@ package com.visitor.repositories;
 import java.util.Date;
 import java.util.List;
 
-import com.visitor.entities.HistoryPointage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -100,7 +99,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			+ " ph.is_absent as isAbsent, ph.log_date as logDate, pe.first_name as firstName, pe.last_name as lastName, "
 			+ " pp.position_name as position, pd.dept_name as departement "
 			+ " from h_log_transaction ph, personnel_employee pe, personnel_employee_area pea, personnel_department pd, personnel_position pp"
-			+ " where pp.id = pe.position_id and pd.id = pe.department_id and pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
+			+ " where pp.id = pe.position_id and pd.id = pe.department_id and pea.employee_id = pe.id and ph.emp_code = pe.emp_code "
 			+ " and ph.departure_state = '3' and ph.log_date between :startDate and :endDate order by ph.departure_time desc limit 5", nativeQuery = true)
 	List<IPunchHistory> departureMax5(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
