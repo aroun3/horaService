@@ -1,12 +1,15 @@
 package com.visitor.controller.visitapp;
 
+import com.visitor.entities.Employee;
 import com.visitor.entities.User;
 import com.visitor.entities.visitor.Nfc;
 import com.visitor.entities.visitor.Visitor;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
+import com.visitor.payload.response.EmployeeResponse;
 import com.visitor.payload.response.VisitorTotalResponse;
 import com.visitor.repositories.UserRepository;
+import com.visitor.services.EmployeeService;
 import com.visitor.services.visitor.NfcService;
 import com.visitor.services.visitor.VisitorService;
 
@@ -36,6 +39,9 @@ public class VisitorController {
 
     @Autowired
     private NfcService nfcService;
+
+    @Autowired
+    EmployeeService employeeService;
 
     @GetMapping("/visitors")
     public  List<Visitor> getAllVisitor(){
@@ -129,6 +135,17 @@ public class VisitorController {
     public List<VisitorTotalResponse> getListCountVisitor(){
         return visitorService.getTotalVistor();
 
+    }
+
+
+    @GetMapping("/visitor/listEmployee")
+    public ResponseEntity<?> getAllEmployee(){
+        try {
+            List<EmployeeResponse> employeeResponseList = employeeService.getAllEmployee();
+            return ResponseEntity.ok().body(new ApiResponse(true, employeeResponseList));
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
+        }
     }
 
     /*@GetMapping("/getPersonals")
