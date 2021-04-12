@@ -107,7 +107,7 @@ public class HistoryController {
 		return punchHistoryService.historyPointageByEmpCode(empCode);
 	};
 
-	/*LISTE DE LES  POINTAGES DE L'EMPLOYE PAR SON CODE*/
+	/*LISTE DE TOUS LES POINTAGES DE L'EMPLOYE PAR SON CODE*/
 	@GetMapping("/history/historyAllPointage")
 	public List<HistoryAllPointage> historyAllPointage(@RequestParam("empCode") String empCode){
 		return punchHistoryService.historyAllPointage(empCode);
