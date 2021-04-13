@@ -3,10 +3,7 @@ package com.visitor.service_interfaces;
 import java.util.Date;
 import java.util.List;
 
-import com.visitor.entities.EmployeTop;
-import com.visitor.entities.HistoryAllPointage;
-import com.visitor.entities.HistoryPointage;
-import com.visitor.entities.PunchHistory;
+import com.visitor.entities.*;
 import com.visitor.payload.response.*;
 import org.springframework.data.repository.query.Param;
 
@@ -28,4 +25,10 @@ public interface PunchHistoryService {
 	List<EmployeTop>employeTop5ByPresencePeriode(String periode);
 	List<EmployeTop>employeLast5ByPresencePeriode(String periode);
 	TotalTopLast totalEmployeTopLastByPresencePeriode(String periode);
+
+	List<IPunchHistory> totalArrivalMin(String periode);
+	List<IPunchHistory> totalArrivalMax(String periode);
+	List<IPunchHistory> totalDepartureMin(String periode);
+	List<IPunchHistory> totalDepartureMax(String periode);
+
 }

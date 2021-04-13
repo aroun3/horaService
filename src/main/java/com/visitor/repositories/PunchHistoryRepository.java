@@ -56,9 +56,9 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			+ " and ph.is_absent = :state and pae.area_id = :areAId and ph.log_date between :startDate and :endDate", nativeQuery = true)
 	Integer countAbsentByArea(@Param("areAId") Integer areAId, @Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("state") Boolean state);
 	
-	
-	
-	
+
+
+
 	
 	@Query(value = "select pe.emp_code as empCode, ph.arrival_time as arrivalTime, ph.arrival_id as arrivalId, ph.arrival_terminal_id as arrivalTerminalId,"
 			+ " ph.departure_time as departureTime, ph.departure_id as departureId, ph.departure_terminal_id as departureTerminalId,"
@@ -101,11 +101,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 	List<IPunchHistory> departureMax5(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 	
-	
-	
-	
-	
-	
+
 	
 	
 	@Query(value = "select avg(ph.departure) from punchhistory ph where ph.punch_day between :startDate and :endDate", nativeQuery = true)
@@ -192,7 +188,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 	List<EmployeTop>employeTop5ByPresencePeriode(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 
-	/*LES EMPLOYEES LAST 5 QUI FONT MOINS DE 8h TRAVAIL*/
+	/*LES EMPLOYEES LAST 5 QUI FONT MOINS DE 8H TRAVAIL*/
 	@Query(value = "SELECT pe.id AS id, pe.emp_code AS empCode, pe.first_name AS firstName, pe.last_name AS lastName, pe.gender AS gender, pe.mobile AS mobile, pe.email AS email, pp.position_name AS positionName, pd.dept_name AS departmentName, STRING_AGG(pa.area_name, ',') AS areaName, ph.presence_periode AS presencePeriode from h_log_transaction ph " +
 			"INNER JOIN personnel_employee pe ON ph.emp_code = pe.emp_code " +
 			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id " +
@@ -207,7 +203,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 	List<EmployeTop>employeLast5ByPresencePeriode(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 
-	/*LISTE TOTAL EMPLOYEES TOP QUI FONT 8 OU PLUS DE TRAVAIL*/
+	/*LISTE TOTAL EMPLOYEES TOP QUI FONT 8H OU PLUS DE TRAVAIL*/
 	@Query(value = "SELECT pe.id AS id, pe.emp_code AS empCode, pe.first_name AS firstName, pe.last_name AS lastName, pe.gender AS gender, pe.mobile AS mobile, pe.email AS email, pp.position_name AS positionName, pd.dept_name AS departmentName, STRING_AGG(pa.area_name, ',') AS areaName, ph.presence_periode AS presencePeriode from h_log_transaction ph \n" +
 			"INNER JOIN personnel_employee pe ON ph.emp_code = pe.emp_code " +
 			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id " +
@@ -221,7 +217,7 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 	List<EmployeTop>totalEmployeTopByPresencePeriode(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 
-	/*LISTE TOTAL EMPLOYEES LAST QUI FONT MOINS DE 8 TRAVAIL*/
+	/*LISTE TOTAL EMPLOYEES LAST QUI FONT MOINS DE 8H TRAVAIL*/
 	@Query(value = "SELECT pe.id AS id, pe.emp_code AS empCode, pe.first_name AS firstName, pe.last_name AS lastName, pe.gender AS gender, pe.mobile AS mobile, pe.email AS email, pp.position_name AS positionName, pd.dept_name AS departmentName, STRING_AGG(pa.area_name, ',') AS areaName, ph.presence_periode AS presencePeriode from h_log_transaction ph " +
 			"INNER JOIN personnel_employee pe ON ph.emp_code = pe.emp_code " +
 			"INNER JOIN personnel_employee_area pea ON pea.employee_id = pe.id " +
@@ -233,5 +229,50 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 			"GROUP BY pe.id, pe.emp_code, pe.first_name, pe.last_name,ph.presence_periode,pp.position_name, pd.dept_name, pe.gender, pe.mobile, pe.email " +
 			"ORDER BY ph.presence_periode asc", nativeQuery = true)
 	List<EmployeTop>totalEmployeLastByPresencePeriode(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+
+
+	/*TOTAL DES ARRIVAL MIN ET MAX ,DEPART MIN ET MAX*/
+	@Query(value = "select pe.emp_code as empCode, ph.arrival_time as arrivalTime, ph.arrival_id as arrivalId, ph.arrival_terminal_id as arrivalTerminalId,"
+			+ " ph.departure_time as departureTime, ph.departure_id as departureId, ph.departure_terminal_id as departureTerminalId,"
+			+ " ph.presence_periode as presencePeriode, ph.arrival_state as arrivalState, ph.departure_state as departureState, ph.presence_state as presenceState,"
+			+ " ph.is_absent as isAbsent, ph.log_date as logDate, pe.first_name as firstName, pe.last_name as lastName, "
+			+ " pp.position_name as position, pd.dept_name as departement "
+			+ " from h_log_transaction ph, personnel_employee pe, personnel_employee_area pae, personnel_department pd, personnel_position pp"
+			+ " where pp.id = pe.position_id and pd.id = pe.department_id and pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
+			+ " and ph.arrival_state = '1' and ph.log_date between :startDate and :endDate order by ph.arrival_time asc ", nativeQuery = true)
+	List<IPunchHistory> totalArrivalMin(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+	@Query(value = "select pe.emp_code as empCode, ph.arrival_time as arrivalTime, ph.arrival_id as arrivalId, ph.arrival_terminal_id as arrivalTerminalId,"
+			+ " ph.departure_time as departureTime, ph.departure_id as departureId, ph.departure_terminal_id as departureTerminalId,"
+			+ " ph.presence_periode as presencePeriode, ph.arrival_state as arrivalState, ph.departure_state as departureState, ph.presence_state as presenceState,"
+			+ " ph.is_absent as isAbsent, ph.log_date as logDate, pe.first_name as firstName, pe.last_name as lastName, "
+			+ " pp.position_name as position, pd.dept_name as departement "
+			+ " from h_log_transaction ph, personnel_employee pe, personnel_employee_area pae, personnel_department pd, personnel_position pp"
+			+ " where pp.id = pe.position_id and pd.id = pe.department_id and pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
+			+ " and ph.arrival_state = '3' and ph.log_date between :startDate and :endDate order by ph.arrival_time desc", nativeQuery = true)
+	List<IPunchHistory> totalArrivalMax(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+	@Query(value = "select pe.emp_code as empCode, ph.arrival_time as arrivalTime, ph.arrival_id as arrivalId, ph.arrival_terminal_id as arrivalTerminalId,"
+			+ " ph.departure_time as departureTime, ph.departure_id as departureId, ph.departure_terminal_id as departureTerminalId,"
+			+ " ph.presence_periode as presencePeriode, ph.arrival_state as arrivalState, ph.departure_state as departureState, ph.presence_state as presenceState,"
+			+ " ph.is_absent as isAbsent, ph.log_date as logDate, pe.first_name as firstName, pe.last_name as lastName, "
+			+ " pp.position_name as position, pd.dept_name as departement "
+			+ " from h_log_transaction ph, personnel_employee pe, personnel_employee_area pae, personnel_department pd, personnel_position pp"
+			+ " where pp.id = pe.position_id and pd.id = pe.department_id and pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
+			+ " and ph.departure_state = '1' and ph.log_date between  :startDate and :endDate order by ph.departure_time asc", nativeQuery = true)
+	List<IPunchHistory> totalDepartureMin(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+	@Query(value = "select pe.emp_code as empCode, ph.arrival_time as arrivalTime, ph.arrival_id as arrivalId, ph.arrival_terminal_id as arrivalTerminalId,"
+			+ " ph.departure_time as departureTime, ph.departure_id as departureId, ph.departure_terminal_id as departureTerminalId,"
+			+ " ph.presence_periode as presencePeriode, ph.arrival_state as arrivalState, ph.departure_state as departureState, ph.presence_state as presenceState,"
+			+ " ph.is_absent as isAbsent, ph.log_date as logDate, pe.first_name as firstName, pe.last_name as lastName, "
+			+ " pp.position_name as position, pd.dept_name as departement "
+			+ " from h_log_transaction ph, personnel_employee pe, personnel_employee_area pea, personnel_department pd, personnel_position pp"
+			+ " where pp.id = pe.position_id and pd.id = pe.department_id and pea.employee_id = pe.id and ph.emp_code = pe.emp_code "
+			+ " and ph.departure_state = '3' and ph.log_date between :startDate and :endDate order by ph.departure_time desc", nativeQuery = true)
+	List<IPunchHistory> totalDepartureMax(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+
 
 }

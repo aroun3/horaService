@@ -124,4 +124,29 @@ public class HistoryController {
 		return punchHistoryService.totalEmployeTopLastByPresencePeriode(periode);
 	};
 
+
+
+	/*LISTE TOTAL DES  ARRIVAL MIN, MAX ET DEPART MIN ? MAX*/
+
+	@GetMapping("/history/totalArrivalMin")
+	public List<IPunchHistory> totalArrivalMin(String periode){
+		return punchHistoryService.totalArrivalMin(periode);
+	};
+
+	@GetMapping("/history/totalArrivalMax")
+	public List<IPunchHistory> totalArrivalMax(String periode) {
+		return punchHistoryService.totalArrivalMax(periode);
+	};
+
+	@GetMapping("/history/totalDepartureMin")
+	public List<IPunchHistory> totalDepartureMin(String periode){
+		return punchHistoryService.totalArrivalMin(periode);
+	}
+
+	@GetMapping("/history/totalDepartureMax")
+	public List<IPunchHistory> totalDepartureMax(String periode) {
+		return punchHistoryService.totalDepartureMax(periode);
+	}
+
+
 }

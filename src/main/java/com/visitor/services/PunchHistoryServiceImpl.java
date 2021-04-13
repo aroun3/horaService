@@ -817,5 +817,37 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		return totalTopLast;
 	}
 
+	@Override
+	public List<IPunchHistory> totalArrivalMin(String periode) {
+		Date startDate = new Date();
+		Date endDate = new Date();
+		getStartAndEndDate(periode, startDate, endDate);
+		return punchHistoryRepository.totalArrivalMin(startDate, endDate);
+	}
+
+	@Override
+	public List<IPunchHistory> totalArrivalMax(String periode) {
+		Date startDate = new Date();
+		Date endDate = new Date();
+		getStartAndEndDate(periode, startDate, endDate);
+		return punchHistoryRepository.totalArrivalMax(startDate, endDate);
+	}
+
+	@Override
+	public List<IPunchHistory> totalDepartureMin(String periode) {
+		Date startDate = new Date();
+		Date endDate = new Date();
+		getStartAndEndDate(periode, startDate, endDate);
+		return punchHistoryRepository.totalArrivalMin(startDate, endDate);
+	}
+
+	@Override
+	public List<IPunchHistory> totalDepartureMax(String periode) {
+		Date startDate = new Date();
+		Date endDate = new Date();
+		getStartAndEndDate(periode, startDate, endDate);
+		return punchHistoryRepository.totalArrivalMax(startDate, endDate);
+	}
+
 
 }
