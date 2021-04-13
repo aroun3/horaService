@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -22,7 +25,8 @@ public class HparamsController {
     }
 
     @PostMapping("/hparams")
-    public ResponseEntity<?> addHparams(@RequestBody Hparams hparams){
+    public ResponseEntity<?> addHparams(@RequestBody Hparams hparams, HttpServletRequest request){
+
         try {
             Hparams hp = hparamsService.add(hparams);
             return ResponseEntity.ok().body(new ApiResponse(true,  AppConstants.STATUS_CODE_SUCCESS[1], hp));

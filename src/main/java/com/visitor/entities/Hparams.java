@@ -28,51 +28,41 @@ public class Hparams implements Serializable{
     private Integer id;
 
     @Column(name = "min_checkin")
-    @Temporal(TemporalType.TIME)
-    @NotBlank
-    private Date minCheckin;
+    //@Temporal(TemporalType.TIME)
+    private String minCheckin;
 
     @Column(name = "h_checkin")
-    @Temporal(TemporalType.TIME)
-    @NotBlank
-    private Date hCheckin;
+    //@Temporal(TemporalType.TIME)
+    private String hCheckin;
 
     @Column(name = "late_checkin")
-    @Temporal(TemporalType.TIME)
-    @NotBlank
-    private Date lateCheckin;
+   // @Temporal(TemporalType.TIME)
+    private String lateCheckin;
 
     @Column(name = "max_checkin")
-    @Temporal(TemporalType.TIME)
-    @NotBlank
-    private Date maxCheckin;
+    //@Temporal(TemporalType.TIME)
+    private String maxCheckin;
 
     @Column(name = "min_checkout")
-    @Temporal(TemporalType.TIME)
-    @NotBlank
-    private Date minCheckout;
+    //@Temporal(TemporalType.TIME)
+    private String minCheckout;
 
     @Column(name = "early_checkout")
-    @Temporal(TemporalType.TIME)
-    @NotBlank
-    private Date hearlyCheckout;
+    //@Temporal(TemporalType.TIME)
+    private String hearlyCheckout;
 
     @Column(name = "h_checkout")
-    @Temporal(TemporalType.TIME)
-    @NotBlank
-    private Date hCheckout;
+    //@Temporal(TemporalType.TIME)
+    private String hCheckout;
 
     @Column(name = "max_checkout")
-    @Temporal(TemporalType.TIME)
-    @NotBlank
-    private Date maxChectout;
+    //@Temporal(TemporalType.TIME)
+    private String maxChectout;
 
     @Column(name = "area_id")
-    @NotBlank
     private Integer areaId;
 
     @Column(name = "callback_date")
-    @NotBlank
     @Temporal(TemporalType.DATE)
     private Date callbackDate;
 }
