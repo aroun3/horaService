@@ -30,8 +30,13 @@ public class NfcController {
     @PostMapping("/nfc")
     public ResponseEntity<?> saveNfc(@RequestBody Nfc nfc){
         try {
-            Nfc data = nfcService.add(nfc);
-            return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
+            Nfc nfcCheck = nfcService.findByNfcId(nfc.getNfcId());
+            if(nfcCheck == null) {
+                Nfc data = nfcService.add(nfc);
+                return ResponseEntity.ok().body(new ApiResponse(true, AppConstants.STATUS_CODE_SUCCESS[1], data));
+            }else{
+                throw new IllegalStateException("La carte nfc existe dèjà");
+            }
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(new ApiResponse(false, AppConstants.STATUS_CODE_ERROR[1], ex.getMessage()));
 
