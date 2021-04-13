@@ -838,7 +838,7 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		Date startDate = new Date();
 		Date endDate = new Date();
 		getStartAndEndDate(periode, startDate, endDate);
-		return punchHistoryRepository.totalArrivalMin(startDate, endDate);
+		return punchHistoryRepository.totalDepartureMin(startDate, endDate);
 	}
 
 	@Override
@@ -846,7 +846,7 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 		Date startDate = new Date();
 		Date endDate = new Date();
 		getStartAndEndDate(periode, startDate, endDate);
-		return punchHistoryRepository.totalArrivalMax(startDate, endDate);
+		return punchHistoryRepository.totalDepartureMax(startDate, endDate);
 	}
 
 
