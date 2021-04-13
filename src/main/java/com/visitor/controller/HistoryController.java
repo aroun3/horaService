@@ -107,18 +107,19 @@ public class HistoryController {
 		return punchHistoryService.historyAllPointage(empCode);
 	};
 
-	/*LES EMPLOYEE TOP 5 QUI FONT 8 OU PLUS DE TRAVAIL*/
+	/*LES EMPLOYEE TOP5 QUI FONT 8H OU PLUS DE TRAVAIL*/
 	@GetMapping("/history/employee/top5")
 	public List<EmployeTop> employeTop5ByPresencePeriode(@RequestParam("periode")String periode){
 		return punchHistoryService.employeTop5ByPresencePeriode(periode);
 	};
 
-	/*LES EMPLOYEE LAST 5 QUI FONT 8 OU PLUS DE TRAVAIL*/
+	/*LES EMPLOYEE LAST5 QUI FONT MOINS DE 8H DE TRAVAIL*/
 	@GetMapping("/history/employee/last5")
 	public List<EmployeTop> employeLast5ByPresencePeriode(@RequestParam("periode")String periode){
 		return punchHistoryService.employeLast5ByPresencePeriode(periode);
 	};
 
+	/*LISTE TOTAL EMPLOYEE TOP ET LAST AVEC LES TEMPS DE TRAVAIL*/
 	@GetMapping("/history/employee/totalTopLast")
 	public TotalTopLast totalEmployeTopLastByPresencePeriode(@RequestParam("periode")String periode){
 		return punchHistoryService.totalEmployeTopLastByPresencePeriode(periode);
@@ -126,7 +127,7 @@ public class HistoryController {
 
 
 
-	/*LISTE TOTAL DES  ARRIVAL MIN, MAX ET DEPART MIN ? MAX*/
+	/*LISTE TOTAL DES ARRIVAL MIN, MAX ET DEPART MIN? MAX*/
 
 	@GetMapping("/history/totalArrivalMin")
 	public List<IPunchHistory> totalArrivalMin(@RequestParam("periode")String periode){
