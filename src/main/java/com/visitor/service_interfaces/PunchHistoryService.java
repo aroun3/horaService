@@ -14,6 +14,7 @@ public interface PunchHistoryService {
 	List<PunchHistory> arrivalMin5(String periode);
 	List<PunchHistory> arrivalMax5(String periode);
 	List<PunchHistory> absent(String periode);
+	List<PunchHistory> absentLimit10(String periode);
 	List<PunchHistory> departureMin5(String periode);
 	List<PunchHistory> departureMax5(String periode);
 	List<PunchHistory> present5(String periode);

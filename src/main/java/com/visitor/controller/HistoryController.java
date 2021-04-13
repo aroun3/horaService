@@ -68,6 +68,11 @@ public class HistoryController {
 	public List<PunchHistory> absent(@RequestParam("periode") String periode){
 		return punchHistoryService.absent(periode);
 	};
+
+	@GetMapping("/history/stats/absentLimit10")
+	public List<PunchHistory> absentLimit10(@RequestParam("periode") String periode){
+		return punchHistoryService.absentLimit10(periode);
+	}
 	
 	@GetMapping("/history/stats/graph")
 	public List<GraphStat> graphStats(@RequestParam("periode") String periode){
@@ -128,7 +133,6 @@ public class HistoryController {
 
 
 	/*LISTE TOTAL DES ARRIVAL MIN, MAX ET DEPART MIN? MAX*/
-
 	@GetMapping("/history/totalArrivalMin")
 	public List<IPunchHistory> totalArrivalMin(@RequestParam("periode")String periode){
 		return punchHistoryService.totalArrivalMin(periode);

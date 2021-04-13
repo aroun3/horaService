@@ -285,6 +285,28 @@ public class PunchHistoryServiceImpl implements PunchHistoryService{
 	}
 
 	@Override
+	public List<PunchHistory> absentLimit10(String periode) {
+		Date startDate = new Date();
+		Date endDate = new Date();
+		getStartAndEndDate(periode, startDate, endDate);
+		List<IPunchHistory> iPunchHistories = punchHistoryRepository.absentLimit10(startDate, endDate);
+
+		PunchHistory punchHistory;
+		List<PunchHistory> punchHistories = new ArrayList<>();
+		for (IPunchHistory iPunchHistory : iPunchHistories) {
+
+			punchHistories.add(new PunchHistory(iPunchHistory.getLogDate(), iPunchHistory.getEmpCode(), iPunchHistory.getFirstName(), iPunchHistory.getLastName(),
+							iPunchHistory.getPosition(), iPunchHistory.getDepartment(), iPunchHistory.getArrivalTime(), iPunchHistory.getDepartureTime(),
+							iPunchHistory.getPresencePeriode(), iPunchHistory.getArrivalState(), iPunchHistory.getDepartureState(),
+							iPunchHistory.getPresenceState(), iPunchHistory.isAbsent()
+					)
+			);
+		}
+
+		return punchHistories;
+	}
+
+	@Override
 	public List<GraphStat> graphStats(String periode) {
 		// TODO Auto-generated method stub
 		
