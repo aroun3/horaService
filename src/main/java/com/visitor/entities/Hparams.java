@@ -16,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Transient;
 
 @Entity
 @Table(name = "h_params")
@@ -65,4 +66,7 @@ public class Hparams implements Serializable{
     @Column(name = "callback_date")
     @Temporal(TemporalType.DATE)
     private Date callbackDate;
+
+    @Transient
+    private Area area;
 }

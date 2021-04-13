@@ -3,6 +3,8 @@ package com.visitor.controller;
 import com.visitor.entities.Hparams;
 import com.visitor.payload.ApiResponse;
 import com.visitor.payload.AppConstants;
+import com.visitor.payload.response.HparamResponse;
+import com.visitor.repositories.HparamsRepository;
 import com.visitor.services.HparamsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,12 @@ import java.util.List;
 public class HparamsController {
     @Autowired
     HparamsService hparamsService;
-
+    @Autowired
+    HparamsRepository hparamsRepository;
     @GetMapping("/hparams")
-    public List<Hparams> getAllHparams(){
-        return  hparamsService.getAll();
+    public List<HparamResponse> getAllHparams(){
+        //return  hparamsService.getAll();
+        return hparamsRepository.getAllHparam();
     }
 
     @PostMapping("/hparams")
