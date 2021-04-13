@@ -5,9 +5,11 @@ import com.visitor.repositories.visitor.NfcRepository;
 import com.visitor.service_interfaces.NfcInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service("nfcInterface")
 public class NfcService implements NfcInterface {
@@ -20,7 +22,14 @@ public class NfcService implements NfcInterface {
     }
 
     @Override
+    @Transactional
     public Nfc add(Nfc nfc) {
+        Random random = new Random();
+        Integer val = random.nextInt();
+        Integer index = nfcRepository.lastIndexNfc();
+        String rand =(val+index)+"";
+        nfc.setNfcRef(rand.replace("-",""));
+        nfc.setStatus(false);
         return nfcRepository.save(nfc);
     }
 
