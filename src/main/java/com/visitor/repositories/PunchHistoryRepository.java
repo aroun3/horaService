@@ -117,14 +117,14 @@ public interface PunchHistoryRepository extends JpaRepository<PunchHistory, Inte
 	@Query(value = "select avg(ph.arrival) from punch_history ph where ph.punch_day between :startDate and :endDate", nativeQuery = true)
 	Date arrivalMean(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
-	@Query(value = "select pe.emp_code as empCode, ph.arrival_time as arrivalTime, ph.arrival_id as arrivalId, ph.arrival_terminal_id as arrivalTerminalId(),"
+	@Query(value = "select pe.emp_code as empCode, ph.arrival_time as arrivalTime, ph.arrival_id as arrivalId, ph.arrival_terminal_id as arrivalTerminalId ,"
 			+ " ph.departure_time as departureTime, ph.departure_id as departureId, ph.departure_terminal_id as departureTerminalId,"
 			+ " ph.presence_periode as presencePeriode, ph.arrival_state as arrivalState, ph.departure_state as departureState, ph.presence_state as presenceState,"
 			+ " ph.is_absent as isAbsent, ph.log_date as logDate, pe.first_name as firstName, pe.last_name as lastName, "
 			+ " pp.position_name as position, pd.dept_name as departement "
 			+ " from h_log_transaction ph, personnel_employee pe, personnel_employee_area pea, personnel_department pd, personnel_position pp"
-			+ " where pp.id = pe.position_id and pd.id = pe.department_id and pae.employee_id = pe.id and ph.emp_code = pe.emp_code "
-			+ " and ph.is_absent = false and ph.log_date between between :startDate and :endDate order by ph.presence_periode desc limit 5", nativeQuery = true)
+			+ " where pp.id = pe.position_id and pd.id = pe.department_id and pea.employee_id = pe.id and ph.emp_code = pe.emp_code "
+			+ " and ph.is_absent = false and ph.log_date between  :startDate and :endDate order by ph.presence_periode desc limit 5", nativeQuery = true)
 	List<IPunchHistory> present5(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 	@Query(value = "select pe.emp_code as empCode, ph.arrival_time as arrivalTime, ph.arrival_id as arrivalId, ph.arrival_terminal_id as arrivalTerminalId,"

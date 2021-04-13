@@ -80,15 +80,15 @@ public class HistoryController {
 		return  punchHistoryRepository.findAreaList();
 	}
 
-	/*DETAIL*/
 
+	/*DETAIL*/
 	@GetMapping("/history/statsByEmployee")
 	public HistoryStats historyStatsByEmployeeCode(@RequestParam("periode") String periode, @RequestParam("empCode")String empCode){
 		HistoryStats historyStats = punchHistoryService.areaHistoryStatsByEmployee(periode, empCode);
 		return historyStats;
 	};
 
-
+	/*LISTE DES AREA OU SITES*/
 	@GetMapping("/history/personnelArea")
 	public List<PersonnelArea> getPersonnelArea(){
 		return punchHistoryService.getAllEmployeArea();
