@@ -140,7 +140,7 @@ public class HistoryController {
 
 	@GetMapping("/history/totalDepartureMin")
 	public List<IPunchHistory> totalDepartureMin(@RequestParam("periode")String periode){
-		return punchHistoryService.totalArrivalMin(periode);
+		return punchHistoryService.totalDepartureMin(periode);
 	}
 
 	@GetMapping("/history/totalDepartureMax")
