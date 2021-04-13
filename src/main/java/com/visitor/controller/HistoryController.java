@@ -129,22 +129,22 @@ public class HistoryController {
 	/*LISTE TOTAL DES  ARRIVAL MIN, MAX ET DEPART MIN ? MAX*/
 
 	@GetMapping("/history/totalArrivalMin")
-	public List<IPunchHistory> totalArrivalMin(String periode){
+	public List<IPunchHistory> totalArrivalMin(@RequestParam("periode")String periode){
 		return punchHistoryService.totalArrivalMin(periode);
 	};
 
 	@GetMapping("/history/totalArrivalMax")
-	public List<IPunchHistory> totalArrivalMax(String periode) {
+	public List<IPunchHistory> totalArrivalMax(@RequestParam("periode")String periode) {
 		return punchHistoryService.totalArrivalMax(periode);
 	};
 
 	@GetMapping("/history/totalDepartureMin")
-	public List<IPunchHistory> totalDepartureMin(String periode){
+	public List<IPunchHistory> totalDepartureMin(@RequestParam("periode")String periode){
 		return punchHistoryService.totalArrivalMin(periode);
 	}
 
 	@GetMapping("/history/totalDepartureMax")
-	public List<IPunchHistory> totalDepartureMax(String periode) {
+	public List<IPunchHistory> totalDepartureMax(@RequestParam("periode")String periode) {
 		return punchHistoryService.totalDepartureMax(periode);
 	}
 
